@@ -1,0 +1,18 @@
+singleton I18n 1.0 I18n.qml
+Backend 1.0 Backend.qml
+Conditions 1.0 Conditions.qml
+Field 1.0 Field.qml
+LocalizedDialog 1.0 LocalizedDialog.qml
+Pairs 1.0 Pairs.qml
+ResourceEditor 1.0 ResourceEditor.qml
+Steps 1.0 Steps.qml
+ScriptParameters 1.0 ScriptParameters.qml
+ScriptArguments 1.0 ScriptArguments.qml
+Directories 1.0 Directories.qml
+ActionButton 1.0 ActionButton.qml
+InputField 1.0 InputField.qml
+MultiLineField 1.0 MultiLineField.qml
+ThemedLabel 1.0 ThemedLabel.qml
+ChoiceField 1.0 ChoiceField.qml
+ToggleField 1.0 ToggleField.qml
+NumericField 1.0 NumericField.qml

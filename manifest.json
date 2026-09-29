@@ -1,0 +1,11 @@
+{
+ "schemaVersion": 1,
+ "id": "quatrro.automations",
+ "name": "Omarchy Automations",
+ "version": "0.1.0",
+ "author": "Omarchy Automations contributors",
+ "description": "Webhooks and system automations with explicit capabilities",
+ "kinds": ["bar-widget", "panel"],
+ "entryPoints": {"barWidget": "Widget.qml", "panel": "Panel.qml"},
+ "barWidget": {"displayName": "Automations", "category": "System", "allowMultiple": false, "defaultSection": "right"}
+}

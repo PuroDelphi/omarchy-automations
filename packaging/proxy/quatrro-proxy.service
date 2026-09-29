@@ -1,0 +1,22 @@
+[Unit]
+Description=Optional Omarchy Automations TLS webhook proxy
+After=network-online.target quatrrod.service
+Wants=quatrrod.service
+
+[Service]
+Type=simple
+EnvironmentFile=%h/.config/quatrro/proxy.env
+Environment=XDG_DATA_HOME=%h/.local/state/quatrro-proxy
+ExecStart=/usr/bin/caddy run --config %h/.config/quatrro/Caddyfile --adapter caddyfile
+Restart=on-failure
+RestartSec=3
+UMask=0077
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=%h/.local/state/quatrro-proxy
+TimeoutStopSec=5
+
+[Install]
+WantedBy=default.target

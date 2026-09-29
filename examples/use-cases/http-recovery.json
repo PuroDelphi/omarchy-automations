@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "entries": [],
+  "destinations": [
+    {
+      "id": "receiver",
+      "url": "https://receiver.example.com/events",
+      "method": "POST",
+      "format": "json",
+      "auth": "bearer",
+      "secret": "receiver-token"
+    }
+  ],
+  "actions": [
+    {
+      "id": "send-result",
+      "kind": "http",
+      "destination": "receiver",
+      "body": "{\"message\":\"{{data.message}}\",\"request\":\"{{data.request}}\"}"
+    }
+  ],
+  "flows": [
+    {
+      "id": "send-demo",
+      "source": "local:delivery",
+      "enabled": false,
+      "steps": [
+        "send-result"
+      ]
+    }
+  ],
+  "monitors": []
+}

@@ -1,0 +1,72 @@
+[
+  {
+    "format": "json",
+    "content_type": "application/json",
+    "body": "{\"state\":\"failed\",\"count\":3}",
+    "field": "count",
+    "expected": 3
+  },
+  {
+    "format": "json",
+    "content_type": "application/json",
+    "body": "{\"enabled\":true,\"message\":\"Ready\"}",
+    "field": "enabled",
+    "expected": true
+  },
+  {
+    "format": "form",
+    "content_type": "application/x-www-form-urlencoded",
+    "body": "state=failed&count=3",
+    "field": "count",
+    "expected": "3"
+  },
+  {
+    "format": "form",
+    "content_type": "application/x-www-form-urlencoded",
+    "body": "message=Build+ready&project=alpha",
+    "field": "message",
+    "expected": "Build ready"
+  },
+  {
+    "format": "raw",
+    "content_type": "text/plain; charset=utf-8",
+    "body": "Build ready",
+    "field": "body",
+    "expected": "Build ready"
+  },
+  {
+    "format": "raw",
+    "content_type": "text/csv",
+    "body": "project,state\nalpha,ready",
+    "field": "content_type",
+    "expected": "text/csv"
+  },
+  {
+    "format": "xml",
+    "content_type": "application/xml",
+    "body": "<event state=\"failed\"><message>Build failed</message></event>",
+    "field": "xml.attributes.state",
+    "expected": "failed"
+  },
+  {
+    "format": "xml",
+    "content_type": "text/xml",
+    "body": "<event><value>10</value><value>20</value></event>",
+    "field": "xml.children.1.text",
+    "expected": "20"
+  },
+  {
+    "format": "multipart",
+    "content_type": "multipart/form-data; boundary=demo",
+    "body": "--demo\r\nContent-Disposition: form-data; name=\"state\"\r\n\r\nfailed\r\n--demo--\r\n",
+    "field": "fields.state",
+    "expected": "failed"
+  },
+  {
+    "format": "multipart",
+    "content_type": "multipart/form-data; boundary=demo",
+    "body": "--demo\r\nContent-Disposition: form-data; name=\"report\"; filename=\"report.txt\"\r\nContent-Type: text/plain\r\n\r\nOK\r\n--demo--\r\n",
+    "field": "files.report.base64",
+    "expected": "T0s="
+  }
+]

@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "entries": [
+    {
+      "id": "deploy",
+      "name": "Deployment",
+      "auth": "bearer",
+      "secret": "deploy-token",
+      "format": "json",
+      "enabled": false
+    }
+  ],
+  "destinations": [],
+  "actions": [
+    {
+      "id": "notice",
+      "kind": "notify",
+      "title": "Omarchy Automations",
+      "body": "{{data.message}}"
+    }
+  ],
+  "flows": [
+    {
+      "id": "deploy-notice",
+      "source": "entry:deploy",
+      "enabled": false,
+      "conditions": [
+        {
+          "field": "data.state",
+          "op": "eq",
+          "value": "failed"
+        }
+      ],
+      "steps": [
+        "notice"
+      ]
+    }
+  ],
+  "monitors": [],
+  "timers": []
+}

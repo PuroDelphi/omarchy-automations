@@ -1,0 +1,84 @@
+[
+  {
+    "provider": "hmac",
+    "secret": "public-documentation-fixture-only",
+    "now": 1800000000,
+    "body": "{\"type\":\"build\",\"state\":\"failed\"}",
+    "headers": {
+      "X-Quatrro-Timestamp": "1800000000",
+      "X-Quatrro-Delivery": "demo-1",
+      "X-Quatrro-Signature": "sha256=4cadc79e35e750df8478d7e7ca506dd5f995476bdc965e879b76def27a696639"
+    }
+  },
+  {
+    "provider": "hmac",
+    "secret": "public-documentation-fixture-only",
+    "now": 1800000000,
+    "body": "{\"type\":\"build\",\"state\":\"passed\"}",
+    "headers": {
+      "X-Quatrro-Timestamp": "1800000000",
+      "X-Quatrro-Delivery": "demo-2",
+      "X-Quatrro-Signature": "sha256=8560adbd5dabaecd4b1ed193d441a1c465c4ec815ca81cbcc1b787c8a5e5e49f"
+    }
+  },
+  {
+    "provider": "slack",
+    "secret": "public-documentation-fixture-only",
+    "now": 1800000000,
+    "body": "{\"type\":\"build\",\"state\":\"failed\"}",
+    "headers": {
+      "X-Slack-Request-Timestamp": "1800000000",
+      "X-Slack-Signature": "v0=13d8b189a39b1eb76750bfd7b1d9c2f7524e2dab7388415e08e60907526efa22"
+    }
+  },
+  {
+    "provider": "slack",
+    "secret": "public-documentation-fixture-only",
+    "now": 1800000000,
+    "body": "{\"type\":\"build\",\"state\":\"passed\"}",
+    "headers": {
+      "X-Slack-Request-Timestamp": "1800000000",
+      "X-Slack-Signature": "v0=4fba96d16498fbd05cd00eb150578c4819a281fa08c09cd3ec1ef6a5c6a745d4"
+    }
+  },
+  {
+    "provider": "github",
+    "secret": "public-documentation-fixture-only",
+    "now": 1800000000,
+    "body": "{\"type\":\"build\",\"state\":\"failed\"}",
+    "headers": {
+      "X-GitHub-Delivery": "demo-1",
+      "X-Hub-Signature-256": "sha256=e6bd63dbcc8f4106aa69b45efd174769103495bb5c9ef112cfcddd8a555166f8"
+    }
+  },
+  {
+    "provider": "github",
+    "secret": "public-documentation-fixture-only",
+    "now": 1800000000,
+    "body": "{\"type\":\"build\",\"state\":\"passed\"}",
+    "headers": {
+      "X-GitHub-Delivery": "demo-2",
+      "X-Hub-Signature-256": "sha256=df51ab8fa3aff840374c5767baaa87d9f785c9845bdc88e305804f5deef6527c"
+    }
+  },
+  {
+    "provider": "bearer",
+    "secret": "public-documentation-fixture-only",
+    "now": 1800000000,
+    "body": "{\"type\":\"build\",\"state\":\"failed\"}",
+    "headers": {
+      "Authorization": "Bearer public-documentation-fixture-only",
+      "X-Quatrro-Delivery": "demo-1"
+    }
+  },
+  {
+    "provider": "bearer",
+    "secret": "public-documentation-fixture-only",
+    "now": 1800000000,
+    "body": "{\"type\":\"build\",\"state\":\"passed\"}",
+    "headers": {
+      "Authorization": "Bearer public-documentation-fixture-only",
+      "X-Quatrro-Delivery": "demo-2"
+    }
+  }
+]

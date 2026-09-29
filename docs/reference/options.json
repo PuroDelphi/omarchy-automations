@@ -1,0 +1,1590 @@
+[
+  {
+    "id": "common.id",
+    "label_es": "Identificador",
+    "default": "\"\"",
+    "description_en": "Required, unique within a resource kind. Start with a lowercase letter; then lowercase letters, digits, dot, underscore or hyphen; 1–64 characters. Changing an ID requires updating references.",
+    "description_es": "Obligatorio y único dentro del tipo de recurso. Empieza con letra minúscula; después minúsculas, dígitos, punto, guion bajo o guion; 1–64 caracteres. Cambiarlo exige actualizar referencias.",
+    "examples": [
+      "deploy",
+      "disk-space"
+    ],
+    "label_en": "Identifier"
+  },
+  {
+    "id": "common.name",
+    "label_es": "Nombre",
+    "default": "\"\"",
+    "description_en": "Optional display name for entries, destinations, flows and schedules. It does not change the technical source or endpoint.",
+    "description_es": "Nombre visible opcional de entradas, destinos, flujos y programaciones. No cambia el origen técnico ni la dirección.",
+    "examples": [
+      "Deployment alerts",
+      "Daily reminder"
+    ],
+    "label_en": "Name"
+  },
+  {
+    "id": "common.enabled",
+    "label_es": "Habilitado al activar la revisión",
+    "default": "true",
+    "description_en": "Applies to entries, flows, monitors and schedules. Saving does not activate it. Import forces false. A disabled flow will not match in simulation or dispatch.",
+    "description_es": "Se aplica a entradas, flujos, monitores y programaciones. Guardar no lo activa. Importar fuerza false. Un flujo deshabilitado no coincide al simular ni ejecutar.",
+    "examples": [
+      "true",
+      "false"
+    ],
+    "label_en": "Enabled when the revision is activated"
+  },
+  {
+    "id": "entries.auth",
+    "label_es": "Autenticación",
+    "default": "hmac",
+    "description_en": "Choose hmac, github, slack or bearer. The sender must implement that exact contract; generic HMAC/Slack timestamps allow five minutes of skew. Slack accepts only json/form. Wrong signatures or missing credentials reject the request before event creation.",
+    "description_es": "Elige hmac, github, slack o bearer. El emisor debe usar exactamente ese contrato; timestamps HMAC genérico/Slack admiten cinco minutos de diferencia. Slack solo acepta json/form. Firmas incorrectas o credenciales ausentes rechazan antes de crear eventos.",
+    "examples": [
+      "hmac",
+      "slack"
+    ],
+    "label_en": "Authentication"
+  },
+  {
+    "id": "entries.secret",
+    "label_es": "Referencia de credencial",
+    "default": "\"\"",
+    "description_en": "Required credential ID created in Security, using the same ID syntax as resources. Enter its reference, not its value. The credential must exist when authenticating real requests.",
+    "description_es": "ID obligatorio de credencial creada en Seguridad, con la misma sintaxis que los recursos. Escribe la referencia, no el valor. Debe existir al autenticar solicitudes reales.",
+    "examples": [
+      "deploy-signing",
+      "slack-signing"
+    ],
+    "label_en": "Credential reference"
+  },
+  {
+    "id": "entries.format",
+    "label_es": "Formato del cuerpo",
+    "default": "json",
+    "description_en": "Choose json, form, raw, xml or multipart; the sender content type/body must agree. JSON must be an object; duplicate form names are rejected. Format is fixed per entry, not auto-detected. HTTP input is limited to 256 KiB.",
+    "description_es": "Elige json, form, raw, xml o multipart; cuerpo y tipo de contenido deben coincidir. JSON debe ser un objeto; formulario rechaza nombres duplicados. El formato es fijo por entrada, no autodetectado. Entrada HTTP limitada a 256 KiB.",
+    "examples": [
+      "json",
+      "multipart"
+    ],
+    "label_en": "Body format"
+  },
+  {
+    "id": "destinations.url",
+    "label_es": "Dirección HTTPS",
+    "default": "\"\"",
+    "description_en": "Required HTTPS URL with a host, without userinfo or fragment. No redirect following. Private addresses require the exact exception below; a certificate trusted by the system is still required. Example addresses must be replaced with your receiver.",
+    "description_es": "URL HTTPS obligatoria con host, sin credenciales en URL ni fragmento. No sigue redirecciones. Las direcciones privadas exigen la excepción exacta; sigue siendo obligatorio un certificado confiable. Sustituye las direcciones de ejemplo por tu receptor.",
+    "examples": [
+      "https://status.example.com/events",
+      "https://receiver.example.com:8443/hook"
+    ],
+    "label_en": "HTTPS address"
+  },
+  {
+    "id": "destinations.method",
+    "label_es": "Método",
+    "default": "POST",
+    "description_en": "Choose POST, PUT or PATCH to match the receiver. The selected method is used for HTTP actions; connectivity monitors always use HEAD. An unsupported method is a configuration error.",
+    "description_es": "Elige POST, PUT o PATCH según el receptor. Las acciones HTTP usan ese método; los monitores de conectividad siempre usan HEAD. Otro método es un error de configuración.",
+    "examples": [
+      "PUT",
+      "PATCH"
+    ],
+    "label_en": "Method"
+  },
+  {
+    "id": "destinations.format",
+    "label_es": "Formato de salida",
+    "default": "json",
+    "description_en": "Choose json, form or raw. JSON/form action bodies are valid JSON templates encoded after substitution; raw bodies are text. An omitted format in imported configuration behaves as JSON.",
+    "description_es": "Elige json, form o raw. Los cuerpos JSON/form son plantillas JSON válidas codificadas tras sustituir valores; raw usa texto. Omitir formato en una configuración importada equivale a JSON.",
+    "examples": [
+      "form",
+      "raw"
+    ],
+    "label_en": "Output format"
+  },
+  {
+    "id": "destinations.auth",
+    "label_es": "Autenticación",
+    "default": "\"\"",
+    "description_en": "Empty means no added authentication; other choices are hmac, bearer and oauth2-google. Authenticated modes require a credential reference. Google mode additionally restricts hosts and port.",
+    "description_es": "Vacío no añade autenticación; otras opciones son hmac, bearer y oauth2-google. Los modos autenticados requieren referencia de credencial. Google limita además hosts y puerto.",
+    "examples": [
+      "bearer",
+      "oauth2-google"
+    ],
+    "label_en": "Authentication"
+  },
+  {
+    "id": "destinations.secret",
+    "label_es": "Referencia de credencial",
+    "default": "\"\"",
+    "description_en": "Visible for authenticated destinations. Use an existing generic credential for HMAC/bearer or a Google connection for oauth2-google. A Google token bundle is not a generic bearer secret.",
+    "description_es": "Visible en destinos autenticados. Usa credencial genérica existente para HMAC/bearer o conexión Google para oauth2-google. Un conjunto de tokens Google no es un secreto bearer genérico.",
+    "examples": [
+      "status-token",
+      "google-calendar"
+    ],
+    "label_en": "Credential reference"
+  },
+  {
+    "id": "destinations.headers",
+    "label_es": "Cabeceras adicionales",
+    "default": "{}",
+    "description_en": "Name/value pairs sent with requests and exported with configuration. Do not put secrets here. Authorization, Host, Cookie, Proxy-* and CR/LF in names/values are rejected.",
+    "description_es": "Pares nombre/valor enviados y exportados en configuración. No pongas secretos aquí. Se rechazan Authorization, Host, Cookie, Proxy-* y CR/LF en nombres/valores.",
+    "examples": [
+      "{\"X-Application\":\"omarchy\"}",
+      "{\"X-Environment\":\"staging\"}"
+    ],
+    "label_en": "Additional headers"
+  },
+  {
+    "id": "destinations.private_hosts",
+    "label_es": "Excepciones de red privada",
+    "default": "[]",
+    "description_en": "Empty blocks private destinations. At most one exception, exactly matching this URL host and explicit port (443 when the URL omits a port); bracket IPv6. It authorizes local unicast only, not arbitrary networks, and never disables TLS. Each example requires its matching URL.",
+    "description_es": "Vacío bloquea destinos privados. Como máximo una excepción, exactamente el host y puerto explícito de esta URL (443 si la URL omite puerto); IPv6 entre corchetes. Autoriza unicast local, no redes arbitrarias, y no desactiva TLS. Cada ejemplo exige su URL correspondiente.",
+    "examples": [
+      "[\"status.internal:443\"]",
+      "[\"[fd00::10]:8443\"]"
+    ],
+    "label_en": "Private network exceptions"
+  },
+  {
+    "id": "flows.source",
+    "label_es": "Cuando llegue un evento de",
+    "default": "local:demo",
+    "description_en": "Exact source: entry:ID, monitor:ID or timer:ID for a registered resource, or local:NAME/hook:NAME. An HTTP sender cannot call the local control API. Selecting a source does not enable it or grant its actions.",
+    "description_es": "Origen exacto: entry:ID, monitor:ID o timer:ID de un recurso registrado, o local:NOMBRE/hook:NOMBRE. Un emisor HTTP no accede a la API de control local. Seleccionar origen no lo habilita ni autoriza acciones.",
+    "examples": [
+      "entry:deploy",
+      "monitor:disk-space"
+    ],
+    "label_en": "When an event arrives from"
+  },
+  {
+    "id": "flows.conditions",
+    "label_es": "Si se cumplen estas condiciones",
+    "default": "[]",
+    "description_en": "Zero to 32 conditions; all must match. Use a field path, operator and typed scalar value. Missing fields never match. Paths are at most 128 characters with at most eight dots. See the nested condition options below.",
+    "description_es": "De cero a 32 condiciones; deben cumplirse todas. Usa ruta de campo, operador y valor escalar tipado. Campos ausentes nunca coinciden. Rutas de hasta 128 caracteres y ocho puntos. Consulta las opciones de condición siguientes.",
+    "examples": [
+      "[{\"field\":\"data.state\",\"op\":\"eq\",\"value\":\"failed\"}]",
+      "[{\"field\":\"data.percent\",\"op\":\"gt\",\"value\":90}]"
+    ],
+    "label_en": "If these conditions match"
+  },
+  {
+    "id": "flows.steps",
+    "label_es": "Ejecutar en este orden",
+    "default": "[]",
+    "description_en": "Required list of 1–32 registered action IDs, executed in this order. An empty flow cannot be saved. Each action needs its reviewed grant; later steps can consume adapter output.",
+    "description_es": "Lista obligatoria de 1–32 IDs de acciones registradas, ejecutadas en ese orden. Un flujo vacío no se guarda. Cada acción exige su permiso revisado; los pasos posteriores pueden consumir salida de adaptadores.",
+    "examples": [
+      "[\"notice\"]",
+      "[\"normalize\",\"report\",\"notice\"]"
+    ],
+    "label_en": "Run in this order"
+  },
+  {
+    "id": "conditions.field",
+    "label_es": "Campo",
+    "default": "data.state",
+    "description_en": "Path in the event: source, type or fields under data. Array indices use ordinary nonnegative decimal notation. It selects data; it does not evaluate code.",
+    "description_es": "Ruta del evento: source, type o campos bajo data. Índices de arrays en decimal ordinario no negativo. Selecciona datos; no evalúa código.",
+    "examples": [
+      "data.repository.full_name",
+      "data.xml.children.0.text"
+    ],
+    "label_en": "Field"
+  },
+  {
+    "id": "conditions.op",
+    "label_es": "Operador",
+    "default": "eq",
+    "description_en": "eq/ne compare typed scalar values; gt/lt require numbers; contains requires text and checks a substring. A missing field fails even ne.",
+    "description_es": "eq/ne comparan valores escalares tipados; gt/lt requieren números; contains busca una subcadena en texto. Un campo ausente falla incluso con ne.",
+    "examples": [
+      "eq",
+      "contains"
+    ],
+    "label_en": "Operator"
+  },
+  {
+    "id": "conditions.type",
+    "label_es": "Tipo de valor",
+    "default": "string",
+    "description_en": "Choose Text, Number or Boolean in the condition row. Types matter: text \"90\" is not number 90. Boolean input is true or false; selecting Boolean converts according to whether the current text is exactly true.",
+    "description_es": "Elige Texto, Número o Booleano en la fila. Importa el tipo: texto \"90\" no es número 90. Booleano usa true o false; al seleccionarlo convierte según si el texto actual es exactamente true.",
+    "examples": [
+      "number: 90",
+      "boolean: true"
+    ],
+    "label_en": "Value type"
+  },
+  {
+    "id": "conditions.value",
+    "label_es": "Valor",
+    "default": "failed",
+    "description_en": "The value to compare with the selected field. The new-condition default is text failed. Choose the type before entering a numeric/boolean comparison.",
+    "description_es": "Valor que se compara con el campo. Una condición nueva empieza con texto failed. Elige el tipo antes de introducir una comparación numérica/booleana.",
+    "examples": [
+      "failed",
+      "90 (number)"
+    ],
+    "label_en": "Value"
+  },
+  {
+    "id": "timers.kind",
+    "label_es": "Programación",
+    "default": "interval",
+    "description_en": "interval repeats after a number of seconds; calendar selects a local clock time in an explicit timezone. Changing the timer configuration creates a new schedule.",
+    "description_es": "interval repite tras un número de segundos; calendar elige una hora local en zona explícita. Cambiar la configuración crea una programación nueva.",
+    "examples": [
+      "interval",
+      "calendar"
+    ],
+    "label_en": "Schedules"
+  },
+  {
+    "id": "timers.interval_seconds",
+    "label_es": "Intervalo en segundos (mínimo 5)",
+    "default": "60",
+    "description_en": "For interval only: integer 5–31536000 seconds. First due time starts from the first evaluation; restarts preserve its stored next due time. It is not a real-time guarantee.",
+    "description_es": "Solo interval: entero de 5–31536000 segundos. El primer vencimiento parte de la primera evaluación; reiniciar conserva el próximo guardado. No garantiza tiempo real.",
+    "examples": [
+      "300",
+      "3600"
+    ],
+    "label_en": "Interval in seconds (minimum 5)"
+  },
+  {
+    "id": "timers.at",
+    "label_es": "Hora local HH:MM",
+    "default": "09:00",
+    "description_en": "For calendar only: exact 24-hour HH:MM. A nonexistent DST time is skipped; in a repeated hour only the first occurrence is eligible. Use separate timers for multiple daily times.",
+    "description_es": "Solo calendar: HH:MM exacto en formato de 24 horas. Una hora inexistente por cambio horario se omite; de una repetida solo puede ejecutarse la primera. Usa programaciones separadas para varias horas diarias.",
+    "examples": [
+      "08:30",
+      "18:00"
+    ],
+    "label_en": "Local time HH:MM"
+  },
+  {
+    "id": "timers.timezone",
+    "label_es": "Zona horaria IANA",
+    "default": "America/Bogota",
+    "description_en": "For calendar only: an explicit known IANA zone or UTC. Local is rejected. The desktop timezone is not substituted implicitly.",
+    "description_es": "Solo calendar: zona IANA conocida explícita o UTC. Se rechaza Local. No se sustituye implícitamente por la zona del escritorio.",
+    "examples": [
+      "UTC",
+      "Europe/Madrid"
+    ],
+    "label_en": "IANA time zone"
+  },
+  {
+    "id": "timers.weekdays",
+    "label_es": "Días de la semana",
+    "default": "[]",
+    "description_en": "For calendar: unique codes mon tue wed thu fri sat sun, one per line in the UI. Empty means daily. Unknown or duplicate codes fail validation.",
+    "description_es": "Para calendar: códigos únicos mon tue wed thu fri sat sun, uno por línea en la interfaz. Vacío significa diario. Códigos desconocidos o repetidos fallan validación.",
+    "examples": [
+      "[\"mon\",\"tue\",\"wed\",\"thu\",\"fri\"]",
+      "[\"sat\",\"sun\"]"
+    ],
+    "label_en": "Weekdays"
+  },
+  {
+    "id": "timers.missed",
+    "label_es": "Si hay ejecuciones atrasadas",
+    "default": "coalesce",
+    "description_en": "coalesce emits one event for accumulated missed times; skip discards times over 5 seconds late for intervals or 60 seconds for calendars. Neither wakes a suspended computer.",
+    "description_es": "coalesce emite un evento por atrasos acumulados; skip descarta atrasos mayores de 5 segundos en intervalos o 60 en calendarios. Ninguno despierta el equipo suspendido.",
+    "examples": [
+      "coalesce",
+      "skip"
+    ],
+    "label_en": "When runs are overdue"
+  },
+  {
+    "id": "monitors.metric",
+    "label_es": "Métrica",
+    "label_en": "Metric",
+    "default": "disk",
+    "description_en": "Choose cpu, memory, disk, battery, service, process, file_exists, file_age, file_size, connectivity, temperature or journal. CPU/memory use percent used; disk/battery use percent available. Presence/connectivity reads 0 or 100. Age is seconds, size bytes and temperature Celsius. Adjust both thresholds when changing metric.",
+    "description_es": "Elige cpu, memory, disk, battery, service, process, file_exists, file_age, file_size, connectivity, temperature o journal. CPU/memoria usan porcentaje ocupado; disco/batería disponible. Presencia/conectividad vale 0 o 100. Antigüedad en segundos, tamaño en bytes y temperatura en Celsius. Ajusta ambos umbrales al cambiar métrica.",
+    "examples": [
+      "cpu",
+      "file_age"
+    ]
+  },
+  {
+    "id": "monitors.path",
+    "label_es": "Ruta del disco",
+    "label_en": "Disk path",
+    "default": "/",
+    "description_en": "The label changes with the metric. Disk: absolute filesystem path. Process: absolute canonical executable path, current user only. File metrics: absolute canonical regular-file path, no symlink components; metadata only. Temperature: explicit thermal/hwmon sensor. Missing/unreadable resources may be unavailable; file_exists reports 0 for a missing file.",
+    "description_es": "La etiqueta cambia según métrica. Disco: ruta absoluta del sistema de archivos. Proceso: ejecutable absoluto canónico, solo del usuario. Archivos: ruta absoluta canónica a archivo regular, sin enlaces simbólicos; solo metadatos. Temperatura: sensor thermal/hwmon explícito. Recursos ausentes/inaccesibles pueden quedar no disponibles; file_exists devuelve 0 para archivo ausente.",
+    "examples": [
+      "/home (disk)",
+      "/sys/class/thermal/thermal_zone0/temp (temperature)"
+    ]
+  },
+  {
+    "id": "monitors.unit",
+    "label_es": "Unidad de usuario",
+    "label_en": "User unit",
+    "default": "\"\"",
+    "description_en": "Required for service/journal: exact user .service unit. Not a system unit or a wildcard. Service reports 100 when active and 0 when inactive. Journal reads only the permitted user unit and does not include MESSAGE content in its events.",
+    "description_es": "Obligatoria para service/journal: unidad .service exacta de usuario. No es unidad de sistema ni comodín. Service devuelve 100 activa y 0 inactiva. Journal lee solo esa unidad permitida y no incluye contenido MESSAGE en sus eventos.",
+    "examples": [
+      "backup.service",
+      "worker.service"
+    ]
+  },
+  {
+    "id": "monitors.destination",
+    "label_es": "Destino HTTPS para comprobar con HEAD",
+    "label_en": "HTTPS destination to check with HEAD",
+    "default": "config.destinations[0]?.id",
+    "description_en": "The selector initially chooses the first registered destination, if any. For connectivity: a registered HTTPS destination. Uses HEAD with its credentials/headers, a three-second deadline and no redirects. HTTP 2xx gives 100, transport/HTTP failure 0; missing credentials or network-policy rejection produce unavailable. Changing the destination requires reviewing the monitor grant.",
+    "description_es": "El selector elige inicialmente el primer destino registrado, si existe. Para connectivity: destino HTTPS registrado. Usa HEAD con sus credenciales/cabeceras, plazo de tres segundos y sin redirecciones. HTTP 2xx vale 100, fallo HTTP/transporte 0; credenciales ausentes o rechazo de política producen no disponible. Cambiar destino exige revisar el permiso del monitor.",
+    "examples": [
+      "status",
+      "health-endpoint"
+    ]
+  },
+  {
+    "id": "monitors.priority",
+    "label_es": "Prioridad máxima de journal (0 emergencia … 7 debug)",
+    "label_en": "Maximum journal priority (0 emergency … 7 debug)",
+    "default": "3",
+    "description_en": "Journal only: integer 0–7, includes this priority and more urgent records. 0 emergency, 3 error, 4 warning, 6 information, 7 debug. Initial sampling starts now; it does not import earlier history.",
+    "description_es": "Solo journal: entero 0–7, incluye esa prioridad y registros más urgentes. 0 emergencia, 3 error, 4 advertencia, 6 información, 7 debug. La primera muestra comienza ahora, sin importar historial anterior.",
+    "examples": [
+      "3",
+      "4"
+    ]
+  },
+  {
+    "id": "monitors.threshold",
+    "label_es": "Umbral de alerta",
+    "label_en": "Alert threshold",
+    "default": "10",
+    "description_en": "Not journal. Alerts when falling for disk/battery/service/process/file_exists/connectivity, rising for other value metrics. Percent range 0–100; temperature −273.15–1000; age 0–31536000; size 0–10^15. An invalid recovery direction rejects configuration. Comparisons are strict: equality does not start an alert. See monitor-recipes.md for two configurations per metric.",
+    "description_es": "No journal. Alerta al bajar en disk/battery/service/process/file_exists/connectivity y al subir en las demás métricas numéricas. Porcentaje 0–100; temperatura −273.15–1000; antigüedad 0–31536000; tamaño 0–10^15. Una recuperación en dirección inválida rechaza la configuración. Las comparaciones son estrictas: la igualdad no inicia una alerta. Consulta monitor-recipes.md para dos configuraciones por métrica.",
+    "examples": [
+      "10 (disk; recovery 15)",
+      "90 (cpu; recovery 75)"
+    ]
+  },
+  {
+    "id": "monitors.recovery",
+    "label_es": "Umbral de recuperación",
+    "label_en": "Recovery threshold",
+    "default": "15",
+    "description_en": "Same units/ranges as threshold. Must be strictly above the alert threshold for falling metrics and strictly below for rising metrics. Returning across it emits recovered after the recovery duration. Equality does not recover; a value must cross the threshold strictly.",
+    "description_es": "Mismas unidades/rangos que el umbral. Debe ser estrictamente mayor para métricas que alertan al bajar y menor para las que alertan al subir. Volver a cruzarlo emite recovered tras la duración de recuperación. La igualdad no recupera; el valor debe cruzar estrictamente el umbral.",
+    "examples": [
+      "15 (disk; threshold 10)",
+      "75 (cpu; threshold 90)"
+    ]
+  },
+  {
+    "id": "monitors.duration_seconds",
+    "label_es": "Duración mínima de la condición (segundos)",
+    "label_en": "Minimum condition duration (seconds)",
+    "default": "60",
+    "description_en": "Not journal: integer 0–86400 seconds of observed alert condition before confirming. Zero allows confirmation on an eligible sample. A prolonged sampling gap resets confirmation; it is not continuous real-time observation.",
+    "description_es": "No journal: entero 0–86400 segundos de condición observada antes de confirmar alerta. Cero permite confirmar en una muestra elegible. Un hueco prolongado reinicia la confirmación; no es observación continua en tiempo real.",
+    "examples": [
+      "0",
+      "120"
+    ]
+  },
+  {
+    "id": "monitors.recovery_duration_seconds",
+    "label_es": "Duración mínima de recuperación (segundos)",
+    "label_en": "Minimum recovery duration (seconds)",
+    "default": "0",
+    "description_en": "Not journal: integer 0–86400 seconds of observed recovery before emitting recovered. Zero removes the additional confirmation delay, not the sampling interval.",
+    "description_es": "No journal: entero 0–86400 segundos de recuperación observada antes de emitir recovered. Cero elimina la espera adicional de confirmación, no el intervalo de muestreo.",
+    "examples": [
+      "0",
+      "30"
+    ]
+  },
+  {
+    "id": "monitors.interval_seconds",
+    "label_es": "Intervalo de muestreo (segundos)",
+    "label_en": "Sampling interval (seconds)",
+    "default": "10",
+    "description_en": "Integer 5–3600 seconds for every metric, including journal. Sampling is sequential and slow checks may delay later ones. The engine does not wake the machine to sample.",
+    "description_es": "Entero 5–3600 segundos para toda métrica, incluido journal. El muestreo es secuencial y comprobaciones lentas pueden retrasar las siguientes. El motor no despierta el equipo para muestrear.",
+    "examples": [
+      "5",
+      "60"
+    ]
+  },
+  {
+    "id": "monitors.cooldown_seconds",
+    "label_es": "Separación mínima entre alertas (segundos)",
+    "label_en": "Minimum time between alerts (seconds)",
+    "default": "300",
+    "description_en": "Not journal: minimum five seconds between alerts. It limits alert frequency; it does not change sample frequency or guarantee repeated reminders while a condition persists.",
+    "description_es": "No journal: mínimo cinco segundos entre alertas. Limita su frecuencia; no cambia el muestreo ni garantiza recordatorios repetidos mientras persista la condición.",
+    "examples": [
+      "60",
+      "600"
+    ]
+  },
+  {
+    "id": "actions.kind",
+    "label_es": "Acción",
+    "label_en": "Action",
+    "default": "notify",
+    "description_en": "Select notify, http, service, command, omarchy, script, adapter or system-service. Only applicable fields are saved. A flow must reference the action and grant its exact capability before execution.",
+    "description_es": "Elige notify, http, service, command, omarchy, script, adapter o system-service. Solo se guardan campos aplicables. Un flujo debe referenciar la acción y conceder su capacidad exacta antes de ejecutar.",
+    "examples": [
+      "notify",
+      "http"
+    ]
+  },
+  {
+    "id": "actions.title",
+    "label_es": "Título",
+    "label_en": "Title",
+    "default": "Omarchy Automations",
+    "description_en": "Notification title, at most 200 bytes. Supports scalar event placeholders. The title is plain text; missing fields fail rendering.",
+    "description_es": "Título de notificación de hasta 200 bytes. Admite referencias escalares al evento. Es texto plano; los campos ausentes provocan fallo de renderizado.",
+    "examples": [
+      "Deployment finished",
+      "Backup: {{data.project}}"
+    ]
+  },
+  {
+    "id": "actions.body",
+    "label_es": "Mensaje",
+    "label_en": "Message",
+    "default": "{{data.message}}",
+    "description_en": "Notification message (up to 4096 bytes) or HTTP body (up to 16 KiB on configuration validation). HTTP labels this field Request body and requires a JSON template for json/form; raw uses text. Missing or nonscalar substituted fields may fail rendering; simulation previews the resolved value. Rendering also limits each textual template to 4096 bytes and expanded text to 16384 bytes; a configuration accepted by the size check can still fail rendering.",
+    "description_es": "Mensaje de notificación (hasta 4096 bytes) o cuerpo HTTP (hasta 16 KiB al validar configuración). En HTTP la etiqueta es Cuerpo del envío y exige plantilla JSON para json/form; raw usa texto. Campos ausentes o no escalares pueden fallar al resolver; simula para previsualizar. Al resolver se limita además cada plantilla textual a 4096 bytes y el texto expandido a 16384; superar la comprobación de tamaño de configuración no garantiza poder resolverla.",
+    "examples": [
+      "Build: {{data.message}}",
+      "{\"state\":\"{{type}}\",\"value\":\"{{data.value}}\"}"
+    ]
+  },
+  {
+    "id": "actions.destination",
+    "label_es": "Destino registrado",
+    "label_en": "Registered destination",
+    "default": "config.destinations[0]?.id",
+    "description_en": "For http: select an existing destination, initially the first available. Its URL, headers and credential reference are included in the reviewed capability; changing them requires renewed review.",
+    "description_es": "Para http: elige destino existente, inicialmente el primero disponible. URL, cabeceras y referencia de credencial forman parte de la capacidad revisada; cambiarlas exige nueva revisión.",
+    "examples": [
+      "status",
+      "deploy-receiver"
+    ]
+  },
+  {
+    "id": "actions.unit",
+    "label_es": "Unidad de usuario",
+    "label_en": "User unit",
+    "default": "\"\"",
+    "description_en": "For service: exact user .service. For system-service the label is System unit and requires optional broker policy and Polkit authorization. No patterns or arbitrary systemctl arguments. A policy check neither runs the service nor grants a flow.",
+    "description_es": "Para service: .service exacta de usuario. En system-service la etiqueta es Unidad de sistema y exige política del broker opcional y autorización Polkit. Sin patrones ni argumentos systemctl arbitrarios. Comprobar política no ejecuta el servicio ni autoriza un flujo.",
+    "examples": [
+      "backup.service",
+      "worker.service"
+    ]
+  },
+  {
+    "id": "actions.operation",
+    "label_es": "Operación",
+    "label_en": "Operation",
+    "default": "status",
+    "description_en": "User/system services offer status, start, stop and restart. Omarchy offers theme.current, nightlight.status, nightlight.toggle and system.lock; switching to Omarchy selects the first valid operation. Status is a check, not a service mutation. Lock and toggle have real desktop effects. For user-service status, inactive is a failed action: it checks is-active rather than returning a detailed status report.",
+    "description_es": "Servicios de usuario/sistema ofrecen status, start, stop y restart. Omarchy ofrece theme.current, nightlight.status, nightlight.toggle y system.lock; al cambiar a Omarchy se elige la primera operación válida. Status consulta sin modificar servicio. Bloqueo y toggle afectan realmente el escritorio. En status de servicio de usuario, inactivo es acción fallida: comprueba is-active, no devuelve informe detallado.",
+    "examples": [
+      "restart (service)",
+      "nightlight.status (omarchy)"
+    ]
+  },
+  {
+    "id": "actions.command_profile",
+    "label_es": "Perfil de comando",
+    "label_en": "Command profile",
+    "default": "fixed",
+    "description_en": "For command: fixed runs a registered executable with fixed arguments; file-exists tests a direct-child regular file in an approved mount; make-directory creates a direct child with mode 0700 and requires write access. Named profiles do not accept executable/argument overrides.",
+    "description_es": "Para command: fixed ejecuta binario y argumentos fijos; file-exists comprueba archivo regular hijo directo de un montaje aprobado; make-directory crea hijo directo con permisos 0700 y exige escritura. Los perfiles nombrados no admiten sustituir ejecutable/argumentos.",
+    "examples": [
+      "file-exists",
+      "make-directory"
+    ]
+  },
+  {
+    "id": "actions.command_path",
+    "label_es": "Ruta del perfil",
+    "label_en": "Profile path",
+    "default": "\"\"",
+    "description_en": "For file-exists/make-directory: absolute canonical path naming a direct child of a prepared mount, without templates. The parent must be an authorized directory target. make-directory fails if the child already exists.",
+    "description_es": "Para file-exists/make-directory: ruta absoluta canónica a hijo directo de montaje preparado, sin plantillas. El padre debe ser destino de directorio autorizado. make-directory falla si el hijo ya existe.",
+    "examples": [
+      "/work/data/report.json",
+      "/work/data/new-backup"
+    ]
+  },
+  {
+    "id": "actions.executable",
+    "label_es": "Ejecutable local",
+    "label_en": "Local executable",
+    "default": "\"\"",
+    "description_en": "For fixed commands: absolute canonical executable under /usr/bin/. It must be available inside the sandbox; no home access or IP network by default. A command error is not automatically retried.",
+    "description_es": "Para comandos fixed: ejecutable absoluto canónico bajo /usr/bin/. Debe estar disponible dentro del sandbox; sin HOME ni red IP por defecto. Un fallo no se reintenta automáticamente.",
+    "examples": [
+      "/usr/bin/true",
+      "/usr/bin/test"
+    ]
+  },
+  {
+    "id": "actions.args",
+    "label_es": "Argumentos fijos",
+    "label_en": "Fixed arguments",
+    "default": "[]",
+    "description_en": "For fixed commands: at most 32 arguments, one per UI line; each at most 4096 bytes, without NUL or {{ templates. No shell expansion. Review the executable too: an interpreter can deliberately treat an argument as code.",
+    "description_es": "Para fixed: hasta 32 argumentos, uno por línea; hasta 4096 bytes por argumento, sin NUL ni plantillas {{. Sin expansión de shell. Revisa también el binario: un intérprete puede tratar deliberadamente un argumento como código.",
+    "examples": [
+      "[\"-f\",\"/work/data/report.json\"]",
+      "[\"-d\",\"/work/data\"]"
+    ]
+  },
+  {
+    "id": "actions.adapter",
+    "label_es": "Adaptador registrado",
+    "label_en": "Registered adapter",
+    "default": "config.adapters[0]?.id",
+    "description_en": "For adapter: select a registered adapter, inspect its code/revision, and explicitly choose that revision. Changing code or limits invalidates the old reference. The action uses manifest limits rather than a separate timeout.",
+    "description_es": "Para adapter: elige adaptador registrado, inspecciona código/revisión y selecciona esa revisión expresamente. Cambiar código o límites invalida la referencia anterior. Usa límites del manifiesto, no timeout separado.",
+    "examples": [
+      "normalize",
+      "summarize"
+    ]
+  },
+  {
+    "id": "actions.script",
+    "label_es": "Script registrado",
+    "label_en": "Registered script",
+    "default": "config.scripts[0]?.id",
+    "description_en": "For script: select a registered script and explicitly select its exact revision. Supply every parameter once as either a literal or an event binding. The original source file is not reopened during execution.",
+    "description_es": "Para script: elige script registrado y selecciona expresamente su revisión exacta. Proporciona cada parámetro una vez como literal o campo del evento. No se vuelve a abrir el archivo original al ejecutar.",
+    "examples": [
+      "check-project",
+      "prepare-report"
+    ]
+  },
+  {
+    "id": "actions.timeout_seconds",
+    "label_es": "Tiempo máximo (segundos)",
+    "label_en": "Timeout (seconds)",
+    "default": "30",
+    "description_en": "For command/script: integer 1–300 seconds. The isolated process group is terminated on timeout; an effect already performed is not undone. Adapter timeouts are configured on the adapter itself.",
+    "description_es": "Para command/script: entero 1–300 segundos. Al vencer se termina el grupo aislado; no deshace efectos realizados. El timeout del adaptador se configura en el propio adaptador.",
+    "examples": [
+      "5",
+      "120"
+    ]
+  },
+  {
+    "id": "scripts.path",
+    "label_es": "Archivo local del script",
+    "label_en": "Local script file",
+    "default": "\"\"",
+    "description_en": "Absolute path to a regular local UTF-8 file, 1–32768 bytes, without NUL or symlink components. Prepare revision reads and copies the code for inspection; it neither executes nor authorizes it. Edit the source and prepare again to replace code; exports include the prepared code.",
+    "description_es": "Ruta absoluta a archivo local regular UTF-8, 1–32768 bytes, sin NUL ni enlaces simbólicos. Preparar revisión lee y copia el código para inspección; no ejecuta ni autoriza. Edita el origen y prepara de nuevo para reemplazar código; las exportaciones incluyen el código preparado.",
+    "examples": [
+      "/home/alex/automations/check.py",
+      "/home/alex/automations/report.py"
+    ]
+  },
+  {
+    "id": "adapters.path",
+    "label_es": "Archivo local del adaptador",
+    "label_en": "Local adapter file",
+    "default": "\"\"",
+    "description_en": "Absolute path to a regular local UTF-8 file, 1–32768 bytes, without NUL or symlink components. Prepare revision reads and copies the code for inspection; it neither executes nor authorizes it. Edit the source and prepare again to replace code; exports include the prepared code.",
+    "description_es": "Ruta absoluta a archivo local regular UTF-8, 1–32768 bytes, sin NUL ni enlaces simbólicos. Preparar revisión lee y copia el código para inspección; no ejecuta ni autoriza. Edita el origen y prepara de nuevo para reemplazar código; las exportaciones incluyen el código preparado.",
+    "examples": [
+      "/home/alex/automations/check.py",
+      "/home/alex/automations/report.py"
+    ]
+  },
+  {
+    "id": "scripts.interpreter",
+    "label_es": "Intérprete",
+    "label_en": "Interpreter",
+    "default": "bash",
+    "description_en": "bash or python3. Bash uses --noprofile --norc; Python uses -I -S. Code and interpreter are part of the revision. Parameters are separate argv values, not interpolated shell code.",
+    "description_es": "bash o python3. Bash usa --noprofile --norc; Python -I -S. Código e intérprete forman parte de la revisión. Los parámetros son valores argv separados, no código shell interpolado.",
+    "examples": [
+      "bash",
+      "python3"
+    ]
+  },
+  {
+    "id": "scripts.parameters",
+    "label_es": "Parámetros del script",
+    "label_en": "Script parameters",
+    "default": "[]",
+    "description_en": "Ordered list of at most 16 required typed parameters. Names are unique resource-style IDs; accepted types are string, integer and boolean. The declared order becomes argv order. No extra or missing values are accepted.",
+    "description_es": "Lista ordenada de hasta 16 parámetros tipados obligatorios. Nombres únicos con sintaxis de ID; tipos string, integer y boolean. El orden declarado es el de argv. No se admiten valores extra ni ausentes.",
+    "examples": [
+      "[{\"name\":\"message\",\"type\":\"string\",\"max_length\":256}]",
+      "[{\"name\":\"count\",\"type\":\"integer\",\"minimum\":1,\"maximum\":10}]"
+    ]
+  },
+  {
+    "id": "adapters.runtime",
+    "label_es": "Intérprete",
+    "label_en": "Interpreter",
+    "default": "python3",
+    "description_en": "Only python3 is supported. The process uses isolated Python (-I -S) and the version-1 JSON request/response protocol. This is not a choice of arbitrary runtimes; both examples use the one supported runtime for different transforms.",
+    "description_es": "Solo admite python3. Usa Python aislado (-I -S) y protocolo JSON solicitud/respuesta versión 1. No permite intérpretes arbitrarios; ambos ejemplos usan el único admitido para transformaciones distintas.",
+    "examples": [
+      "python3: normalize fields",
+      "python3: calculate a summary"
+    ],
+    "examples_es": [
+      "python3: normalizar campos",
+      "python3: calcular un resumen"
+    ]
+  },
+  {
+    "id": "adapters.input_limit",
+    "label_es": "Límite de entrada (bytes)",
+    "label_en": "Input limit (bytes)",
+    "default": "262144",
+    "description_en": "Integer 1–262144 bytes for the complete encoded protocol request including its newline, not just event data. Oversize input fails before launching the adapter. Choose enough space for the envelope.",
+    "description_es": "Entero 1–262144 bytes para toda la solicitud codificada, incluido salto final, no solo datos del evento. Si excede el límite falla antes de lanzar. Reserva espacio para el sobre.",
+    "examples": [
+      "4096",
+      "65536"
+    ]
+  },
+  {
+    "id": "adapters.output_limit",
+    "label_es": "Límite de salida (bytes)",
+    "label_en": "Output limit (bytes)",
+    "default": "4096",
+    "description_en": "Integer 1–65536 bytes for the complete JSON response. Oversize, extra output, wrong invocation ID or invalid data rejects the result. Adapter data is available to following steps under data.adapter.",
+    "description_es": "Entero 1–65536 bytes para la respuesta JSON completa. Salida excesiva/adicional, ID de invocación incorrecto o datos inválidos rechazan el resultado. Los pasos siguientes acceden a datos bajo data.adapter.",
+    "examples": [
+      "2048",
+      "16384"
+    ]
+  },
+  {
+    "id": "adapters.timeout_seconds",
+    "label_es": "Tiempo máximo (segundos)",
+    "label_en": "Timeout (seconds)",
+    "default": "5",
+    "description_en": "Integer 1–30 seconds. The isolated transform must finish within it. No network or authorized host directories are offered to adapters. Simulation reports the dependency but does not execute the adapter.",
+    "description_es": "Entero 1–30 segundos. La transformación aislada debe terminar dentro del plazo. No se ofrece red ni directorios autorizados del host a adaptadores. Simular informa de la dependencia pero no ejecuta el adaptador.",
+    "examples": [
+      "2",
+      "10"
+    ]
+  },
+  {
+    "id": "parameters.name",
+    "label_es": "Nombre del parámetro",
+    "label_en": "Parameter name",
+    "default": "parameterN",
+    "description_en": "A newly added parameter uses parameter plus its position. Replace with a unique identifier (same syntax as resource IDs). Renaming changes the contract and requires preparing/reviewing a new revision.",
+    "description_es": "Un parámetro nuevo usa parameter más su posición. Sustitúyelo por identificador único (misma sintaxis de recursos). Renombrar cambia el contrato y exige preparar/revisar nueva revisión.",
+    "examples": [
+      "message",
+      "count"
+    ]
+  },
+  {
+    "id": "parameters.type",
+    "label_es": "Tipo de valor",
+    "label_en": "Value type",
+    "default": "string",
+    "description_en": "Choose string, integer or boolean. Changing type resets its bounds: string starts max_length 256, integer starts minimum 0/maximum 100, boolean has no bounds.",
+    "description_es": "Elige string, integer o boolean. Cambiar tipo reinicia límites: string empieza con max_length 256, integer con mínimo 0/máximo 100, boolean sin límites.",
+    "examples": [
+      "integer",
+      "boolean"
+    ]
+  },
+  {
+    "id": "parameters.max_length",
+    "label_es": "Longitud máxima (bytes)",
+    "label_en": "Maximum length (bytes)",
+    "default": "256",
+    "description_en": "String only: integer 1–4096 UTF-8 bytes, not characters. Values exceeding it are rejected before execution.",
+    "description_es": "Solo string: entero 1–4096 bytes UTF-8, no caracteres. Valores mayores se rechazan antes de ejecutar.",
+    "examples": [
+      "64",
+      "1024"
+    ]
+  },
+  {
+    "id": "parameters.pattern",
+    "label_es": "Patrón RE2 (opcional)",
+    "label_en": "RE2 pattern (optional)",
+    "default": "\"\"",
+    "description_en": "String only: optional RE2 pattern up to 256 bytes, matched against the entire value. Empty means no pattern restriction. Invalid patterns fail preparation.",
+    "description_es": "Solo string: patrón RE2 opcional de hasta 256 bytes, aplicado al valor completo. Vacío no restringe por patrón. Un patrón inválido falla al preparar.",
+    "examples": [
+      "[a-z][a-z0-9-]*",
+      "[0-9]{4}"
+    ]
+  },
+  {
+    "id": "parameters.choices",
+    "label_es": "Opciones permitidas (una por línea)",
+    "label_en": "Allowed choices (one per line)",
+    "default": "[]",
+    "description_en": "String only: at most 32 unique allowed values, one per line. Empty imposes no enumeration. Every listed choice must itself satisfy length/pattern limits.",
+    "description_es": "Solo string: hasta 32 valores permitidos únicos, uno por línea. Vacío no impone enumeración. Cada opción debe cumplir longitud/patrón.",
+    "examples": [
+      "[\"staging\",\"production\"]",
+      "[\"small\",\"large\"]"
+    ]
+  },
+  {
+    "id": "parameters.minimum",
+    "label_es": "Mínimo",
+    "label_en": "Minimum",
+    "default": "0",
+    "description_en": "Integer only: explicit inclusive lower bound, no larger than maximum. Bounds lie within ±9007199254740991. Text and fractional values do not become integers automatically.",
+    "description_es": "Solo integer: límite inferior inclusivo explícito, no mayor que máximo. Límites dentro de ±9007199254740991. Texto y fracciones no se convierten automáticamente a enteros.",
+    "examples": [
+      "1",
+      "-10"
+    ]
+  },
+  {
+    "id": "parameters.maximum",
+    "label_es": "Máximo",
+    "label_en": "Maximum",
+    "default": "100",
+    "description_en": "Integer only: explicit inclusive upper bound, no smaller than minimum and within the exact JSON integer range. Limits are checked again after resolving an event binding.",
+    "description_es": "Solo integer: límite superior inclusivo explícito, no menor que mínimo y dentro del rango entero exacto JSON. Se comprueba otra vez tras resolver un campo del evento.",
+    "examples": [
+      "10",
+      "1000"
+    ]
+  },
+  {
+    "id": "actions.script_revision",
+    "label_es": "Usar esta revisión y reiniciar parámetros",
+    "label_en": "Use this revision and reset parameters",
+    "default": "\"\"",
+    "description_en": "Inspect the available script code/hash before selecting. This pins that exact revision and resets each value: false for boolean, minimum for integer, first choice or empty text for string. A changed script requires selecting again; it is never silently substituted. Example hashes are obtained from preparation, not invented.",
+    "description_es": "Inspecciona código/hash disponible antes de seleccionar. Fija esa revisión y reinicia valores: false para booleano, mínimo para entero, primera opción o vacío para string. Si cambia el script hay que seleccionar otra vez; nunca se sustituye silenciosamente. Los hashes se obtienen al preparar, no se inventan.",
+    "examples": [
+      "check-project: select prepared revision",
+      "prepare-report: select updated revision"
+    ],
+    "examples_es": [
+      "check-project: seleccionar revisión preparada",
+      "prepare-report: seleccionar revisión actualizada"
+    ]
+  },
+  {
+    "id": "actions.adapter_revision",
+    "label_es": "Usar esta revisión",
+    "label_en": "Use this revision",
+    "default": "\"\"",
+    "description_en": "Inspect adapter code and its manifest limits, then pin the prepared revision. Preparing or selecting is not execution or a grant. Any code/manifest change requires a new exact selection and reviewed capability.",
+    "description_es": "Inspecciona código y límites del manifiesto y fija la revisión preparada. Preparar o seleccionar no ejecuta ni concede permisos. Cambiar código/manifiesto exige nueva selección exacta y capacidad revisada.",
+    "examples": [
+      "normalize: select prepared revision",
+      "summarize: select updated revision"
+    ],
+    "examples_es": [
+      "normalize: seleccionar revisión preparada",
+      "summarize: seleccionar revisión actualizada"
+    ]
+  },
+  {
+    "id": "arguments.mode",
+    "label_es": "Valor literal",
+    "label_en": "Literal value",
+    "default": "script_values",
+    "description_en": "Per parameter: choose Literal value or Event field. Exactly one source is required. Switching to Event field suggests data.PARAMETER; switching back resets a type-appropriate literal. Actual values must pass the selected script contract.",
+    "description_es": "Por parámetro: elige Valor literal o Campo del evento. Exige exactamente un origen. Cambiar a campo sugiere data.PARAMETRO; volver reinicia literal según tipo. Los valores deben cumplir el contrato del script elegido.",
+    "examples": [
+      "script_values: {\"count\":3}",
+      "script_bindings: {\"count\":\"data.count\"}"
+    ]
+  },
+  {
+    "id": "arguments.value",
+    "label_es": "Valor",
+    "label_en": "Value",
+    "default": "\"\" / minimum / false / data.PARAMETER",
+    "description_en": "Literals preserve string/integer/boolean types; boolean uses a toggle. Event bindings accept source, type or data.FIELD with at most 128 characters/eight dots. Missing fields, wrong types and out-of-range values fail before launching the script.",
+    "description_es": "Los literales conservan tipo string/integer/boolean; booleano usa interruptor. Los vínculos aceptan source, type o data.CAMPO con hasta 128 caracteres/ocho puntos. Campos ausentes, tipos incorrectos o valores fuera de rango fallan antes de lanzar.",
+    "examples": [
+      "data.message",
+      "true (boolean literal)"
+    ],
+    "examples_es": [
+      "data.message",
+      "true (literal booleano)"
+    ]
+  },
+  {
+    "id": "directories.source",
+    "label_es": "Directorio del host",
+    "label_en": "Host directory",
+    "default": "\"\"",
+    "description_en": "For command/script only: existing absolute canonical directory, without symlink components. Root and /proc, /sys, /dev, /run trees are rejected. Preparation captures device/inode identity; a replaced directory requires re-preparation and review.",
+    "description_es": "Solo command/script: directorio existente absoluto canónico, sin enlaces simbólicos. Se rechazan raíz y árboles /proc, /sys, /dev, /run. Preparar captura identidad dispositivo/inode; reemplazar el directorio exige preparar y revisar de nuevo.",
+    "examples": [
+      "/home/alex/reports",
+      "/home/alex/project-data"
+    ]
+  },
+  {
+    "id": "directories.target",
+    "label_es": "Destino dentro del sandbox",
+    "label_en": "Sandbox mount target",
+    "default": "/work/data",
+    "description_en": "Target is /work/ID, using lowercase resource-ID syntax. At most eight unique targets per action. Preparing an existing target replaces its draft entry; the source tree is exposed at this sandbox path.",
+    "description_es": "Destino /work/ID con sintaxis minúscula de ID. Hasta ocho destinos únicos por acción. Preparar un destino existente reemplaza su entrada del borrador; el árbol origen se expone en esa ruta del sandbox.",
+    "examples": [
+      "/work/reports",
+      "/work/project"
+    ]
+  },
+  {
+    "id": "directories.access",
+    "label_es": "Solo lectura",
+    "label_en": "Read only",
+    "default": "ro",
+    "description_en": "Choose read-only (ro) or read/write (rw). Permission covers the whole tree. Write allows modifying/deleting host files; sockets in an exposed tree may communicate with host services. No permissions are granted until activation.",
+    "description_es": "Elige solo lectura (ro) o lectura/escritura (rw). El permiso abarca todo el árbol. Escritura permite modificar/borrar archivos del host; sockets del árbol pueden comunicar con servicios del host. No se concede permiso hasta activar.",
+    "examples": [
+      "ro",
+      "rw"
+    ]
+  },
+  {
+    "id": "actions.working_directory",
+    "label_es": "Directorio de trabajo",
+    "label_en": "Working directory",
+    "default": "/tmp",
+    "description_en": "Choose private /tmp or one of this action’s approved mount targets, not an arbitrary subdirectory. Removing the chosen target resets the UI to /tmp.",
+    "description_es": "Elige /tmp privado o uno de los destinos de montaje aprobados de la acción, no un subdirectorio arbitrario. Quitar el destino elegido devuelve la interfaz a /tmp.",
+    "examples": [
+      "/tmp",
+      "/work/reports"
+    ]
+  },
+  {
+    "id": "credentials.type",
+    "label_es": "Tipo de credencial",
+    "label_en": "Credential type",
+    "default": "generic",
+    "description_en": "Generic saves an HMAC/bearer secret. Google import saves an existing refresh-token bundle without contacting Google. Google browser authorization starts a ten-minute consent session; it does not grant flows. Choose the mode matching the integration.",
+    "description_es": "Genérica guarda secreto HMAC/bearer. Importar Google guarda autorización existente sin contactar Google. Autorizar Google en navegador inicia consentimiento de diez minutos; no autoriza flujos. Elige el modo correspondiente a la integración.",
+    "examples": [
+      "generic: HMAC signing secret",
+      "Google OAuth2: browser authorization"
+    ],
+    "examples_es": [
+      "generic: secreto de firma HMAC",
+      "Google OAuth2: autorización en navegador"
+    ]
+  },
+  {
+    "id": "credentials.id",
+    "label_es": "Identificador",
+    "label_en": "Identifier",
+    "default": "\"\"",
+    "description_en": "Local credential reference using resource-ID syntax. Reusing an ID rotates its value in the same backend. A different backend is rejected until the existing reference is deleted; deletion affects all consumers of the reference.",
+    "description_es": "Referencia local con sintaxis de ID de recurso. Reutilizar ID rota valor en el mismo backend. Otro backend se rechaza hasta eliminar la referencia existente; eliminar afecta todos sus consumidores.",
+    "examples": [
+      "deploy-token",
+      "google-calendar"
+    ]
+  },
+  {
+    "id": "credentials.value",
+    "label_es": "Valor nuevo (16–8192 bytes)",
+    "label_en": "New value (16–8192 bytes)",
+    "default": "\"\"",
+    "description_en": "Generic only: 16–8192 bytes without CR, LF or NUL. The masked value is cleared after Save/Cancel. Examples describe sources of private values; do not use published example text as a production credential. Store a signing secret for inbound HMAC/Slack or the token expected by a bearer receiver.",
+    "description_es": "Solo genérica: 16–8192 bytes sin CR, LF ni NUL. El campo oculto se limpia al Guardar/Cancelar. Los ejemplos describen orígenes de valores privados; no uses texto público como credencial real. Guarda secreto de firma para HMAC/Slack o token esperado por receptor bearer.",
+    "examples": [
+      "private signing secret from your webhook sender",
+      "private API token from your HTTPS receiver"
+    ],
+    "examples_es": [
+      "secreto privado de firma del emisor de webhooks",
+      "token privado de API del receptor HTTPS"
+    ]
+  },
+  {
+    "id": "credentials.backend",
+    "label_es": "Almacén de credenciales",
+    "label_en": "Credential store",
+    "default": "keyring",
+    "description_en": "Desktop keyring uses Secret Service and may need an unlocked session. Private file explicitly stores an unencrypted local value with restrictive permissions. No automatic fallback. Configuration exports contain references, not these stored values.",
+    "description_es": "El almacén del escritorio usa Secret Service y puede necesitar sesión desbloqueada. Archivo privado guarda explícitamente valor local sin cifrar con permisos restrictivos. Sin fallback automático. Exportar configuración incluye referencias, no estos valores.",
+    "examples": [
+      "keyring",
+      "file"
+    ]
+  },
+  {
+    "id": "credentials.client_id",
+    "label_es": "Client ID",
+    "label_en": "Client ID",
+    "default": "\"\"",
+    "description_en": "Google modes: your own Desktop OAuth client ID, not your Google email or password. Required printable ASCII without spaces/control characters, at most 8192 bytes per value; the entire stored credential bundle also has an 8192-byte limit. Examples are nonfunctional placeholders.",
+    "description_es": "Modos Google: ID de tu cliente OAuth Desktop, no correo ni contraseña Google. ASCII imprimible obligatorio sin espacios/controles, hasta 8192 bytes por valor; todo el conjunto guardado tiene también límite de 8192 bytes. Ejemplos son marcadores no funcionales.",
+    "examples": [
+      "YOUR_DESKTOP_CLIENT_A.apps.googleusercontent.com",
+      "YOUR_DESKTOP_CLIENT_B.apps.googleusercontent.com"
+    ]
+  },
+  {
+    "id": "credentials.client_secret",
+    "label_es": "Client secret",
+    "label_en": "Client secret",
+    "default": "\"\"",
+    "description_en": "Google modes: secret belonging to the selected Desktop client. Same printable-ASCII/value and bundle limits as client ID. Masked and cleared after Save/Cancel. Supply locally; examples are placeholders, not usable secrets.",
+    "description_es": "Modos Google: secreto del cliente Desktop elegido. Mismos límites ASCII/valor y conjunto que client ID. Oculto y borrado tras Guardar/Cancelar. Introdúcelo localmente; ejemplos son marcadores no utilizables.",
+    "examples": [
+      "CLIENT_SECRET_FROM_DESKTOP_CLIENT_A",
+      "CLIENT_SECRET_FROM_DESKTOP_CLIENT_B"
+    ]
+  },
+  {
+    "id": "credentials.refresh_token",
+    "label_es": "Refresh token",
+    "label_en": "Refresh token",
+    "default": "\"\"",
+    "description_en": "Google import only: an existing refresh token issued to the matching client, not a short-lived access token. Saving does not validate granted scopes with Google. Same ASCII and size limits apply. Examples are placeholders; actual values belong in the local masked field.",
+    "description_es": "Solo importación Google: refresh token existente del cliente correspondiente, no access token de corta duración. Guardar no valida scopes con Google. Mismos límites ASCII/tamaño. Ejemplos son marcadores; el valor real va en el campo local oculto.",
+    "examples": [
+      "REFRESH_TOKEN_FOR_ACCOUNT_A",
+      "REFRESH_TOKEN_FOR_ACCOUNT_B"
+    ]
+  },
+  {
+    "id": "credentials.scopes",
+    "label_es": "Permisos OAuth",
+    "label_en": "OAuth scopes",
+    "default": "\"\"",
+    "description_en": "Browser authorization only: 1–16 distinct HTTPS scope URLs under www.googleapis.com/auth/, at most 256 bytes each, separated by whitespace in the UI. No query, fragment, userinfo or port. The calendar.events placeholder is not a selected default. Request only scopes needed for your destination API; Google must grant all requested scopes. The example scope names are listed in the [official Google Calendar scope reference](https://developers.google.com/workspace/calendar/api/auth). A valid scope does not add GET support: outbound actions still offer POST/PUT/PATCH.",
+    "description_es": "Solo autorización en navegador: 1–16 URLs HTTPS distintas bajo www.googleapis.com/auth/, hasta 256 bytes cada una, separadas por espacios. Sin query, fragmento, credenciales URL ni puerto. La sugerencia calendar.events no es valor inicial seleccionado. Solicita scopes necesarios para tu API; Google debe concederlos todos. Los nombres de ejemplo figuran en la [referencia oficial de scopes de Google Calendar](https://developers.google.com/workspace/calendar/api/auth). Un scope válido no añade soporte GET: las acciones de salida siguen ofreciendo POST/PUT/PATCH.",
+    "examples": [
+      "https://www.googleapis.com/auth/calendar.events",
+      "https://www.googleapis.com/auth/calendar.readonly"
+    ]
+  },
+  {
+    "id": "storage.max_events",
+    "label_es": "Máximo de eventos",
+    "label_en": "Maximum events",
+    "default": "10000",
+    "description_en": "Integer 100–100000. Save limits applies immediately, separately from draft activation. Reaching a quota rejects new events rather than deleting unfinished or uncertain work. A larger limit is not a substitute for resolving a stuck queue.",
+    "description_es": "Entero 100–100000. Guardar límites aplica inmediatamente, separado de activar borrador. Alcanzar cuota rechaza eventos nuevos sin borrar trabajo pendiente/incierto. Aumentarla no sustituye resolver una cola atascada.",
+    "examples": [
+      "5000",
+      "20000"
+    ]
+  },
+  {
+    "id": "storage.max_payload_bytes",
+    "label_es": "Datos de eventos (MiB)",
+    "label_en": "Event data (MiB)",
+    "default": "64 MiB",
+    "description_en": "UI accepts integer 1–128 MiB; API stores bytes (MiB × 1048576). Counts event payloads plus private execution contexts, not total SQLite/WAL disk usage. Saving limits does not export or upload event data.",
+    "description_es": "La UI admite entero 1–128 MiB; API guarda bytes (MiB × 1048576). Cuenta cuerpos de eventos y contextos privados de ejecución, no todo SQLite/WAL. Guardar límites no exporta ni sube datos.",
+    "examples": [
+      "16 MiB = 16777216 bytes",
+      "128 MiB = 134217728 bytes"
+    ]
+  },
+  {
+    "id": "storage.retention_days",
+    "label_es": "Conservar historial (días)",
+    "label_en": "Keep history (days)",
+    "default": "7",
+    "description_en": "Integer 1–90 days for terminal history. Pending/uncertain work is retained. Shortening retention affects later cleanup; keep dedup_days at least as large.",
+    "description_es": "Entero 1–90 días de historial terminal. Trabajo pendiente/incierto se conserva. Reducir retención afecta limpieza posterior; dedup_days debe ser al menos igual.",
+    "examples": [
+      "3",
+      "30"
+    ]
+  },
+  {
+    "id": "storage.dedup_days",
+    "label_es": "Evitar duplicados durante (días)",
+    "label_en": "Deduplication window (days)",
+    "default": "30",
+    "description_en": "Integer between retention_days and 365. Retains delivery identities independently of normal payload retention. It does not make an external HTTP receiver idempotent or prove freshness of an old provider signature outside the retained window.",
+    "description_es": "Entero entre retention_days y 365. Conserva identidades de entrega independientemente de cuerpos ordinarios. No hace idempotente al receptor HTTP ni acredita frescura de firmas antiguas fuera de la ventana conservada.",
+    "examples": [
+      "30",
+      "90"
+    ]
+  },
+  {
+    "id": "panel.language",
+    "label_es": "Idioma",
+    "label_en": "Language",
+    "default": "en",
+    "description_en": "English or Español, stored per profile immediately. Does not change resource IDs or user-written messages. Requires engine connection.",
+    "description_es": "English o Español, guardado inmediatamente por perfil. No cambia IDs ni mensajes propios. Requiere conexión con el motor.",
+    "examples": [
+      "English for an English desktop",
+      "Español for a Spanish desktop"
+    ],
+    "examples_es": [
+      "English para escritorio en inglés",
+      "Español para escritorio en español"
+    ]
+  },
+  {
+    "id": "panel.save",
+    "label_es": "Guardar borrador",
+    "label_en": "Save draft",
+    "default": "—",
+    "description_en": "Validates and saves the edited configuration. It does not grant capabilities or change the active revision. The dot indicates local unsaved edits; fix validation errors before review.",
+    "description_es": "Valida y guarda la configuración editada. No concede capacidades ni cambia revisión activa. El punto indica cambios locales sin guardar; corrige errores antes de revisar.",
+    "examples": [
+      "Save a new notification flow",
+      "Save changed recovery thresholds"
+    ],
+    "examples_es": [
+      "Guardar un flujo de notificación nuevo",
+      "Guardar umbrales de recuperación modificados"
+    ]
+  },
+  {
+    "id": "panel.activate",
+    "label_es": "Revisar y activar",
+    "label_en": "Review and activate",
+    "default": "—",
+    "description_en": "Saves the draft, then shows exact capabilities and their revision hash. OK activates that reviewed revision; Cancel leaves it unactivated. Resource changes require another review.",
+    "description_es": "Guarda borrador y muestra capacidades exactas y hash. OK activa esa revisión; Cancelar la deja sin activar. Cambiar recursos requiere otra revisión.",
+    "examples": [
+      "Approve one notification capability",
+      "Review a monitor plus an outbound action"
+    ],
+    "examples_es": [
+      "Aprobar una capacidad de notificación",
+      "Revisar monitor y acción de salida"
+    ]
+  },
+  {
+    "id": "panel.pause",
+    "label_es": "Pausar",
+    "label_en": "Pause",
+    "default": "—",
+    "description_en": "Toggles Pause/Resume with admission retain. Pause stops subsequent dispatch while retaining incoming events; it does not undo effects already started. Resume lets queued work continue.",
+    "description_es": "Alterna Pausar/Reanudar con admisión retain. Pausa detiene despachos posteriores y conserva eventos entrantes; no deshace efectos iniciados. Reanudar deja continuar la cola.",
+    "examples": [
+      "Pause while inspecting pending work",
+      "Resume after restoring a credential"
+    ],
+    "examples_es": [
+      "Pausar para inspeccionar pendientes",
+      "Reanudar tras restaurar una credencial"
+    ]
+  },
+  {
+    "id": "panel.stop",
+    "label_es": "Detener ejecuciones",
+    "label_en": "Stop executions",
+    "default": "—",
+    "description_en": "Opens confirmation. Accept cancels pending work and attempts to stop active processes; effects already sent cannot be undone and results may be uncertain. It does not reject future incoming events.",
+    "description_es": "Abre confirmación. Aceptar cancela pendientes e intenta detener procesos; no deshace efectos enviados y puede dejar resultados inciertos. No rechaza eventos futuros.",
+    "examples": [
+      "Cancel queued tests after a mistake",
+      "Stop an active long-running script"
+    ],
+    "examples_es": [
+      "Cancelar pruebas en cola tras un error",
+      "Detener un script activo prolongado"
+    ]
+  },
+  {
+    "id": "panel.new",
+    "label_es": "Nuevo",
+    "label_en": "New",
+    "default": "—",
+    "description_en": "Opens a new resource editor in the current section. Save in that editor stages the resource locally; Save draft then validates the full configuration. Cancel abandons that editor submission.",
+    "description_es": "Abre recurso nuevo en la sección actual. Guardar en el editor prepara recurso localmente; Guardar borrador valida toda la configuración. Cancelar abandona ese envío del editor.",
+    "examples": [
+      "Create a destination in Connections",
+      "Create an interval in Scheduling"
+    ],
+    "examples_es": [
+      "Crear destino en Conexiones",
+      "Crear intervalo en Programación"
+    ]
+  },
+  {
+    "id": "panel.edit",
+    "label_es": "Editar",
+    "label_en": "Edit",
+    "default": "—",
+    "description_en": "Opens the selected resource for editing. The existing identifier is immutable in the form; references and exact revisions still require validation. Saving does not activate.",
+    "description_es": "Abre recurso seleccionado. El ID existente es inmutable en el formulario; referencias y revisiones exactas requieren validación. Guardar no activa.",
+    "examples": [
+      "Change a notification message",
+      "Change a timer timezone"
+    ],
+    "examples_es": [
+      "Cambiar mensaje de notificación",
+      "Cambiar zona de programación"
+    ]
+  },
+  {
+    "id": "panel.remove",
+    "label_es": "Quitar",
+    "label_en": "Remove",
+    "default": "—",
+    "description_en": "Removes the resource from local draft edits, without a confirmation dialog. Save validates remaining references; activation is separate. Removing a referenced action requires updating its flows first.",
+    "description_es": "Quita recurso de cambios locales del borrador, sin diálogo de confirmación. Guardar valida referencias restantes; activar es separado. Quitar acción referenciada exige actualizar sus flujos.",
+    "examples": [
+      "Remove an unused destination",
+      "Remove an obsolete disabled timer"
+    ],
+    "examples_es": [
+      "Quitar destino sin uso",
+      "Quitar programación deshabilitada obsoleta"
+    ]
+  },
+  {
+    "id": "panel.refresh",
+    "label_es": "Actualizar",
+    "label_en": "Refresh",
+    "default": "—",
+    "description_en": "Refreshes section status, such as monitor/timer state, queue or security metadata. It does not activate a draft or itself test an external service.",
+    "description_es": "Actualiza estado de sección, como monitores/programaciones, cola o metadatos de seguridad. No activa borrador ni prueba por sí mismo servicio externo.",
+    "examples": [
+      "Refresh after a delivery completes",
+      "Refresh credential metadata after consent"
+    ],
+    "examples_es": [
+      "Actualizar tras completar entrega",
+      "Actualizar credenciales tras consentimiento"
+    ]
+  },
+  {
+    "id": "panel.import",
+    "label_es": "Importar",
+    "label_en": "Import",
+    "default": "—",
+    "description_en": "Reads an absolute regular .json file up to 1 MiB and replaces the saved draft with sources/flows disabled. Does not merge with the draft or replace active revision. Export edits you wish to keep first.",
+    "description_es": "Lee .json regular absoluto de hasta 1 MiB y reemplaza borrador guardado con orígenes/flujos deshabilitados. No fusiona ni reemplaza revisión activa. Exporta antes cambios que quieras conservar.",
+    "examples": [
+      "Import the notification example",
+      "Import a previously exported configuration"
+    ],
+    "examples_es": [
+      "Importar ejemplo de notificación",
+      "Importar configuración exportada antes"
+    ]
+  },
+  {
+    "id": "panel.export",
+    "label_es": "Exportar",
+    "label_en": "Export",
+    "default": "—",
+    "description_en": "Requires a saved draft. Writes configuration to a new absolute .json path; refuses overwrite. Includes code, ordinary headers and body text, but only references to stored credentials. No automatic upload.",
+    "description_es": "Requiere borrador guardado. Escribe configuración en .json absoluto nuevo; rechaza sobrescribir. Incluye código, cabeceras ordinarias y cuerpos, pero solo referencias a credenciales guardadas. No sube automáticamente.",
+    "examples": [
+      "Export before importing another setup",
+      "Export a configuration for local backup"
+    ],
+    "examples_es": [
+      "Exportar antes de importar otra configuración",
+      "Exportar configuración como respaldo local"
+    ]
+  },
+  {
+    "id": "files.path",
+    "label_es": "Ruta de archivo",
+    "label_en": "File path",
+    "default": "\"\"",
+    "description_en": "Used by import, configuration export and diagnosis export. Import requires an existing regular file; export requires a new filename. A final symlink is rejected. Example parent directories must exist.",
+    "description_es": "Usada en importación y exportación de configuración/diagnóstico. Importar exige archivo regular existente; exportar nombre nuevo. Rechaza enlace simbólico final. Los directorios padre de ejemplo deben existir.",
+    "examples": [
+      "/home/alex/automations-backup.json",
+      "/home/alex/diagnostics-01.json"
+    ],
+    "examples_es": [
+      "/home/alex/automations-backup.json",
+      "/home/alex/diagnostics-01.json"
+    ]
+  },
+  {
+    "id": "history.queue",
+    "label_es": "Solo cola pendiente / incierta",
+    "label_en": "Pending / uncertain queue only",
+    "default": "false",
+    "description_en": "Off shows the latest 100 executions. On shows pending, running and uncertain work with pages of 100. This is a live queue: counts and page contents may change as work progresses.",
+    "description_es": "Desactivado muestra últimas 100 ejecuciones. Activado muestra pendientes, en ejecución e inciertas, por páginas de 100. La cola cambia mientras trabaja; contadores y páginas pueden variar.",
+    "examples": [
+      "Enable to inspect a stuck delivery",
+      "Disable to find a terminal failed delivery"
+    ],
+    "examples_es": [
+      "Activar para inspeccionar entrega atascada",
+      "Desactivar para localizar entrega fallida terminal"
+    ]
+  },
+  {
+    "id": "history.pages",
+    "label_es": "Anterior",
+    "label_en": "Previous",
+    "default": "—",
+    "description_en": "Previous/Next moves through queue pages by 100, when available; it does not change work state. Refresh can update the page contents.",
+    "description_es": "Anterior/Siguiente mueve páginas de cola de 100 si están disponibles; no cambia trabajos. Actualizar puede cambiar contenido de página.",
+    "examples": [
+      "Next to inspect jobs after the first 100",
+      "Previous to return to the first page"
+    ],
+    "examples_es": [
+      "Siguiente para inspeccionar después de los primeros 100",
+      "Anterior para volver a la primera página"
+    ]
+  },
+  {
+    "id": "history.details",
+    "label_es": "Detalles",
+    "label_en": "Details",
+    "default": "—",
+    "description_en": "Opens step states and HTTP attempt details without payload bodies or credentials. A completed step can belong to a pending execution. Inspect uncertain external outcomes before retry decisions.",
+    "description_es": "Abre estados de pasos e intentos HTTP sin cuerpos ni credenciales. Un paso completado puede pertenecer a ejecución pendiente. Inspecciona efectos inciertos antes de decidir reintentos.",
+    "examples": [
+      "Read the HTTP status of a failed send",
+      "Find which step lost its permission"
+    ],
+    "examples_es": [
+      "Consultar estado HTTP de un envío fallido",
+      "Identificar paso que perdió permiso"
+    ]
+  },
+  {
+    "id": "history.retry",
+    "label_es": "Reenviar HTTP",
+    "label_en": "Retry HTTP",
+    "default": "—",
+    "description_en": "Shown for failed/cancelled executions; the engine only accepts eligible HTTP steps. Confirmation reuses the original body/idempotency key. Receiver-side idempotency is required to avoid duplicates. Non-HTTP actions are not retried by this button.",
+    "description_es": "Visible en ejecuciones fallidas/canceladas; el motor solo admite pasos HTTP elegibles. Confirmar reutiliza cuerpo/clave de idempotencia originales. El receptor debe evitar duplicados. Este botón no reintenta acciones no HTTP.",
+    "examples": [
+      "Retry after repairing the receiver",
+      "Retry after fixing rejected credentials"
+    ],
+    "examples_es": [
+      "Reenviar tras reparar receptor",
+      "Reenviar tras corregir credenciales rechazadas"
+    ]
+  },
+  {
+    "id": "simulation.source",
+    "label_es": "Origen",
+    "label_en": "Source",
+    "default": "local:demo",
+    "description_en": "Exact event source. Simulation accepts registered entry/monitor/timer sources and local/hook sources. Run real test is available only for local: and hook:; it does not forge a signed webhook.",
+    "description_es": "Origen exacto del evento. Simular acepta entradas/monitores/programaciones registradas y local/hook. Prueba real solo admite local: y hook:; no falsifica webhook firmado.",
+    "examples": [
+      "local:demo",
+      "monitor:disk-space"
+    ],
+    "examples_es": [
+      "local:demo",
+      "monitor:disk-space"
+    ]
+  },
+  {
+    "id": "simulation.type",
+    "label_es": "Tipo",
+    "label_en": "Type",
+    "default": "test",
+    "description_en": "Event type used by conditions and templates. It does not select an entry authentication mode or a system action by itself.",
+    "description_es": "Tipo de evento usado por condiciones/plantillas. No selecciona por sí solo autenticación de entrada ni acción de sistema.",
+    "examples": [
+      "alert",
+      "recovered"
+    ],
+    "examples_es": [
+      "alert",
+      "recovered"
+    ]
+  },
+  {
+    "id": "simulation.data",
+    "label_es": "Datos de ejemplo (JSON)",
+    "label_en": "Sample data (JSON)",
+    "default": "{\"message\":\"…\",\"state\":\"failed\"}",
+    "description_en": "A valid JSON object, not a JSON array or unquoted text. Use data matching fields referenced by your conditions/actions; avoid credentials in sample payloads. Initial message follows the interface language.",
+    "description_es": "Objeto JSON válido, no array ni texto sin comillas. Usa campos referenciados por condiciones/acciones; evita credenciales en datos de prueba. El mensaje inicial sigue idioma de interfaz.",
+    "examples": [
+      "{\"message\":\"Build finished\",\"state\":\"ok\"}",
+      "{\"metric\":\"disk\",\"value\":8,\"state\":\"alert\"}"
+    ],
+    "examples_es": [
+      "{\"message\":\"Compilación terminada\",\"state\":\"ok\"}",
+      "{\"metric\":\"disk\",\"value\":8,\"state\":\"alert\"}"
+    ]
+  },
+  {
+    "id": "simulation.preview",
+    "label_es": "Simular sin efectos",
+    "label_en": "Simulate without effects",
+    "default": "—",
+    "description_en": "Saves a dirty draft first, then explains matching and rejected flows and resolves steps without executing actions, reading credentials or creating work. Adapters remain unresolved dependencies.",
+    "description_es": "Guarda primero borrador modificado y explica flujos coincidentes/rechazados, resolviendo pasos sin ejecutar, consultar credenciales ni crear trabajos. Adaptadores quedan como dependencias sin resolver.",
+    "examples": [
+      "Preview a notification body",
+      "Verify a numeric condition does not match"
+    ],
+    "examples_es": [
+      "Previsualizar cuerpo de notificación",
+      "Comprobar que no coincide condición numérica"
+    ]
+  },
+  {
+    "id": "simulation.real",
+    "label_es": "Ejecutar prueba real",
+    "label_en": "Run real test",
+    "default": "—",
+    "description_en": "Opens a separate confirmation and sends the sample local/hook event to the active revision. It can notify, execute or send HTTP under active grants. Cancel sends no event. It does not activate unsaved changes.",
+    "description_es": "Abre confirmación separada y envía evento local/hook a revisión activa. Puede notificar, ejecutar o enviar HTTP con permisos activos. Cancelar no envía evento. No activa cambios sin guardar.",
+    "examples": [
+      "Send a real local notification test",
+      "Exercise an authorized hook flow"
+    ],
+    "examples_es": [
+      "Enviar prueba local real de notificación",
+      "Ejercitar flujo hook autorizado"
+    ]
+  },
+  {
+    "id": "security.create",
+    "label_es": "Crear o rotar credencial",
+    "label_en": "Create or rotate credential",
+    "default": "—",
+    "description_en": "Opens credential fields. Save applies the selected generic/import/browser operation immediately, independently of draft activation. Cancel clears sensitive inputs and submits nothing.",
+    "description_es": "Abre campos de credencial. Guardar aplica operación genérica/importación/navegador inmediatamente, independiente de activar borrador. Cancelar limpia campos sensibles y no envía nada.",
+    "examples": [
+      "Create a new inbound signing reference",
+      "Rotate a bearer token under its existing ID"
+    ],
+    "examples_es": [
+      "Crear referencia de firma entrante",
+      "Rotar token bearer con su ID existente"
+    ]
+  },
+  {
+    "id": "security.delete",
+    "label_es": "Eliminar",
+    "label_en": "Delete",
+    "default": "—",
+    "description_en": "Opens credential deletion confirmation. Accept removes the selected local value/reference, causing dependent authentication to fail until restored. It neither undoes completed requests nor revokes Google consent remotely.",
+    "description_es": "Abre confirmación de eliminación. Aceptar retira valor/referencia local y hace fallar autenticación dependiente hasta restaurar. No deshace solicitudes completadas ni revoca remotamente consentimiento Google.",
+    "examples": [
+      "Delete an unused API credential",
+      "Remove a Google connection locally"
+    ],
+    "examples_es": [
+      "Eliminar credencial API sin uso",
+      "Retirar conexión Google localmente"
+    ]
+  },
+  {
+    "id": "security.revoke",
+    "label_es": "Revocar",
+    "label_en": "Revoke",
+    "default": "—",
+    "description_en": "Immediately revokes the selected active capability, without a confirmation dialog. Prevents future authorized dispatch under that grant, not completed effects. Revoking a monitor/timer stops new events but does not revoke action grants for queued work.",
+    "description_es": "Revoca inmediatamente capacidad activa elegida, sin diálogo de confirmación. Impide futuros despachos bajo ese permiso, no efectos completados. Revocar monitor/programación detiene eventos nuevos, no permisos de acciones ya encoladas.",
+    "examples": [
+      "Revoke an outbound action grant",
+      "Revoke a timer event capability"
+    ],
+    "examples_es": [
+      "Revocar permiso de acción de salida",
+      "Revocar capacidad de eventos de programación"
+    ]
+  },
+  {
+    "id": "security.oauth_open",
+    "label_es": "Abrir consentimiento en el navegador",
+    "label_en": "Open consent in browser",
+    "default": "—",
+    "description_en": "Available while a Google authorization session awaits consent. Opens its provider URL in the browser; review the requested permissions there. The session expires after ten minutes. Do not share the URL/code as troubleshooting data.",
+    "description_es": "Disponible mientras sesión Google espera consentimiento. Abre URL del proveedor en navegador; revisa allí permisos pedidos. Caduca a los diez minutos. No compartas URL/código como diagnóstico.",
+    "examples": [
+      "Open consent for a new connection",
+      "Reopen the waiting session after panel reload"
+    ],
+    "examples_es": [
+      "Abrir consentimiento de conexión nueva",
+      "Reabrir sesión en espera tras recargar panel"
+    ]
+  },
+  {
+    "id": "security.oauth_cancel",
+    "label_es": "Cancelar autorización",
+    "label_en": "Cancel authorization",
+    "default": "—",
+    "description_en": "Cancels a pending local consent/exchange session and closes its listener. A successfully stored connection is not revoked by cancelling. Starting again creates a new session; engine restart also requires starting over.",
+    "description_es": "Cancela sesión local pendiente de consentimiento/canje y cierra listener. No revoca conexión ya guardada con éxito. Volver a iniciar crea sesión nueva; reiniciar motor también exige empezar otra.",
+    "examples": [
+      "Cancel after choosing the wrong client",
+      "Cancel an authorization you no longer need"
+    ],
+    "examples_es": [
+      "Cancelar tras elegir cliente incorrecto",
+      "Cancelar autorización que ya no necesitas"
+    ]
+  },
+  {
+    "id": "security.oauth_status",
+    "label_es": "Estado OAuth2",
+    "label_en": "OAuth2 status",
+    "default": "—",
+    "description_en": "Shows locally stored connection metadata, including renewal/reconnection state. Does not contact Google or prove the token remains valid remotely. Missing/rejected scopes or invalid_grant can require reconnecting.",
+    "description_es": "Muestra metadatos locales, incluidos estados de renovación/reconexión. No contacta Google ni prueba validez remota actual. Scopes ausentes/rechazados o invalid_grant pueden exigir reconectar.",
+    "examples": [
+      "Inspect after a successful consent",
+      "Inspect after an HTTP 401"
+    ],
+    "examples_es": [
+      "Consultar tras consentimiento exitoso",
+      "Consultar tras HTTP 401"
+    ]
+  },
+  {
+    "id": "security.diagnostics",
+    "label_es": "Ver diagnóstico",
+    "label_en": "View diagnostics",
+    "default": "—",
+    "description_en": "Shows a report of versions, counters, pause/storage state and tool availability. Excludes configuration, URLs, paths, payloads and stored secret values. Tool presence alone does not establish that its service works.",
+    "description_es": "Muestra versiones, contadores, pausa/almacenamiento y disponibilidad de herramientas. Excluye configuración, URLs, rutas, cuerpos y valores secretos. Tener herramienta no demuestra servicio operativo.",
+    "examples": [
+      "Check component versions after updating",
+      "Inspect queue/storage counts during an incident"
+    ],
+    "examples_es": [
+      "Comprobar versiones tras actualizar",
+      "Inspeccionar cola/almacenamiento durante incidente"
+    ]
+  },
+  {
+    "id": "security.export_diagnostics",
+    "label_es": "Exportar diagnóstico",
+    "label_en": "Export diagnostics",
+    "default": "—",
+    "description_en": "Writes that bounded diagnostic report to a new absolute .json path with mode 0600, without overwriting or uploading. A failed write can leave an incomplete file; choose another new path after inspecting the error.",
+    "description_es": "Escribe diagnóstico acotado en .json absoluto nuevo con permisos 0600, sin sobrescribir ni subir. Un fallo puede dejar archivo incompleto; elige otra ruta nueva tras revisar error.",
+    "examples": [
+      "Save a report before upgrading",
+      "Save a report after a failed delivery"
+    ],
+    "examples_es": [
+      "Guardar informe antes de actualizar",
+      "Guardar informe tras entrega fallida"
+    ]
+  },
+  {
+    "id": "security.save_limits",
+    "label_es": "Guardar límites",
+    "label_en": "Save limits",
+    "default": "—",
+    "description_en": "Applies all four storage-policy values immediately, separately from the draft/review workflow. Invalid combinations are rejected. It does not erase pending/uncertain work to meet the new quota.",
+    "description_es": "Aplica inmediatamente cuatro límites, separado del borrador/revisión. Rechaza combinaciones inválidas. No borra trabajo pendiente/incierto para cumplir cuota nueva.",
+    "examples": [
+      "Increase capacity after inspecting queue growth",
+      "Shorten terminal history and retain longer deduplication"
+    ],
+    "examples_es": [
+      "Ampliar capacidad tras inspeccionar crecimiento de cola",
+      "Reducir historial terminal conservando deduplicación mayor"
+    ]
+  },
+  {
+    "id": "monitors.reset",
+    "label_es": "Reiniciar cursor",
+    "label_en": "Reset cursor",
+    "default": "—",
+    "description_en": "Journal monitors only. Confirmation discards the saved cursor; the next authorized sample starts from then, without recovering older records. Does not grant permissions and records an audit event.",
+    "description_es": "Solo monitores journal. Confirmar descarta cursor guardado; siguiente muestra autorizada comienza desde entonces sin recuperar registros anteriores. No concede permisos y registra auditoría.",
+    "examples": [
+      "Reset after journal rotation removed the cursor",
+      "Start a new observation period intentionally"
+    ],
+    "examples_es": [
+      "Reiniciar si rotación eliminó cursor",
+      "Iniciar deliberadamente periodo de observación nuevo"
+    ]
+  },
+  {
+    "id": "code.prepare",
+    "label_es": "Preparar revisión",
+    "label_en": "Prepare revision",
+    "default": "—",
+    "description_en": "Reads the selected local script/adapter and prepares code plus exact revision. Review before Save. Changing preparation fields invalidates it and requires preparing again. Never runs the code or grants capabilities.",
+    "description_es": "Lee script/adaptador local y prepara código y revisión exacta. Revisa antes de Guardar. Cambiar campos invalida preparación y exige repetir. Nunca ejecuta ni concede capacidades.",
+    "examples": [
+      "Prepare a Python script with typed parameters",
+      "Prepare a changed adapter manifest and code"
+    ],
+    "examples_es": [
+      "Preparar script Python con parámetros tipados",
+      "Preparar manifiesto/código de adaptador modificados"
+    ]
+  },
+  {
+    "id": "directories.prepare",
+    "label_es": "Preparar y añadir directorio",
+    "label_en": "Prepare and add directory",
+    "default": "—",
+    "description_en": "Verifies the existing directory identity and adds/replaces its target in the local action draft, up to eight targets. Does not grant access until the action revision is approved.",
+    "description_es": "Verifica identidad de directorio existente y añade/reemplaza destino en borrador local de acción, hasta ocho. No concede acceso hasta aprobar revisión.",
+    "examples": [
+      "Prepare a read-only report tree",
+      "Prepare an output tree with explicit write access"
+    ],
+    "examples_es": [
+      "Preparar árbol de informes solo lectura",
+      "Preparar árbol de salida con escritura explícita"
+    ]
+  },
+  {
+    "id": "administration.check",
+    "label_es": "Comprobar permisos administrativos",
+    "label_en": "Check administrative permissions",
+    "default": "—",
+    "description_en": "For system-service: checks exact unit/operation against the optional broker without executing systemctl or granting a flow. Authorized does not prove the unit exists or guarantee future permission; execution rechecks policy/Polkit.",
+    "description_es": "Para system-service: comprueba unidad/operación exactas con broker opcional sin ejecutar systemctl ni autorizar flujo. Autorizado no acredita que exista unidad ni garantiza permiso futuro; ejecución vuelve a comprobar política/Polkit.",
+    "examples": [
+      "Check status authorization for backup.service",
+      "Check restart authorization for worker.service"
+    ],
+    "examples_es": [
+      "Comprobar autorización status de backup.service",
+      "Comprobar autorización restart de worker.service"
+    ]
+  }
+]

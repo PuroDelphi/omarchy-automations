@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "entries": [],
+  "destinations": [
+    {
+      "id": "status",
+      "url": "https://status.example.com/events",
+      "method": "POST",
+      "format": "json",
+      "auth": "bearer",
+      "secret": "status-token"
+    }
+  ],
+  "actions": [
+    {
+      "id": "report",
+      "kind": "http",
+      "destination": "status",
+      "body": "{\"state\":\"{{type}}\",\"metric\":\"{{data.metric}}\",\"value\":\"{{data.value}}\"}"
+    }
+  ],
+  "flows": [
+    {
+      "id": "disk-report",
+      "source": "monitor:disk-space",
+      "enabled": false,
+      "conditions": [],
+      "steps": [
+        "report"
+      ]
+    }
+  ],
+  "monitors": [
+    {
+      "id": "disk-space",
+      "metric": "disk",
+      "path": "/",
+      "threshold": 10,
+      "recovery": 15,
+      "duration_seconds": 60,
+      "recovery_duration_seconds": 30,
+      "interval_seconds": 10,
+      "cooldown_seconds": 300,
+      "enabled": false
+    }
+  ],
+  "timers": []
+}

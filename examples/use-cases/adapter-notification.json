@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "entries": [],
+  "destinations": [],
+  "actions": [
+    {
+      "id": "normalize",
+      "kind": "adapter",
+      "adapter": "status-normalizer",
+      "adapter_revision": "e100dee40cf2d7d66de4efbb8c1532aae417f1ef203eadda57b5e2acd0217792"
+    },
+    {
+      "id": "notice",
+      "kind": "notify",
+      "title": "Omarchy Automations",
+      "body": "{{data.adapter.severity}}: {{data.adapter.message}}"
+    }
+  ],
+  "flows": [
+    {
+      "id": "normalized-notice",
+      "source": "local:build",
+      "enabled": false,
+      "steps": [
+        "normalize",
+        "notice"
+      ]
+    }
+  ],
+  "monitors": [],
+  "adapters": [
+    {
+      "id": "status-normalizer",
+      "protocol": 1,
+      "runtime": "python3",
+      "capabilities": [
+        "event.read",
+        "data.write"
+      ],
+      "input_limit": 262144,
+      "output_limit": 4096,
+      "timeout_seconds": 5,
+      "code": "\"\"\"Example isolated adapter: normalize status without OS or network effects.\"\"\"\nimport json\nimport sys\n\nraw = sys.stdin.buffer.read(262145)\nif len(raw) > 262144:\n    raise SystemExit(2)\nrequest = json.loads(raw)\nif request.get('version') != 1 or request.get('operation') != 'transform':\n    raise SystemExit(2)\ndata = request['event']['data']\nstatus = data.get('status', 'unknown')\nmessage = data.get('message', '')\nif not isinstance(status, str) or not isinstance(message, str):\n    raise SystemExit(2)\nseverity = {'failed': 'error', 'failure': 'error', 'error': 'error',\n            'success': 'info', 'passed': 'info', 'warning': 'warning'}.get(status, 'info')\nprint(json.dumps({'version': 1, 'id': request['id'],\n                  'data': {'severity': severity, 'message': message[:512]}}))\n",
+      "revision": "e100dee40cf2d7d66de4efbb8c1532aae417f1ef203eadda57b5e2acd0217792"
+    }
+  ]
+}

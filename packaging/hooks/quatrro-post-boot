@@ -1,0 +1,3 @@
+#!/bin/bash
+# Quatrro-owned hook; failures never abort the Omarchy operation.
+/usr/bin/timeout --kill-after=0.2s 1.5s "$HOME/.local/bin/quatrroctl" hook post-boot "$@" >/dev/null 2>&1 || :

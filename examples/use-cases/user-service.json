@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "entries": [],
+  "destinations": [],
+  "actions": [
+    {
+      "id": "service-status",
+      "kind": "service",
+      "unit": "omarchy-automations-demo.service",
+      "operation": "status"
+    },
+    {
+      "id": "service-restart",
+      "kind": "service",
+      "unit": "omarchy-automations-demo.service",
+      "operation": "restart"
+    }
+  ],
+  "flows": [
+    {
+      "id": "request-status",
+      "source": "local:service",
+      "enabled": false,
+      "conditions": [
+        {
+          "field": "data.operation",
+          "op": "eq",
+          "value": "status"
+        }
+      ],
+      "steps": [
+        "service-status"
+      ]
+    },
+    {
+      "id": "request-restart",
+      "source": "local:service",
+      "enabled": false,
+      "conditions": [
+        {
+          "field": "data.operation",
+          "op": "eq",
+          "value": "restart"
+        }
+      ],
+      "steps": [
+        "service-restart"
+      ]
+    }
+  ],
+  "monitors": []
+}

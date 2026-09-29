@@ -1,0 +1,58 @@
+{
+  "version": 1,
+  "entries": [],
+  "destinations": [],
+  "actions": [
+    {
+      "id": "check",
+      "kind": "script",
+      "script": "check-project",
+      "script_revision": "9131dc398601d0d039cb87a07fb585f6f78ab4386cd9206a11601f928103c890",
+      "script_bindings": {
+        "project": "data.project",
+        "count": "data.count"
+      },
+      "script_values": {
+        "enabled": true
+      },
+      "timeout_seconds": 5
+    }
+  ],
+  "flows": [
+    {
+      "id": "validate-project",
+      "source": "local:project",
+      "enabled": false,
+      "steps": [
+        "check"
+      ]
+    }
+  ],
+  "monitors": [],
+  "scripts": [
+    {
+      "id": "check-project",
+      "interpreter": "python3",
+      "code": "\"\"\"Validate typed arguments without changing files, services or network state.\"\"\"\nimport sys\n\nproject, count, enabled = sys.argv[1:]\nassert project and project[0].islower()\nassert all(character.islower() or character.isdigit() or character == '-' for character in project)\nassert int(count) in range(1, 11)\nassert enabled in ('true', 'false')\n",
+      "parameters": [
+        {
+          "name": "project",
+          "type": "string",
+          "max_length": 64,
+          "pattern": "[a-z][a-z0-9-]*"
+        },
+        {
+          "name": "count",
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10
+        },
+        {
+          "name": "enabled",
+          "type": "boolean"
+        }
+      ],
+      "revision": "9131dc398601d0d039cb87a07fb585f6f78ab4386cd9206a11601f928103c890"
+    }
+  ]
+}

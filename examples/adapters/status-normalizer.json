@@ -1,0 +1,9 @@
+{
+  "id": "status-normalizer",
+  "protocol": 1,
+  "runtime": "python3",
+  "capabilities": ["event.read", "data.write"],
+  "input_limit": 262144,
+  "output_limit": 4096,
+  "timeout_seconds": 5
+}

@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "entries": [
+    {
+      "id": "github-releases",
+      "name": "GitHub releases",
+      "auth": "github",
+      "secret": "github-signing",
+      "format": "json",
+      "enabled": false
+    }
+  ],
+  "destinations": [],
+  "actions": [
+    {
+      "id": "release-notice",
+      "kind": "notify",
+      "title": "GitHub release",
+      "body": "{{data.repository.full_name}}: {{data.release.tag_name}}"
+    }
+  ],
+  "flows": [
+    {
+      "id": "published-release",
+      "source": "entry:github-releases",
+      "enabled": false,
+      "conditions": [
+        {
+          "field": "data.action",
+          "op": "eq",
+          "value": "published"
+        },
+        {
+          "field": "data.repository.full_name",
+          "op": "eq",
+          "value": "example/project"
+        }
+      ],
+      "steps": [
+        "release-notice"
+      ]
+    }
+  ],
+  "monitors": []
+}

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE policyconfig PUBLIC "-//freedesktop//DTD PolicyKit Policy Configuration 1.0//EN" "http://www.freedesktop.org/standards/PolicyKit/1/policyconfig.dtd">
+<policyconfig>
+  <vendor>Omarchy Automations</vendor>
+  <action id="org.quatrro.automations.service.status">
+    <description>Omarchy Automations: status an explicitly permitted system service</description>
+    <message>Administrative service access requires an installed Omarchy Automations policy.</message>
+    <defaults><allow_any>no</allow_any><allow_inactive>no</allow_inactive><allow_active>no</allow_active></defaults>
+  </action>
+  <action id="org.quatrro.automations.service.start">
+    <description>Omarchy Automations: start an explicitly permitted system service</description>
+    <message>Administrative service access requires an installed Omarchy Automations policy.</message>
+    <defaults><allow_any>no</allow_any><allow_inactive>no</allow_inactive><allow_active>no</allow_active></defaults>
+  </action>
+  <action id="org.quatrro.automations.service.stop">
+    <description>Omarchy Automations: stop an explicitly permitted system service</description>
+    <message>Administrative service access requires an installed Omarchy Automations policy.</message>
+    <defaults><allow_any>no</allow_any><allow_inactive>no</allow_inactive><allow_active>no</allow_active></defaults>
+  </action>
+  <action id="org.quatrro.automations.service.restart">
+    <description>Omarchy Automations: restart an explicitly permitted system service</description>
+    <message>Administrative service access requires an installed Omarchy Automations policy.</message>
+    <defaults><allow_any>no</allow_any><allow_inactive>no</allow_inactive><allow_active>no</allow_active></defaults>
+  </action>
+</policyconfig>

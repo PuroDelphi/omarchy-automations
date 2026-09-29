@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "entries": [],
+  "destinations": [],
+  "actions": [
+    {"id": "notice", "kind": "notify", "title": "Omarchy Automations", "body": "{{data.message}}"}
+  ],
+  "flows": [
+    {"id": "local-demo", "name": "Notificación local", "source": "local:demo", "enabled": true, "steps": ["notice"]}
+  ],
+  "monitors": []
+}

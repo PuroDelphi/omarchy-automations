@@ -1,0 +1,18 @@
+/build/
+/dist/
+/.dev/
+*.db
+*.db-shm
+*.db-wal
+*.sock
+.env
+secrets/
+__pycache__/
+*.pyc
+
+# Local environment variants and SQLite profiles
+.env.*
+!.env.example
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm

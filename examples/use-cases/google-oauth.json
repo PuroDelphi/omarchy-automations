@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "entries": [],
+  "destinations": [
+    {
+      "id": "google-freebusy",
+      "url": "https://www.googleapis.com/calendar/v3/freeBusy",
+      "method": "POST",
+      "format": "json",
+      "auth": "oauth2-google",
+      "secret": "google-calendar"
+    }
+  ],
+  "actions": [
+    {
+      "id": "query-availability",
+      "kind": "http",
+      "destination": "google-freebusy",
+      "body": "{\"timeMin\":\"{{data.start}}\",\"timeMax\":\"{{data.end}}\",\"items\":[{\"id\":\"{{data.calendar}}\"}]}"
+    }
+  ],
+  "flows": [
+    {
+      "id": "calendar-query",
+      "source": "local:calendar",
+      "enabled": false,
+      "steps": [
+        "query-availability"
+      ]
+    }
+  ],
+  "monitors": []
+}

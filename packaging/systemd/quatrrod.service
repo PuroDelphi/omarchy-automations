@@ -1,0 +1,16 @@
+[Unit]
+Description=Omarchy Automations automation engine
+After=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=%h/.local/bin/quatrrod
+Restart=on-failure
+RestartSec=3
+UMask=0077
+NoNewPrivileges=yes
+PrivateTmp=yes
+RestrictSUIDSGID=yes
+
+[Install]
+WantedBy=default.target

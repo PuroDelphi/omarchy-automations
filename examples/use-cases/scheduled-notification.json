@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "entries": [],
+  "destinations": [],
+  "actions": [
+    {
+      "id": "notice",
+      "kind": "notify",
+      "title": "Omarchy Automations",
+      "body": "Scheduled reminder: {{data.scheduled_at}}"
+    }
+  ],
+  "flows": [
+    {
+      "id": "reminder",
+      "source": "timer:weekday-reminder",
+      "enabled": false,
+      "conditions": [],
+      "steps": [
+        "notice"
+      ]
+    }
+  ],
+  "monitors": [],
+  "timers": [
+    {
+      "id": "weekday-reminder",
+      "kind": "calendar",
+      "at": "09:00",
+      "timezone": "America/Bogota",
+      "weekdays": [
+        "mon",
+        "tue",
+        "wed",
+        "thu",
+        "fri"
+      ],
+      "missed": "skip",
+      "enabled": false
+    }
+  ]
+}

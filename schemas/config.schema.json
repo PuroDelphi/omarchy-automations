@@ -1,0 +1,880 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "const": 1
+    },
+    "entries": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Entry"
+      }
+    },
+    "destinations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Destination"
+      }
+    },
+    "actions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Action"
+      }
+    },
+    "flows": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Flow"
+      }
+    },
+    "monitors": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Monitor"
+      },
+      "maxItems": 64
+    },
+    "timers": {
+      "type": "array",
+      "maxItems": 64,
+      "items": {
+        "$ref": "#/$defs/Timer"
+      }
+    },
+    "scripts": {
+      "type": "array",
+      "maxItems": 8,
+      "items": {
+        "$ref": "#/$defs/Script"
+      }
+    },
+    "adapters": {
+      "type": "array",
+      "maxItems": 8,
+      "items": {
+        "$ref": "#/$defs/Adapter"
+      }
+    }
+  },
+  "required": [
+    "version"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:quatrro:configuration:1",
+  "title": "Omarchy Automations configuration v1",
+  "description": "Structural interchange schema. The engine additionally validates references, resource policies, durations, quotas and permission grants.",
+  "$defs": {
+    "Entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9._-]{0,63}$"
+        },
+        "name": {
+          "type": "string"
+        },
+        "auth": {
+          "type": "string",
+          "enum": [
+            "hmac",
+            "github",
+            "slack",
+            "bearer"
+          ]
+        },
+        "secret": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9._-]{0,63}$"
+        },
+        "format": {
+          "type": "string",
+          "enum": [
+            "json",
+            "form",
+            "raw",
+            "xml",
+            "multipart"
+          ]
+        },
+        "enabled": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "auth",
+        "secret",
+        "format"
+      ]
+    },
+    "Destination": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9._-]{0,63}$"
+        },
+        "name": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "method": {
+          "type": "string",
+          "enum": [
+            "POST",
+            "PUT",
+            "PATCH"
+          ]
+        },
+        "format": {
+          "type": "string",
+          "enum": [
+            "",
+            "json",
+            "form",
+            "raw"
+          ]
+        },
+        "auth": {
+          "type": "string",
+          "enum": [
+            "",
+            "hmac",
+            "bearer",
+            "oauth2-google"
+          ]
+        },
+        "secret": {
+          "type": "string"
+        },
+        "headers": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "private_hosts": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "url",
+        "method"
+      ]
+    },
+    "Action": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9._-]{0,63}$"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "notify",
+            "http",
+            "service",
+            "command",
+            "omarchy",
+            "script",
+            "adapter",
+            "system-service"
+          ]
+        },
+        "title": {
+          "type": "string"
+        },
+        "body": {
+          "type": "string"
+        },
+        "destination": {
+          "type": "string"
+        },
+        "unit": {
+          "type": "string"
+        },
+        "operation": {
+          "type": "string",
+          "enum": [
+            "",
+            "status",
+            "start",
+            "stop",
+            "restart",
+            "theme.current",
+            "nightlight.status",
+            "nightlight.toggle",
+            "system.lock"
+          ]
+        },
+        "executable": {
+          "type": "string"
+        },
+        "args": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "timeout_seconds": {
+          "type": "integer"
+        },
+        "script": {
+          "type": "string"
+        },
+        "script_revision": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "script_values": {
+          "type": "object",
+          "maxProperties": 16,
+          "additionalProperties": {
+            "type": [
+              "string",
+              "number",
+              "boolean"
+            ]
+          }
+        },
+        "script_bindings": {
+          "type": "object",
+          "maxProperties": 16,
+          "additionalProperties": {
+            "type": "string",
+            "maxLength": 128
+          }
+        },
+        "directories": {
+          "type": "array",
+          "maxItems": 8,
+          "items": {
+            "$ref": "#/$defs/Directory"
+          }
+        },
+        "working_directory": {
+          "type": "string",
+          "maxLength": 70
+        },
+        "command_profile": {
+          "enum": [
+            "fixed",
+            "file-exists",
+            "make-directory"
+          ]
+        },
+        "command_path": {
+          "type": "string",
+          "maxLength": 326
+        },
+        "adapter": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9._-]{0,63}$"
+        },
+        "adapter_revision": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "id",
+        "kind"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "script"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "script",
+              "script_revision",
+              "timeout_seconds"
+            ],
+            "properties": {
+              "timeout_seconds": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 300
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "command_profile"
+            ],
+            "properties": {
+              "command_profile": {
+                "enum": [
+                  "file-exists",
+                  "make-directory"
+                ]
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "command_path"
+            ],
+            "properties": {
+              "kind": {
+                "const": "command"
+              },
+              "executable": {
+                "maxLength": 0
+              },
+              "args": {
+                "maxItems": 0
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "adapter"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "adapter",
+              "adapter_revision"
+            ],
+            "properties": {
+              "directories": {
+                "maxItems": 0
+              },
+              "working_directory": {
+                "maxLength": 0
+              },
+              "executable": {
+                "maxLength": 0
+              },
+              "args": {
+                "maxItems": 0
+              },
+              "timeout_seconds": {
+                "const": 0
+              }
+            }
+          }
+        }
+      ]
+    },
+    "Condition": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "field": {
+          "type": "string"
+        },
+        "op": {
+          "type": "string",
+          "enum": [
+            "eq",
+            "ne",
+            "gt",
+            "lt",
+            "contains"
+          ]
+        },
+        "value": {
+          "type": [
+            "string",
+            "number",
+            "boolean",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "field",
+        "op",
+        "value"
+      ]
+    },
+    "Flow": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9._-]{0,63}$"
+        },
+        "name": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "conditions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Condition"
+          }
+        },
+        "steps": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "source",
+        "steps"
+      ]
+    },
+    "Monitor": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9._-]{0,63}$"
+        },
+        "metric": {
+          "type": "string",
+          "enum": [
+            "cpu",
+            "memory",
+            "disk",
+            "battery",
+            "service",
+            "process",
+            "file_exists",
+            "file_age",
+            "file_size",
+            "connectivity",
+            "temperature",
+            "journal"
+          ]
+        },
+        "path": {
+          "type": "string"
+        },
+        "unit": {
+          "type": "string"
+        },
+        "threshold": {
+          "type": "number"
+        },
+        "recovery": {
+          "type": "number"
+        },
+        "duration_seconds": {
+          "type": "integer"
+        },
+        "interval_seconds": {
+          "type": "integer"
+        },
+        "cooldown_seconds": {
+          "type": "integer"
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "recovery_duration_seconds": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 86400
+        },
+        "destination": {
+          "type": "string"
+        },
+        "priority": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 7
+        }
+      },
+      "required": [
+        "id",
+        "metric",
+        "interval_seconds"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "metric": {
+                "const": "journal"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "unit"
+            ]
+          },
+          "else": {
+            "required": [
+              "threshold",
+              "recovery",
+              "cooldown_seconds"
+            ]
+          }
+        }
+      ]
+    },
+    "Timer": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9._-]{0,63}$"
+        },
+        "name": {
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "interval",
+            "calendar"
+          ]
+        },
+        "interval_seconds": {
+          "type": "integer",
+          "minimum": 5,
+          "maximum": 31536000
+        },
+        "at": {
+          "type": "string",
+          "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$"
+        },
+        "timezone": {
+          "type": "string",
+          "minLength": 1
+        },
+        "weekdays": {
+          "type": "array",
+          "maxItems": 7,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "sun",
+              "mon",
+              "tue",
+              "wed",
+              "thu",
+              "fri",
+              "sat"
+            ]
+          }
+        },
+        "missed": {
+          "enum": [
+            "coalesce",
+            "skip"
+          ]
+        },
+        "enabled": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "missed",
+        "enabled"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "interval"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "interval_seconds"
+            ],
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "at"
+                  ]
+                },
+                {
+                  "required": [
+                    "timezone"
+                  ]
+                },
+                {
+                  "required": [
+                    "weekdays"
+                  ]
+                }
+              ]
+            }
+          },
+          "else": {
+            "required": [
+              "at",
+              "timezone"
+            ],
+            "not": {
+              "required": [
+                "interval_seconds"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "ScriptParameter": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "name",
+            "type",
+            "max_length"
+          ],
+          "properties": {
+            "name": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9._-]{0,63}$"
+            },
+            "type": {
+              "const": "string"
+            },
+            "max_length": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 4096
+            },
+            "pattern": {
+              "type": "string",
+              "maxLength": 256
+            },
+            "choices": {
+              "type": "array",
+              "maxItems": 32,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "maxLength": 4096
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "name",
+            "type",
+            "minimum",
+            "maximum"
+          ],
+          "properties": {
+            "name": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9._-]{0,63}$"
+            },
+            "type": {
+              "const": "integer"
+            },
+            "minimum": {
+              "type": "integer",
+              "minimum": -9007199254740991,
+              "maximum": 9007199254740991
+            },
+            "maximum": {
+              "type": "integer",
+              "minimum": -9007199254740991,
+              "maximum": 9007199254740991
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "name",
+            "type"
+          ],
+          "properties": {
+            "name": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9._-]{0,63}$"
+            },
+            "type": {
+              "const": "boolean"
+            }
+          }
+        }
+      ]
+    },
+    "Script": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "interpreter",
+        "code",
+        "parameters",
+        "revision"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9._-]{0,63}$"
+        },
+        "interpreter": {
+          "enum": [
+            "bash",
+            "python3"
+          ]
+        },
+        "code": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32768
+        },
+        "parameters": {
+          "type": "array",
+          "maxItems": 16,
+          "items": {
+            "$ref": "#/$defs/ScriptParameter"
+          }
+        },
+        "revision": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "Directory": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source",
+        "target",
+        "access",
+        "device",
+        "inode"
+      ],
+      "properties": {
+        "source": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 4096
+        },
+        "target": {
+          "type": "string",
+          "pattern": "^/work/[a-z][a-z0-9._-]{0,63}$"
+        },
+        "access": {
+          "enum": [
+            "ro",
+            "rw"
+          ]
+        },
+        "device": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "inode": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]*$"
+        }
+      }
+    },
+    "Adapter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "protocol",
+        "runtime",
+        "capabilities",
+        "input_limit",
+        "output_limit",
+        "timeout_seconds",
+        "code",
+        "revision"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9._-]{0,63}$"
+        },
+        "protocol": {
+          "const": 1
+        },
+        "runtime": {
+          "const": "python3"
+        },
+        "capabilities": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "event.read",
+              "data.write"
+            ]
+          }
+        },
+        "input_limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 262144
+        },
+        "output_limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 65536
+        },
+        "timeout_seconds": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 30
+        },
+        "code": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32768
+        },
+        "revision": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    }
+  }
+}
