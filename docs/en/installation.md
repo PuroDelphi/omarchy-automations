@@ -89,20 +89,8 @@ If you previously used `scripts/install.py`, update from the original source
 checkout with `python3 scripts/setup.py --update`, and uninstall from there with
 `python3 scripts/setup.py --uninstall`. Do not run `omarchy plugin add` over it.
 
-For an unpublished UI change, other architectures or development, build from
-source with Go 1.26+, Make and the desktop dependencies. Keep the source outside
-the installed plugin directory:
-
-```bash
-git clone https://github.com/PuroDelphi/omarchy-automations.git
-cd omarchy-automations
-make build
-python3 scripts/install.py --activate
-```
-
-For later source updates, rebuild, stop `quatrrod.service`, and rerun the installer.
-Only Linux amd64 prebuilt artifacts are currently verified. Building elsewhere
-does not imply desktop compatibility has been tested.
+For unpublished changes or development, see [Development and source builds](development.md).
+Only Linux amd64 prebuilt artifacts are currently verified.
 
 ## Common installation problems
 

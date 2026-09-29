@@ -192,37 +192,9 @@ Historical engineering records: [Roadmap](ROADMAP.md), [validation evidence](doc
 
 ## Development
 
-Requires Linux, Go 1.26+, Omarchy/Quickshell for the UI, and user systemd for system actions. The engine uses SQLite through Go.
-
-```bash
-make build
-make test
-make check
-```
-
-To try an isolated profile without changing your existing configuration, run in one terminal:
-
-```bash
-export QUATRRO_PROFILE="$PWD/.dev/profile"
-export PATH="$PWD/build:$PATH"
-quatrrod
-```
-
-In another terminal, with the same environment variables:
-
-```bash
-quatrroctl status
-quatrroctl config.save --stdin < examples/notification.json
-quatrroctl simulate '{"source":"local:demo","type":"demo","data":{"message":"Hello"}}'
-quatrroctl config.preview
-python3 scripts/run-ui.py
-```
-
-Simulation does not activate flows or execute actions. Activation requires the reviewed hash and capabilities returned by `config.preview`; see the [protocol](docs/PROTOCOL.md). The panel lets you create connections, actions, flows and monitors, review capabilities and activate a revision. It includes simulation, history, credentials and storage limits.
-
-`python3 scripts/smoke-native.py --offscreen` checks connectivity and produces a fresh render at `.dev/panel-render.png`, even while the session is locked. `python3 scripts/test-ui-flow.py` exercises QML form signals, activates a revision and checks notification, local HTTPS delivery and history. `QUATRRO_HOST_TEST=1 go test -race ./...` adds a notification, a dedicated temporary service and isolated command tests. These tests require access to the real session bus.
-
-Omarchy plugins run as user code; this interface is not a sandbox. The plugin does not expose a remote shell. Registered commands use fixed arguments and run through systemd/Bubblewrap with networking disabled and read-only `/usr`.
+For source builds, isolated profiles and tests, see the development guide
+[[en]](docs/en/development.md) · [[es]](docs/es/development.md).
+Normal installation uses prebuilt binaries and does not require Go.
 
 ## License
 

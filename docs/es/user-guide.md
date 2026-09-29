@@ -28,38 +28,18 @@ El producto se llama Omarchy Automations. Nombres técnicos existentes como
 
 ## Instalación y primer inicio
 
-Para la instalación recomendada sin Go, sigue la [guía de instalación](installation.md). Usa `omarchy plugin add` y el instalador del motor precompilado. Los comandos siguientes describen la alternativa desde código/archivo; no mezcles ambos modos de gestión.
-
-
-Si extrajiste un paquete de ejecución, los binarios ya están incluidos: omite
-`make build` y ejecuta el instalador desde el directorio extraído. Verifica antes
-el checksum del paquete; consulta [paquetes](../releases.md).
-
-Desde una copia del código, compila con Go 1.26 o posterior:
+Instala el motor publicado para Linux amd64 con estos dos comandos. No necesitas
+Go ni un compilador:
 
 ```bash
-make build
+omarchy plugin add https://github.com/PuroDelphi/omarchy-automations.git --yes
+python3 ~/.config/omarchy/plugins/quatrro.automations/scripts/setup.py
 ```
 
-La interfaz nativa necesita Omarchy/Quickshell. Los comandos y scripts también
-necesitan systemd de usuario operativo y Bubblewrap; el motor comprueba el
-aislamiento antes de activar. Las notificaciones necesitan un servicio de
-notificaciones en funcionamiento.
-
-Previsualiza los archivos instalados en un HOME temporal nuevo sin iniciar servicios:
-
-```bash
-python3 scripts/install.py --staging-root /tmp/omarchy-automations-preview
-python3 scripts/install.py --staging-root /tmp/omarchy-automations-preview --uninstall
-```
-
-Para una instalación real, ejecuta desde el directorio del proyecto:
-
-```bash
-python3 scripts/install.py --activate
-systemctl --user status quatrrod.service
-quatrroctl status
-```
+¿Ya está instalado? Sigue las [instrucciones de actualización o migración](installation.md)
+en lugar de agregar otra copia. Esa guía también cubre requisitos, instalación
+sin conexión y solución de problemas. La [compilación propia](development.md)
+es opcional y está destinada al desarrollo.
 
 El instalador escribe los binarios en `~/.local/bin`, habilita el servicio de
 usuario y el plugin. Comprueba que `~/.local/bin` esté en el PATH de tu terminal.
@@ -70,17 +50,6 @@ selecciona Español en el control de idioma para guardar la preferencia del perf
 Por ejemplo, conserva inglés en un equipo compartido o elige español para tu
 perfil personal. Cambiar el idioma no traduce identificadores, claves JSON,
 nombres de servicios ni los mensajes que escribas.
-
-Para un perfil de desarrollo aislado, usa estas variables en **ambas** terminales:
-
-```bash
-export QUATRRO_PROFILE="$PWD/.dev/tutorial"
-export PATH="$PWD/build:$PATH"
-```
-
-Ejecuta `quatrrod` en una terminal y `python3 scripts/run-ui.py` en la otra. Esto
-separa los datos de la aplicación; cualquier acción real que actives expresamente
-seguirá produciendo efectos reales. Detén el motor manual con Ctrl+C al terminar.
 
 ## Primera automatización: una notificación local
 
@@ -320,24 +289,25 @@ URLs, cuerpos ni valores de credenciales. Ninguna exportación se sube automáti
 
 ## Actualización, retirada y solución de problemas
 
-Antes de actualizar, revisa trabajo pendiente/en ejecución/incierto y detén el
-motor. Compila el código nuevo y reinstala juntos motor, CLI e interfaz compatibles:
+Revisa el trabajo pendiente/en ejecución/incierto en Historial y actualiza:
 
 ```bash
-systemctl --user stop quatrrod.service
-python3 scripts/install.py --activate
+omarchy plugin update quatrro.automations
+python3 ~/.config/omarchy/plugins/quatrro.automations/scripts/setup.py --update
 ```
 
-El instalador rechaza archivos ajenos o propios modificados y registra una ruta
-de respaldo. Conserva ese respaldo privado. Restaurar datos exige motor detenido
-y usa `python3 scripts/install.py --restore-data /RUTA/ABSOLUTA/RESPALDO`; los datos
-restaurados quedan pausados, rechazan entradas y no conservan permisos activos.
-Revisa antes de reanudar. No restaura valores de credenciales ni retrocede binarios.
+Para desinstalar:
 
-Para desinstalar, ejecuta `python3 scripts/install.py --uninstall`. Deshabilita
-motor y plugin y retira archivos propios verificados; conserva datos, credenciales
-y respaldos.
+```bash
+python3 ~/.config/omarchy/plugins/quatrro.automations/scripts/setup.py --uninstall
+omarchy plugin remove quatrro.automations
+```
 
+El instalador conserva datos, credenciales y respaldos. Las instalaciones antiguas
+gestionadas desde fuentes deben usar los comandos de [migración](installation.md)
+desde su checkout original. Consulta los [detalles del instalador](../installation.md)
+para restaurar datos: exige detener el motor y revisar los permisos antes de
+reanudar los datos restaurados.
 
 Los hooks instalados por separado con `omarchy hook install` no pertenecen al
 instalador del plugin y se conservan. Revisa y retira únicamente tu hook de

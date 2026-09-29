@@ -1,5 +1,7 @@
 # Broker administrativo opcional — F3.5
 
+Referencia técnica del broker administrativo opcional. No es un requisito para instalar ni usar notificaciones o flujos normales. Instalación del plugin sin compilador: [English](en/installation.md) · [Español](es/installation.md). Los comandos de compilación de este documento corresponden al desarrollo y las pruebas del broker.
+
 En desarrollo. No se ha instalado un servicio privilegiado ni se han modificado
 políticas del sistema. El componente es opcional, desactivado por defecto y
 separado de quatrrod. El resto del plugin no requiere root.

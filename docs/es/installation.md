@@ -91,20 +91,8 @@ Si usaste `scripts/install.py`, actualiza desde el checkout original con
 `python3 scripts/setup.py --update` y desinstala desde allí con
 `python3 scripts/setup.py --uninstall`. No ejecutes `omarchy plugin add` encima.
 
-Para cambios de UI sin publicar, otras arquitecturas o desarrollo, compila con
-Go 1.26+, Make y las dependencias del escritorio. Mantén las fuentes fuera del
-directorio instalado del plugin:
-
-```bash
-git clone https://github.com/PuroDelphi/omarchy-automations.git
-cd omarchy-automations
-make build
-python3 scripts/install.py --activate
-```
-
-En actualizaciones desde fuentes, recompila, detén `quatrrod.service` y ejecuta
-el instalador. Solo se verifican artefactos precompilados Linux amd64. Compilar
-en otro entorno no demuestra que se haya probado su compatibilidad de escritorio.
+Para cambios no publicados o desarrollo, consulta [Desarrollo y compilación](development.md).
+Solo están verificados los paquetes precompilados para Linux amd64.
 
 ## Problemas frecuentes de instalación
 

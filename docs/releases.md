@@ -1,5 +1,7 @@
 # Paquetes de Omarchy Automations
 
+Referencia de empaquetado para mantenedores. Para instalar el plugin sin compilar, usa [English](en/installation.md) · [Español](es/installation.md). Referencia actual de paquetes: [English](en/packages.md) · [Español](es/packages.md).
+
 El empaquetador actual prepara artefactos locales de desarrollo para Linux amd64.
 No implica que las fases pendientes del roadmap estén completas ni publica en
 GitHub. Solo se anuncia una arquitectura comprobada.

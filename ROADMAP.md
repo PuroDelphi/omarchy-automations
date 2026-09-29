@@ -2035,3 +2035,11 @@ Preview 1 pendientes de verificar antes de considerar cerrada esta mejora.
 - [x] Layout checks: 64 forms, 120 dialogs, two themes and three sizes.
 - [x] Add paired technical references and Git-managed native panel test.
 - [ ] Google OAuth and physical suspend/logout acceptance remain deferred by the user.
+
+### Documentation installation consistency
+
+- [x] EN/ES user guides use prebuilt setup for installation, updates and removal.
+- [x] Source compilation and isolated development workflows moved to paired development guides.
+- [x] README and installation guides link to optional development instructions.
+- [x] Legacy installer/package/broker references identify their advanced scope and link to normal installation.
+- Historical validation records and third-party license notices remain unchanged.

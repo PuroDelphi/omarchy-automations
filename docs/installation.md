@@ -1,12 +1,15 @@
 # Instalación en desarrollo
 
+Referencia avanzada del instalador para desarrollo y recuperación. Para instalar, actualizar o retirar el plugin normalmente, usa la guía de instalación: [English](en/installation.md) · [Español](es/installation.md). No necesitas Go para la instalación precompilada.
+
 La instalación permanente y los ciclos de instalación, actualización y retirada
 se han comprobado para la versión de desarrollo; las evidencias están en el
 roadmap. Quedan pendientes las validaciones externas aplazadas y el cierre de
 versión estable. No se anuncia todavía como entrega 1.0.
 
-Construye primero con `make build`. Python 3 ejecuta el instalador sin descargar
-paquetes ni solicitar privilegios administrativos.
+Para trabajar desde fuentes, sigue primero la [guía de desarrollo](es/development.md).
+El instalador de bajo nivel descrito aquí requiere binarios ya preparados; no
+descarga paquetes ni solicita privilegios administrativos.
 
 ## Prueba temporal
 
