@@ -43,3 +43,5 @@ ejemplo son alternativas, no fragmentos que deban combinarse automáticamente.
 [Notas de versión de desarrollo](release-notes.md).
 
 - [Pruebas de aceptación con el usuario](external-acceptance.md)
+
+[Instalar sin Go](installation.md).

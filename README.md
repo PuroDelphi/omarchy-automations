@@ -28,44 +28,39 @@ History shows execution and delivery status, including failures and uncertain ou
 *The editor and simulation dialog are captures from the installed Omarchy shell.
 More light/dark and English/Spanish screenshots: [[en]](docs/en/interface.md) · [[es]](docs/es/interface.md).*
 
-## Install
+## Install — no Go compiler needed
 
-Requires Omarchy Quattro with the plugin CLI, Git, Make, Python 3 and Go 1.26+.
-The verified environment is Linux amd64 with Omarchy 4.0.4-1. A user systemd
-session runs the engine; commands/scripts need Bubblewrap. Desktop credentials
-use Secret Service when selected. See [verified compatibility](docs/compatibility.md).
-
-Run as your normal desktop user, from a directory where you keep source projects:
+**Linux amd64 · Omarchy Quattro · Python 3.** The prebuilt preview includes the
+engine and CLI. Omarchy supplies the shell and user systemd session; command and
+script actions also require Bubblewrap. The installer runs as your desktop user.
 
 ```bash
-git clone https://github.com/PuroDelphi/omarchy-automations.git
-cd omarchy-automations
-make build
-python3 scripts/install.py --activate
+omarchy plugin add https://github.com/PuroDelphi/omarchy-automations.git --yes
+python3 ~/.config/omarchy/plugins/quatrro.automations/scripts/setup.py
 ```
 
-The installer installs the engine and CLI in `~/.local/bin`, registers
-`quatrrod.service` and enables the panel through `omarchy plugin enable`.
-Keep the checkout for updates and uninstallation. No administrator broker is
-installed by this command; system-service control is an optional separate setup.
+The first command clones the plugin without enabling it. The second downloads
+**Preview 1**, verifies the archive and file checksums, installs the engine and
+CLI, then enables the service and widget. Click the connections icon in the bar.
+The download comes from this repository's [GitHub Releases](https://github.com/PuroDelphi/omarchy-automations/releases).
+No Go compiler, sudo or manual service configuration is needed.
 
-Verify and open the plugin:
+If you already installed an earlier development build with `scripts/install.py`,
+keep that installation and update from its source checkout using
+`python3 scripts/setup.py --update`. Do not add a second plugin with the same ID.
+The installer refuses to mix management modes or replace locally modified files.
+
+Verify the engine:
 
 ```bash
 systemctl --user status quatrrod.service
 ~/.local/bin/quatrroctl status
-omarchy plugin enable quatrro.automations
 ```
 
-Click the connections icon in the bar. `quatrro.automations` is the compatible
-technical plugin ID; the displayed product name is **Omarchy Automations**.
-
-**About `omarchy plugin add`:** Omarchy's standard command clones a plugin;
-it does not build our Go binaries or install the background service. This
-version therefore requires the installation steps above. Do not combine a
-clone inside Omarchy's plugin directory with this installer: its ownership
-checks reject untracked existing files. A complete one-command installation is
-still a packaging improvement, not a supported shortcut.
+Full installation, offline use, source builds and troubleshooting:
+[[en]](docs/en/installation.md) · [[es]](docs/es/installation.md).
+`quatrro.automations` remains the compatible technical ID; the displayed name is
+**Omarchy Automations**. The optional administrative broker is installed separately.
 
 ## Try your first automation
 
@@ -83,44 +78,43 @@ Follow the illustrated user guide for credentials, inbound webhooks and more:
 
 ## Update
 
-From your source checkout, review the incoming changes and current work in History.
-Then build and install matching engine, CLI and panel versions together:
+Review current work in History, then update the Omarchy checkout and its runtime:
 
 ```bash
-git pull --ff-only
-make build
-systemctl --user stop quatrrod.service
-python3 scripts/install.py --activate
+omarchy plugin update quatrro.automations
+python3 ~/.config/omarchy/plugins/quatrro.automations/scripts/setup.py --update
 ```
 
-The installer records backups and refuses unexpected modifications to owned files.
-`omarchy plugin update` alone does not update this installer-managed engine and UI.
+Setup downloads the release selected by that checkout, checks that the UI and
+runtime match, stops the engine and installs them. It records backups and
+preserves data and credentials. An incompatible checkout is rejected before
+runtime installation. Omarchy's update command alone only updates the panel.
 
 ## Disable or uninstall
 
-To hide the panel while keeping automations running:
+Hide the panel while leaving automations running:
 
 ```bash
 omarchy plugin disable quatrro.automations
 ```
 
-To show it again, use `omarchy plugin enable quatrro.automations`. To stop the
-engine as well, use `systemctl --user stop quatrrod.service`.
+Show it again with `omarchy plugin enable quatrro.automations`. To stop the engine
+as well, run `systemctl --user stop quatrrod.service`.
 
-For a complete uninstall, run from the source checkout:
+For the recommended Omarchy installation, remove the runtime first, then the plugin:
 
 ```bash
-python3 scripts/install.py --uninstall
+python3 ~/.config/omarchy/plugins/quatrro.automations/scripts/setup.py --uninstall
+omarchy plugin remove quatrro.automations
 ```
 
-This stops/disables the service and uses `omarchy plugin disable` before removing
-verified installed files. Configuration, history, credentials and backups are
-preserved. Separately installed hooks and the optional administrator broker have
+Configuration, history, credentials and backups are preserved. The first command
+stops/disables the service and removes its verified files; the second removes the
+Omarchy checkout. Review any local checkout edits before confirming removal.
+For an older installer-managed installation, run `python3 scripts/setup.py --uninstall`
+from its original source checkout; it removes both runtime and installed panel.
+Separately installed hooks and the optional broker have
 [their own removal steps](docs/en/system-integration.md).
-
-Omarchy also provides `omarchy plugin remove quatrro.automations`, but it only
-removes the shell plugin directory; it does not uninstall the engine, service or
-installation receipt. Use the complete uninstall above for this plugin.
 
 ## Troubleshooting and current limits
 
@@ -144,6 +138,7 @@ Choose a language for each guide. English is listed first throughout.
 
 | Guide | Languages |
 |---|---|
+| Installation | [[en]](docs/en/installation.md) · [[es]](docs/es/installation.md) |
 | Documentation index | [[en]](docs/en/README.md) · [[es]](docs/es/README.md) |
 | User guide: installation and troubleshooting | [[en]](docs/en/user-guide.md) · [[es]](docs/es/user-guide.md) |
 | Interface, language and screenshots | [[en]](docs/en/interface.md) · [[es]](docs/es/interface.md) |

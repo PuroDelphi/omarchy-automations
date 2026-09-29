@@ -37,3 +37,5 @@ jobs:
         run: python3 -m unittest discover -s tests -v
       - name: Reproducible archive and staging lifecycle
         run: python3 scripts/test-release-package.py
+      - name: Prebuilt setup lifecycle and archive safety
+        run: python3 scripts/test-setup.py

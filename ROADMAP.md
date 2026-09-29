@@ -2014,3 +2014,11 @@ real a proveedores. Generador: scripts/capture-tutorials.py.
 CI: workflow portable con acciones oficiales fijadas por SHA, permisos de solo
 lectura, Go 1.26.8, Python 3.13, vet, race, documentación, instalador y paquete.
 No sustituye pruebas gráficas/host de Omarchy. Resultado remoto aún por verificar.
+
+Instalación simplificada implementada: scripts/setup.py descarga una versión
+precompilada seleccionada, valida archivo/miembros/hashes y usa el instalador
+revisado local. Modo --git-plugin mantiene QML/.git bajo Omarchy y registra solo
+motor/CLI/unidad. Rechaza UI distinta y mezcla de modos; conserva modo antiguo.
+Documentadas instalación en dos comandos, actualización y retirada ordenada,
+uso offline y fallback desde fuentes en EN/ES. Publicación y descarga real de
+Preview 1 pendientes de verificar antes de considerar cerrada esta mejora.

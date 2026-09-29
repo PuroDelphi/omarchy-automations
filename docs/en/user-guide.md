@@ -27,6 +27,9 @@ The product is named Omarchy Automations. Existing technical names such as
 
 ## Installation and first launch
 
+For the recommended installation without Go, follow the [installation guide](installation.md). It uses `omarchy plugin add` and the prebuilt-runtime setup. The commands below describe the alternative source/archive installer; do not mix the two management modes.
+
+
 If you extracted a runtime archive, the binaries are already included: skip
 `make build` and run the installer from the extracted directory. Verify the
 archive checksum first; see [packages](../releases.md).

@@ -234,12 +234,38 @@ def install(args):
     print(json.dumps(result))
 
 
+def git_plugin_directory(args, home, config):
+    """A git-managed panel stays owned by Omarchy; install only its runtime."""
+    requested = getattr(args, "git_plugin", None)
+    if requested is None:
+        return None
+    expected = config / "omarchy/plugins" / PLUGIN
+    safe_path(requested)
+    if requested != expected or not (requested / ".git").is_dir():
+        raise ValueError("Git plugin must be the Omarchy-managed checkout at " + str(expected))
+    # The runtime package and checked-out panel must be one matching revision.
+    # Never overwrite or adopt repository files into the installer receipt.
+    for relative in plugin_sources():
+        target = requested / relative
+        safe_path(target)
+        if target.read_bytes() != (PROJECT / relative).read_bytes():
+            raise ValueError("Git plugin differs from runtime package: " + str(relative))
+    return requested
+
+
 def install_files(args):
     home, config, state = layout(args.staging_root)
+    git_plugin = git_plugin_directory(args, home, config)
     files, compatibility = artifacts(home, config)
+    if git_plugin:
+        files = {name: value for name, value in files.items()
+                 if not Path(name).is_relative_to(git_plugin)}
     receipt_path = state / "quatrro-install/receipt.json"
     receipt = load_receipt(receipt_path)
     validate_owned(receipt, owned_paths(home, config, receipt))
+    installation_mode = "git-plugin" if git_plugin else "managed"
+    if receipt and receipt.get("mode", "managed") != installation_mode:
+        raise ValueError("Uninstall the previous installation before changing its management mode")
     # Retain tracked prior UI revisions so loaded components remain usable
     # until the host has switched. Uninstall still owns/removes these files.
     for name in (receipt or {}).get("files", {}):
@@ -276,7 +302,7 @@ def install_files(args):
     try:
         for name, (raw, mode) in files.items():
             atomic_write(Path(name), raw, mode)
-        value = {"format": 1, "compatibility": compatibility, "version": json.loads((PROJECT / "manifest.json").read_text())["version"], "files": {name: digest(raw) for name, (raw, _) in files.items()}}
+        value = {"format": 1, "mode": installation_mode, "compatibility": compatibility, "version": json.loads((PROJECT / "manifest.json").read_text())["version"], "files": {name: digest(raw) for name, (raw, _) in files.items()}}
         atomic_write(receipt_path, json.dumps(value, indent=2).encode()+b"\n", 0o600)
     except Exception:
         for name, previous in before.items():
@@ -373,6 +399,7 @@ def restore_data(args):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--staging-root", type=Path, help="Install under a temporary home, never activate")
+    parser.add_argument("--git-plugin", type=Path, help="Use an existing matching Omarchy git checkout; install runtime only")
     parser.add_argument("--activate", action="store_true", help="Enable user service and Omarchy widget after installation")
     parser.add_argument("--uninstall", action="store_true", help="Remove owned files; preserve state, secrets and backups")
     parser.add_argument("--restore-data", type=Path, help="Restore a private backup with effects paused and grants revoked")

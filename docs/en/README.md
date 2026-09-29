@@ -43,3 +43,5 @@ fragments to combine automatically.
 [Development release notes](release-notes.md).
 
 - [Acceptance tests with the user](external-acceptance.md)
+
+[Install without Go](installation.md).

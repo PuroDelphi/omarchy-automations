@@ -28,6 +28,9 @@ El producto se llama Omarchy Automations. Nombres técnicos existentes como
 
 ## Instalación y primer inicio
 
+Para la instalación recomendada sin Go, sigue la [guía de instalación](installation.md). Usa `omarchy plugin add` y el instalador del motor precompilado. Los comandos siguientes describen la alternativa desde código/archivo; no mezcles ambos modos de gestión.
+
+
 Si extrajiste un paquete de ejecución, los binarios ya están incluidos: omite
 `make build` y ejecuta el instalador desde el directorio extraído. Verifica antes
 el checksum del paquete; consulta [paquetes](../releases.md).
