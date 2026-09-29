@@ -77,6 +77,16 @@ Only `www.googleapis.com` and `calendar.googleapis.com` on HTTPS port 443 are
 allowed in this mode; no private network exceptions or redirects are supported.
 Authorization consent and permission to execute the flow are separate approvals.
 
+### Visual walkthrough
+
+The destination uses Google OAuth and refers to `google-calendar`; it does not contain tokens. The action defines the free/busy request body. These captures do not show completed Google authorization.
+
+![google-oauth: destinations](../images/google-oauth-destinations-en.png)
+
+![google-oauth: actions](../images/google-oauth-actions-en.png)
+
+The images show the imported draft before activation. Long forms scroll; fields below the visible area remain part of the configuration.
+
 ## Troubleshooting and disconnecting
 
 - A locally available token is not proof of remote validity. OAuth2 status reads

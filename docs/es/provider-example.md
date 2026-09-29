@@ -33,6 +33,16 @@ y un receptor HTTPS accesible.
 Simular solo prueba flujo y plantillas. No comprueba firma ni acredita que un
 emisor remoto pueda acceder al equipo.
 
+### Recorrido visual
+
+Tras importar, inspecciona el receptor GitHub en Conexiones → Entrada y las condiciones de repositorio/acción en Flujos. Mantén el receptor deshabilitado mientras pruebas el borrador.
+
+![github-release: entries](../images/github-release-entries-es.png)
+
+![github-release: flows](../images/github-release-flows-es.png)
+
+Las imágenes muestran el borrador importado antes de activar. Los formularios largos se desplazan; los campos fuera del área visible siguen formando parte de la configuración.
+
 ## Conectar un repositorio real
 
 Crea credencial genérica privada `github-signing` en Seguridad. Usa el mismo valor

@@ -97,6 +97,12 @@ cambiar la acción. El origen `local:other` no debe coincidir con ese flujo.
 El equivalente importable es [notification.json](../../examples/notification.json).
 Importar deshabilita los flujos; vuelve a habilitar el ejemplo antes de revisar y activar.
 
+![Simulation / Simulación](../images/native-simulation-es.png)
+
+Usa el formulario para simular tu primer evento y revisa Historial después de una prueba real.
+
+![History / Historial](../images/native-history-es.png)
+
 ## Conexiones y credenciales
 
 Crea credenciales en **Seguridad → Crear o rotar credencial**. Elige una referencia

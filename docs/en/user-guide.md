@@ -95,6 +95,12 @@ changing the action. Sending source `local:other` should match no such flow.
 The importable equivalent is [notification.json](../../examples/notification.json).
 Importing disables flows; re-enable the example before reviewing and activating.
 
+![Simulation / Simulación](../images/native-simulation-en.png)
+
+Use the form to simulate your first event, then inspect History after a real test.
+
+![History / Historial](../images/native-history-en.png)
+
 ## Connections and credentials
 
 Create credentials in **Security → Create or rotate credential**. Choose a local

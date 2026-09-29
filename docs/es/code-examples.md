@@ -52,6 +52,16 @@ Si editas la fuente, prepara expresamente una revisión nueva. Selecciónala en 
 acción y vuelve a introducir sus valores antes de guardar/revisar. Editar el
 archivo no cambia por sí solo el código de una revisión activa.
 
+### Recorrido visual
+
+Scripts muestra el código importado y su revisión. Acciones fija la revisión y asigna campos del evento a parámetros tipados. Desplázate dentro de cada formulario para inspeccionar los campos restantes.
+
+![typed-script: scripts](../images/typed-script-scripts-es.png)
+
+![typed-script: actions](../images/typed-script-actions-es.png)
+
+Las imágenes muestran el borrador importado antes de activar. Los formularios largos se desplazan; los campos fuera del área visible siguen formando parte de la configuración.
+
 ## Normalizar un evento de compilación y después notificar
 
 Importa [adapter-notification.json](../../examples/use-cases/adapter-notification.json).
@@ -94,6 +104,16 @@ Timeout, respuesta malformada o exceso de cuota hacen fallar la transformación 
 impiden usar su resultado. Los fallos de scripts/adaptadores no se reintentan
 automáticamente. Inspecciona el fallo, cambia código/contrato si corresponde y
 revisa nueva revisión antes de enviar otro evento.
+
+### Recorrido visual
+
+Adaptadores muestra la implementación importada; Acciones selecciona ese adaptador. Sigue el flujo ordenado siguiente para pasar el resultado a la notificación.
+
+![adapter-notification: adapters](../images/adapter-notification-adapters-es.png)
+
+![adapter-notification: actions](../images/adapter-notification-actions-es.png)
+
+Las imágenes muestran el borrador importado antes de activar. Los formularios largos se desplazan; los campos fuera del área visible siguen formando parte de la configuración.
 
 ## Qué se verificó
 

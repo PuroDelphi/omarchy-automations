@@ -1998,3 +1998,19 @@ Mejoras de distribución detectadas (propuestas; no declaradas implementadas):
 - Traducir las notas técnicas históricas que siguen solo en español; las guías
   de usuario ya están emparejadas.
 Se conservan las pruebas Google/sesión aplazadas por el usuario.
+
+## Mejoras solicitadas de documentación y distribución (en curso)
+
+El usuario solicita ejecutar las mejoras detectadas: instalación sencilla,
+paquetes descargables, CI y traducciones técnicas. Google/suspensión/logout
+permanecen aplazados según su instrucción anterior.
+
+Documentación: 36 capturas nuevas reproducibles de nueve ejemplos, con valores
+reales de los JSON públicos y formularios EN/ES, sin activar efectos. Se incorporan
+recorridos visuales, procedimiento común paso a paso, resultados esperados y
+comparación de pruebas positivas/negativas. Las capturas no acreditan conexión
+real a proveedores. Generador: scripts/capture-tutorials.py.
+
+CI: workflow portable con acciones oficiales fijadas por SHA, permisos de solo
+lectura, Go 1.26.8, Python 3.13, vet, race, documentación, instalador y paquete.
+No sustituye pruebas gráficas/host de Omarchy. Resultado remoto aún por verificar.

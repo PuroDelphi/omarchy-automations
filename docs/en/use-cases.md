@@ -17,6 +17,47 @@ All example sources and flows ship disabled. Import does not affect the active
 revision. Enable the relevant flow to simulate; enable its source only when you
 intend to activate it. Credential references are placeholders, never real secrets.
 
+
+## Follow one example from start to finish
+
+1. Choose one case below. Download its linked JSON or locate it under
+   `examples/use-cases/` in your checkout. Use an absolute file path when importing.
+2. In the panel, choose **Export** to preserve your current draft, then **Import**
+   and select the example. Import replaces the draft; it does not activate it.
+3. Open the sections named in the visual walkthrough. Click **Edit** beside each
+   resource ID and compare its values with the screenshots. Cancel leaves it
+   unchanged; Save updates the draft. Scroll long forms to reach all fields.
+4. Enable the example flow, then **Save draft**. Keep automatic sources disabled
+   until you are ready to accept real events.
+5. Open **Simulate / test**, enter the source, type and JSON shown in the case,
+   then choose **Simulate without effects**. Compare the matched flow and resolved
+   action with the expected result. Test the second input too.
+6. Only when the configuration is correct, prepare credentials and external
+   services, enable the intended sources, and **Review and activate**. Review the
+   exact destinations, commands or services being permitted.
+7. After a real event, open **History** and inspect the execution. HTTP 202 means
+   the event was accepted; it does not prove its actions succeeded. Disable the
+   example flow/source and activate that revision when you finish experimenting.
+
+![Event simulation in the installed panel](../images/native-simulation-en.png)
+
+*Enter the source and sample JSON from the chosen case. This generic screenshot
+illustrates the dialog; its sample values are not the input for every tutorial.*
+
+| Case | Successful simulation | Check after a real event |
+|---|---|---|
+| Deployment failure | `failed` matches `deploy-notice`; `passed` does not | Desktop notification and completed execution |
+| Disk space | Alert and recovery both resolve an outbound JSON body | Monitor transition, delivery state and receiver log |
+| Weekday reminder | Timestamp is inserted into the message | Next scheduled occurrence and one notification |
+
+### Reading the screenshots
+
+The populated forms below are rendered from the real QML UI with the exact
+public example files, using isolated profiles and the Tokyo Night theme.
+`scripts/capture-tutorials.py` reproduces all 36 English/Spanish images. Sources
+and flows are disabled; no credentials are loaded or effects activated. These
+screenshots guide configuration and do not claim a live provider connection.
+
 ## A webhook that notifies about failures
 
 Import [webhook-notification.json](../../examples/use-cases/webhook-notification.json)
@@ -40,6 +81,16 @@ and preserve `Authorization` and the body. Its URL ends with `/hooks/deploy`.
 Send the failure payload: expect HTTP 202 after persistence, then a notification
 and completed History entry. Simulation does not verify bearer authentication;
 only an actual HTTP request tests that boundary.
+
+### Visual walkthrough
+
+Connections → Inbound → Edit `deploy`: check bearer authentication and the `deploy-token` reference. Then Flows → Edit `deploy-notice`: check the source, condition and `notice` step.
+
+![webhook-notification: entries](../images/webhook-notification-entries-en.png)
+
+![webhook-notification: flows](../images/webhook-notification-flows-en.png)
+
+The images show the imported draft before activation. Long forms scroll; fields below the visible area remain part of the configuration.
 
 ## A disk monitor with outbound alert and recovery
 
@@ -68,6 +119,16 @@ from real monitoring. Check monitor status and receiver logs when a real transit
 occurs. A receiver outage creates pending/retry or failed delivery state; correct
 the receiver and inspect History before manually retrying eligible HTTP steps.
 
+### Visual walkthrough
+
+Monitors → Edit `disk-space`: compare the thresholds and confirmation times below. Connections → Outbound → Edit `status`: replace the placeholder URL with your receiver.
+
+![monitor-outbound: monitors](../images/monitor-outbound-monitors-en.png)
+
+![monitor-outbound: destinations](../images/monitor-outbound-destinations-en.png)
+
+The images show the imported draft before activation. Long forms scroll; fields below the visible area remain part of the configuration.
+
 ## A weekday reminder
 
 Import [scheduled-notification.json](../../examples/use-cases/scheduled-notification.json).
@@ -90,6 +151,16 @@ activate. The scheduling view should show the next future occurrence. At that
 time, expect one notification if the engine/session are available. `skip` discards
 calendar occurrences over 60 seconds late; choose `coalesce` if one reminder after
 an absence is preferable. Neither choice wakes a suspended machine.
+
+### Visual walkthrough
+
+Schedules → Edit `weekday-reminder`: set the time, timezone and weekdays. Actions → Edit `notice`: the message inserts the event timestamp.
+
+![scheduled-notification: timers](../images/scheduled-notification-timers-en.png)
+
+![scheduled-notification: actions](../images/scheduled-notification-actions-en.png)
+
+The images show the imported draft before activation. Long forms scroll; fields below the visible area remain part of the configuration.
 
 ## Verification status
 

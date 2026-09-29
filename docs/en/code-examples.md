@@ -53,6 +53,16 @@ If you edit the source, prepare a new revision explicitly. Select that revision 
 the action and re-enter its values before saving/reviewing. Editing the source
 alone never changes the code already stored in an active revision.
 
+### Visual walkthrough
+
+Scripts shows the imported source and revision. Actions pins the revision and maps event fields into typed parameters. Scroll within each form to inspect the remaining fields.
+
+![typed-script: scripts](../images/typed-script-scripts-en.png)
+
+![typed-script: actions](../images/typed-script-actions-en.png)
+
+The images show the imported draft before activation. Long forms scroll; fields below the visible area remain part of the configuration.
+
 ## Normalize a build event, then notify
 
 Import [adapter-notification.json](../../examples/use-cases/adapter-notification.json).
@@ -95,6 +105,16 @@ A timeout, malformed response or exceeded quota fails the transform and prevents
 using its output. Script/adapter failures do not automatically retry. Inspect the
 failure, change the code/contract if needed and review a new revision before
 sending a new event.
+
+### Visual walkthrough
+
+Adapters shows the imported implementation; Actions selects that adapter. Follow the ordered flow below to pass the adapter result to the notification.
+
+![adapter-notification: adapters](../images/adapter-notification-adapters-en.png)
+
+![adapter-notification: actions](../images/adapter-notification-actions-en.png)
+
+The images show the imported draft before activation. Long forms scroll; fields below the visible area remain part of the configuration.
 
 ## What was verified
 

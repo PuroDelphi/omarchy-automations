@@ -33,6 +33,16 @@ needs repository webhook administration and a reachable HTTPS receiver.
 Simulation only tests the flow and templates. It neither checks a signature nor
 proves that a remote sender can reach your machine.
 
+### Visual walkthrough
+
+After importing, inspect the GitHub receiver in Connections → Inbound and the repository/action conditions in Flows. Keep the receiver disabled while testing the draft.
+
+![github-release: entries](../images/github-release-entries-en.png)
+
+![github-release: flows](../images/github-release-flows-en.png)
+
+The images show the imported draft before activation. Long forms scroll; fields below the visible area remain part of the configuration.
+
 ## Connect a real repository
 
 Create a private generic credential `github-signing` in Security. Use the same

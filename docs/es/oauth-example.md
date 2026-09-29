@@ -74,6 +74,16 @@ privado elegido y lo añade al destino Google admitido. Este modo solo admite
 `www.googleapis.com` y `calendar.googleapis.com` por HTTPS puerto 443, sin excepciones
 privadas ni redirecciones. Consentimiento y permiso del flujo son aprobaciones separadas.
 
+### Recorrido visual
+
+El destino usa Google OAuth y referencia `google-calendar`; no contiene tokens. La acción define el cuerpo de consulta de disponibilidad. Estas capturas no muestran una autorización Google completada.
+
+![google-oauth: destinations](../images/google-oauth-destinations-es.png)
+
+![google-oauth: actions](../images/google-oauth-actions-es.png)
+
+Las imágenes muestran el borrador importado antes de activar. Los formularios largos se desplazan; los campos fuera del área visible siguen formando parte de la configuración.
+
 ## Resolver problemas y desconectar
 
 - Token disponible localmente no prueba validez remota. Estado OAuth2 lee metadatos

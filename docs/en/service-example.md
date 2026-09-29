@@ -37,6 +37,16 @@ Enable both flows in the draft, then save. To build it manually, create the two
 actions first, then the two flows and text conditions shown in the table. Each
 operation has its own reviewed capability.
 
+### Visual walkthrough
+
+Inspect Actions before activating: the operation and exact unit name determine which user service can be controlled. The flow selects when that action runs.
+
+![user-service: actions](../images/user-service-actions-en.png)
+
+![user-service: flows](../images/user-service-flows-en.png)
+
+The images show the imported draft before activation. Long forms scroll; fields below the visible area remain part of the configuration.
+
 ## Simulate, activate and run
 
 1. Open Simulate / test, source `local:service`, type `test`, and data:

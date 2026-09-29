@@ -17,6 +17,47 @@ Todos sus orígenes y flujos se entregan deshabilitados. Importar no modifica la
 revisión activa. Habilita el flujo correspondiente para simular; habilita su origen
 solo cuando quieras activarlo. Las referencias son marcadores, nunca secretos reales.
 
+
+## Sigue un ejemplo de principio a fin
+
+1. Elige un caso siguiente. Descarga su JSON enlazado o búscalo en
+   `examples/use-cases/` dentro del checkout. Usa una ruta absoluta al importar.
+2. En el panel elige **Exportar** para conservar el borrador actual y después
+   **Importar** con el ejemplo. Importar reemplaza el borrador; no lo activa.
+3. Abre las secciones indicadas en el recorrido visual. Pulsa **Editar** junto a
+   cada identificador y compara valores con las capturas. Cancelar no lo cambia;
+   Guardar actualiza el borrador. Desplaza los formularios largos para ver todo.
+4. Habilita el flujo del ejemplo y **Guarda el borrador**. Mantén deshabilitados
+   los orígenes automáticos hasta estar listo para recibir eventos reales.
+5. Abre **Simular / probar**, introduce origen, tipo y JSON del caso y elige
+   **Simular sin efectos**. Compara el flujo coincidente y la acción resuelta con
+   el resultado esperado. Prueba también el segundo conjunto de datos.
+6. Cuando la configuración sea correcta, prepara credenciales y servicios
+   externos, habilita los orígenes deseados y **Revisa y activa**. Comprueba los
+   destinos, comandos o servicios exactos que vas a autorizar.
+7. Después de un evento real abre **Historial** e inspecciona la ejecución.
+   HTTP 202 significa que se aceptó el evento; no demuestra éxito de sus acciones.
+   Al terminar, deshabilita flujo/origen de ejemplo y activa esa revisión.
+
+![Simulación de eventos en el panel instalado](../images/native-simulation-es.png)
+
+*Introduce origen y JSON del caso elegido. Esta captura genérica muestra el
+cuadro de diálogo; sus valores no son los datos de todos los tutoriales.*
+
+| Caso | Simulación correcta | Comprobación tras evento real |
+|---|---|---|
+| Fallo de despliegue | `failed` coincide con `deploy-notice`; `passed` no | Notificación y ejecución completada |
+| Espacio de disco | Alerta y recuperación resuelven un cuerpo JSON de salida | Transición del monitor, estado de entrega y registro del receptor |
+| Recordatorio entre semana | La fecha se incorpora al mensaje | Próxima ocurrencia y una notificación |
+
+### Cómo interpretar las capturas
+
+Los formularios rellenados siguientes se renderizan con la UI QML real y los
+archivos públicos exactos, en perfiles aislados con tema Tokyo Night.
+`scripts/capture-tutorials.py` reproduce las 36 imágenes en inglés/español.
+Orígenes y flujos están deshabilitados; no se cargan credenciales ni activan
+efectos. Las imágenes guían la configuración y no acreditan conexión real a un proveedor.
+
 ## Un webhook que notifica fallos
 
 Importa [webhook-notification.json](../../examples/use-cases/webhook-notification.json)
@@ -40,6 +81,16 @@ valor bearer y formato JSON. Usa un proxy TLS para solicitudes remotas que conse
 fallo: debe responder HTTP 202 tras persistir y después aparecer una notificación
 y una ejecución completada en Historial. Simular no verifica bearer; solo una
 solicitud HTTP real comprueba esa autenticación.
+
+### Recorrido visual
+
+Conexiones → Entrada → Editar `deploy`: comprueba autenticación bearer y referencia `deploy-token`. Después Flujos → Editar `deploy-notice`: comprueba origen, condición y paso `notice`.
+
+![webhook-notification: entries](../images/webhook-notification-entries-es.png)
+
+![webhook-notification: flows](../images/webhook-notification-flows-es.png)
+
+Las imágenes muestran el borrador importado antes de activar. Los formularios largos se desplazan; los campos fuera del área visible siguen formando parte de la configuración.
 
 ## Un monitor de disco con alerta y recuperación de salida
 
@@ -69,6 +120,16 @@ receptor cuando ocurra una transición real. Una caída del receptor deja la ent
 pendiente/en reintento o fallida; corrígelo y revisa Historial antes de reenviar los
 pasos HTTP que lo permitan.
 
+### Recorrido visual
+
+Monitores → Editar `disk-space`: compara los umbrales y tiempos de confirmación siguientes. Conexiones → Salida → Editar `status`: sustituye la URL ficticia por tu receptor.
+
+![monitor-outbound: monitors](../images/monitor-outbound-monitors-es.png)
+
+![monitor-outbound: destinations](../images/monitor-outbound-destinations-es.png)
+
+Las imágenes muestran el borrador importado antes de activar. Los formularios largos se desplazan; los campos fuera del área visible siguen formando parte de la configuración.
+
 ## Un recordatorio entre semana
 
 Importa [scheduled-notification.json](../../examples/use-cases/scheduled-notification.json).
@@ -91,6 +152,16 @@ A esa hora debe aparecer una notificación si el motor y la sesión están dispo
 `skip` descarta ocurrencias de calendario con más de 60 segundos de atraso; elige
 `coalesce` si prefieres un recordatorio al volver tras una ausencia. Ninguna opción
 despierta el equipo suspendido.
+
+### Recorrido visual
+
+Programaciones → Editar `weekday-reminder`: configura hora, zona y días. Acciones → Editar `notice`: el mensaje incorpora la fecha del evento.
+
+![scheduled-notification: timers](../images/scheduled-notification-timers-es.png)
+
+![scheduled-notification: actions](../images/scheduled-notification-actions-es.png)
+
+Las imágenes muestran el borrador importado antes de activar. Los formularios largos se desplazan; los campos fuera del área visible siguen formando parte de la configuración.
 
 ## Estado de verificación
 

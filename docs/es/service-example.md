@@ -37,6 +37,16 @@ Habilita ambos flujos en el borrador y guarda. Para construirlo manualmente, cre
 primero las acciones y después flujos y condiciones de texto de la tabla. Cada
 operación tiene su propia capacidad revisada.
 
+### Recorrido visual
+
+Inspecciona Acciones antes de activar: la operación y el nombre exacto de unidad determinan qué servicio de usuario se controla. El flujo selecciona cuándo se ejecuta.
+
+![user-service: actions](../images/user-service-actions-es.png)
+
+![user-service: flows](../images/user-service-flows-es.png)
+
+Las imágenes muestran el borrador importado antes de activar. Los formularios largos se desplazan; los campos fuera del área visible siguen formando parte de la configuración.
+
 ## Simular, activar y ejecutar
 
 1. Abre Simular / probar, origen `local:service`, tipo `test` y datos:

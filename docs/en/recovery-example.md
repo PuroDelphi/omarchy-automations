@@ -24,6 +24,16 @@ For private receivers, configure the exact host:port exception and a trusted TLS
 certificate; do not disable certificate verification. These settings are part of
 the reviewed capability.
 
+### Visual walkthrough
+
+Connections → Outbound contains the receiver URL and credential reference. Actions contains the request body template. Check both before the first delivery.
+
+![http-recovery: destinations](../images/http-recovery-destinations-en.png)
+
+![http-recovery: actions](../images/http-recovery-actions-en.png)
+
+The images show the imported draft before activation. Long forms scroll; fields below the visible area remain part of the configuration.
+
 ## Observe an automatic retry
 
 Configure the receiver to return HTTP 503, then confirm a real test using the first

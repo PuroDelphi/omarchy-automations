@@ -24,6 +24,16 @@ Para receptor privado, configura excepción host:puerto exacta y certificado TLS
 confiable; no desactives verificación. Estos ajustes forman parte de la capacidad
 revisada.
 
+### Recorrido visual
+
+Conexiones → Salida contiene la URL del receptor y la referencia de credencial. Acciones contiene la plantilla del cuerpo. Revisa ambos antes del primer envío.
+
+![http-recovery: destinations](../images/http-recovery-destinations-es.png)
+
+![http-recovery: actions](../images/http-recovery-actions-es.png)
+
+Las imágenes muestran el borrador importado antes de activar. Los formularios largos se desplazan; los campos fuera del área visible siguen formando parte de la configuración.
+
 ## Observar un reintento automático
 
 Configura receptor para responder HTTP 503 y confirma prueba real con el primer
