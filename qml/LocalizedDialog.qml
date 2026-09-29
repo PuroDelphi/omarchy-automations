@@ -7,6 +7,7 @@ import "."
 
 Dialog {
     id: root
+    property string acceptText: I18n.language === "es" ? "Aceptar" : "OK"
     font.family: Style.font.family
     font.pixelSize: Style.font.body
     palette.windowText: Color.foreground
@@ -67,7 +68,7 @@ Dialog {
         ActionButton {
             id: acceptButton
             visible: (root.standardButtons & Dialog.Ok) !== 0
-            text: I18n.language === "es" ? "Aceptar" : "OK"
+            text: root.acceptText
             highlighted: true
             onClicked: root.accept()
         }

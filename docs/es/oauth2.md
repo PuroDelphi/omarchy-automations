@@ -1,5 +1,7 @@
 # Google OAuth2
 
+[English](../en/oauth2.md) · [Documentación](README.md)
+
 Implementación en desarrollo de F3.3. Incluye consentimiento Desktop, importación
 de refresh token, renovación, destinos HTTP y UI inglés/español. Las pruebas usan
 perfiles temporales, loopback real y proveedor simulado. No se ha verificado una

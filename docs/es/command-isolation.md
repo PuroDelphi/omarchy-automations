@@ -1,5 +1,7 @@
 # Aislamiento de comandos
 
+[English](../en/command-isolation.md) · [Documentación](README.md)
+
 Las acciones `command` ejecutan un binario registrado bajo `/usr/bin` con hasta
 32 argumentos fijos. La revisión aprobada contiene el ejecutable y cada
 argumento; no se sustituyen campos del evento ni se hace expansión de shell.
@@ -60,7 +62,7 @@ Cada ejecución usa una unidad transitoria de systemd del usuario y Bubblewrap:
 
 El motor de desarrollo permite añadir árboles concretos mediante `directories`
 y elegir `working_directory`, sujetos a identidad, modo de acceso y capacidad
-de la acción. Véase [directorios autorizados](directory-access.md); el formulario y el despliegue instalado están verificados en R1.UI. Las operaciones de escritorio se realizan
+de la acción. Véase [directorios autorizados](../directory-access.md); el formulario y el despliegue instalado están verificados en R1.UI. Las operaciones de escritorio se realizan
 mediante los tipos explícitos `notify`, `service` y `omarchy`.
 
 ## Activación y terminación

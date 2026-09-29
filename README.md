@@ -40,7 +40,7 @@ python3 ~/.config/omarchy/plugins/quatrro.automations/scripts/setup.py
 ```
 
 The first command clones the plugin without enabling it. The second downloads
-**Preview 1**, verifies the archive and file checksums, installs the engine and
+**Preview 2**, verifies the archive and file checksums, installs the engine and
 CLI, then enables the service and widget. Click the connections icon in the bar.
 The download comes from this repository's [GitHub Releases](https://github.com/PuroDelphi/omarchy-automations/releases).
 No Go compiler, sudo or manual service configuration is needed.
@@ -69,9 +69,14 @@ Full installation, offline use, source builds and troubleshooting:
 2. Open **Flows** and create an enabled flow with source `local:demo` and step `notice`.
 3. Save the draft. Open **Simulate / test**, use source `local:demo`, type `demo`
    and sample data `{"message":"Hello from Omarchy Automations"}`.
-4. Choose **Simulate without effects**, then review permissions and activate.
-5. Choose **Run real test** and confirm. Look for the notification and its result
-   in **History**.
+4. Choose **Simulate without effects**. No notification or History entry is created.
+   Close the simulation dialogs, click **Review and activate** in the toolbar,
+   review the flow/source/notification capability, then click **Authorize and activate**.
+   Wait for the activation confirmation and **Active flows: 1**.
+5. Reopen **Simulate / test**, choose **Run real test** and confirm. The panel opens
+   **History**; expect **Executions created: 1**, then **Completed**.
+
+![Completed first notification](docs/images/first-completed-notification-en.png)
 
 Follow the illustrated user guide for credentials, inbound webhooks and more:
 [[en]](docs/en/user-guide.md) · [[es]](docs/es/user-guide.md).
@@ -162,15 +167,28 @@ Choose a language for each guide. English is listed first throughout.
 
 ## Technical references
 
-The original engineering notes below are maintained in Spanish. The documentation above provides the English and Spanish user guides.
+| Reference | Languages |
+|---|---|
+| Product name and compatibility identifiers | [[en]](docs/en/product-name.md) · [[es]](docs/es/product-name.md) |
+| Development packages | [[en]](docs/en/packages.md) · [[es]](docs/es/packages.md) |
+| Architecture | [[en]](docs/en/architecture.md) · [[es]](docs/es/architecture.md) |
+| Control protocol | [[en]](docs/en/protocol.md) · [[es]](docs/es/protocol.md) |
+| Event formats | [[en]](docs/en/formats.md) · [[es]](docs/es/formats.md) |
+| LAN access | [[en]](docs/en/lan.md) · [[es]](docs/es/lan.md) |
+| Omarchy hooks | [[en]](docs/en/hooks.md) · [[es]](docs/es/hooks.md) |
+| Scheduling | [[en]](docs/en/scheduling.md) · [[es]](docs/es/scheduling.md) |
+| Webhook providers | [[en]](docs/en/providers.md) · [[es]](docs/es/providers.md) |
+| System monitoring | [[en]](docs/en/monitoring.md) · [[es]](docs/es/monitoring.md) |
+| Delivery recovery | [[en]](docs/en/recovery.md) · [[es]](docs/es/recovery.md) |
+| Command isolation | [[en]](docs/en/command-isolation.md) · [[es]](docs/es/command-isolation.md) |
+| Directory access | [[en]](docs/en/directory-access.md) · [[es]](docs/es/directory-access.md) |
+| Typed scripts | [[en]](docs/en/scripts.md) · [[es]](docs/es/scripts.md) |
+| OAuth 2 | [[en]](docs/en/oauth2.md) · [[es]](docs/es/oauth2.md) |
+| External adapters | [[en]](docs/en/external-adapters.md) · [[es]](docs/es/external-adapters.md) |
+| Operations | [[en]](docs/en/operations.md) · [[es]](docs/es/operations.md) |
+| Network exposure | [[en]](docs/en/exposure.md) · [[es]](docs/es/exposure.md) |
 
-- [Roadmap and progress](ROADMAP.md)
-- [Product name and compatibility identifiers](docs/product-name.md)
-- [Development packages](docs/releases.md)
-- [Architecture](docs/DESIGN.md)
-- [Protocol and operations](docs/PROTOCOL.md)
-- [Validation evidence](docs/validation.md)
-- [Verified compatibility](docs/compatibility.md)
+Historical engineering records: [Roadmap](ROADMAP.md), [validation evidence](docs/validation.md), [verified compatibility](docs/compatibility.md).
 
 ## Development
 

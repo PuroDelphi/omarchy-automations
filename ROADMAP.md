@@ -2022,3 +2022,16 @@ motor/CLI/unidad. Rechaza UI distinta y mezcla de modos; conserva modo antiguo.
 Documentadas instalación en dos comandos, actualización y retirada ordenada,
 uso offline y fallback desde fuentes en EN/ES. Publicación y descarga real de
 Preview 1 pendientes de verificar antes de considerar cerrada esta mejora.
+
+
+### Preview 2 — activation onboarding correction
+
+- [x] Preview 1 published and its public download/install verified; remote CI passed.
+- [x] Explain saved draft versus active revision in the panel and both user guides.
+- [x] Explicit Authorize and activate button, activation confirmation and source guidance.
+- [x] Real tests open History, report execution counts and explain zero matches.
+- [x] Replace empty tutorial History with actual completed notification captures in EN/ES.
+- [x] Native regression: unactivated draft cannot run, activation enables real notifications, conditions producing zero matches are explained, both languages.
+- [x] Layout checks: 64 forms, 120 dialogs, two themes and three sizes.
+- [x] Add paired technical references and Git-managed native panel test.
+- [ ] Google OAuth and physical suspend/logout acceptance remain deferred by the user.

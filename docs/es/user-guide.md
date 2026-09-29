@@ -91,20 +91,52 @@ seguirá produciendo efectos reales. Detén el motor manual con Ctrl+C al termin
 3. Guarda el borrador. Abre **Simular / probar** con origen `local:demo`, tipo `demo`
    y datos `{"message":"Compilación terminada"}`. Elige **Simular sin efectos**.
    Deben aparecer el flujo coincidente y el texto resuelto de la notificación.
-4. Revisa las capacidades y activa exactamente la revisión que revisaste.
-5. Elige **Ejecutar prueba real** y confirma. Debes ver una notificación de
-   escritorio y una ejecución completada en **Historial**.
+4. Cierra el resultado de la simulación y el diálogo del evento de prueba.
+   **La simulación solo comprueba el borrador: no envía notificaciones ni crea
+   entradas en Historial.**
+5. En la barra superior, pulsa **Revisar y activar**. Se abre **Revisar
+   capacidades**; abrir ese diálogo todavía no activa nada.
+6. Comprueba que aparecen tu flujo (`local-demo`), el origen (`local:demo`) y la
+   acción `notify` con el título de tu notificación. Desplázate por la lista si
+   hace falta. Pulsa **Autorizar y activar** para conceder las capacidades
+   indicadas y activar esa revisión. **Cancelar** conserva la revisión activa
+   anterior. Este diálogo no tiene casillas individuales de permisos.
+7. Espera el mensaje **Revisión activada. Ya puedes ejecutar la prueba real desde
+   Simular / probar.** El indicador sobre las secciones debe mostrar **Flujos
+   activos: 1** si este es tu único flujo habilitado. Si editas después el
+   borrador, repite los pasos 5–6.
 
-Una segunda prueba, `{"message":"Respaldo comprobado"}`, cambia el mensaje sin
-cambiar la acción. El origen `local:other` no debe coincidir con ese flujo.
+![Revisión del flujo, origen y permiso de notificación antes de autorizar](../images/first-review-activation-es.png)
+
+Esta captura muestra el diálogo real de revisión. El perfil de prueba usa el
+título `Omarchy Automations — tutorial check`; el tuyo mostrará tu propio título.
+
+8. Abre de nuevo **Simular / probar**, introduce origen `local:demo`, tipo `demo`
+   y datos `{"message":"Compilación terminada"}`. Pulsa **Ejecutar prueba real** y
+   confirma la advertencia. El botón no está disponible si ningún flujo activo
+   usa ese origen.
+9. El panel abre **Historial** e informa **Ejecuciones creadas: 1**. Espera a ver
+   **Completado** y **1 pasos realizados** en la fila. Pulsa **Actualizar** si
+   aún aparece un estado intermedio, o **Detalles** para inspeccionar el resultado.
+
+![Una ejecución real de notificación completada en Historial](../images/first-completed-notification-es.png)
+
+La captura contiene el resultado de una prueba real de notificación; no es una
+maqueta ni un perfil inicial vacío. `Completado` significa que el servicio de
+notificaciones aceptó la acción; el modo no molestar puede ocultar el aviso.
+
+| Lo que ves | Significado y siguiente paso |
+|---|---|
+| La simulación coincide, pero Historial está vacío | Es normal al simular. Revisa, autoriza y activa antes de la prueba real. |
+| No hay flujos activos para este origen | Guarda y habilita el flujo, comprueba el origen exacto y pulsa Revisar y activar. |
+| Ningún flujo activo coincidió; no se crearon ejecuciones | El evento real no cumplió el origen o las condiciones de un flujo activo. Revisa la revisión activa y los datos de prueba. |
+| Ejecución fallida | Abre **Detalles** y comprueba el error de permisos o del servicio de notificaciones. |
+| Ejecución completada sin aviso | Revisa las notificaciones del escritorio y el modo no molestar. |
+
+Una segunda prueba real, `{"message":"Respaldo comprobado"}`, cambia el mensaje
+sin cambiar la acción. El origen `local:other` no debe coincidir con ese flujo.
 El equivalente importable es [notification.json](../../examples/notification.json).
-Importar deshabilita los flujos; vuelve a habilitar el ejemplo antes de revisar y activar.
-
-![Simulation / Simulación](../images/native-simulation-es.png)
-
-Usa el formulario para simular tu primer evento y revisa Historial después de una prueba real.
-
-![History / Historial](../images/native-history-es.png)
+Importar deshabilita los flujos; vuelve a habilitarlos antes de revisar y activar.
 
 ## Conexiones y credenciales
 

@@ -18,6 +18,8 @@ revisión activa. Habilita el flujo correspondiente para simular; habilita su or
 solo cuando quieras activarlo. Las referencias son marcadores, nunca secretos reales.
 
 
+Sigue los [pasos ilustrados de activación](user-guide.md#primera-automatización-una-notificación-local): abre **Revisar y activar**, inspecciona las capacidades, pulsa **Autorizar y activar** y espera la confirmación. Simular no crea entradas en Historial.
+
 ## Sigue un ejemplo de principio a fin
 
 1. Elige un caso siguiente. Descarga su JSON enlazado o búscalo en

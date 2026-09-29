@@ -1,6 +1,8 @@
 .pragma library
 
 var english = {
+    "Autorizar y activar": "Authorize and activate",
+    "Revisión activada. Ya puedes ejecutar la prueba real desde Simular / probar.": "Revision activated. You can now run the real test from Simulate / test.",
     "Filtrar historial": "Filter history",
     "Subir paso": "Move step up",
     "Bajar paso": "Move step down",
@@ -162,6 +164,17 @@ var english = {
     "Importado como borrador desactivado; revisa y habilita los recursos antes de activar.": "Imported as a disabled draft; review and enable resources before activating.",
     "Exportado a ": "Exported to ",
     "Operación completada": "Operation completed",
+    "Consultando la revisión activa…": "Checking the active revision\u2026",
+    "No hay flujos activos para este origen. Guardar o simular no activa el borrador. Pulsa Revisar y activar antes de la prueba real.": "No active flows use this source. Saving or simulating does not activate the draft. Choose Review and activate before a real test.",
+    "Flujos activos para este origen: ": "Active flows for this source: ",
+    ". La prueba real aplica también sus condiciones y permisos.": ". A real test also applies their conditions and permissions.",
+    "Evento duplicado: no se crearon ejecuciones nuevas.": "Duplicate event: no new executions were created.",
+    "Ejecuciones creadas: ": "Executions created: ",
+    ". Historial muestra su progreso; una ejecución completada confirma el resultado de la acción.": ". History shows progress; a completed execution confirms the action result.",
+    "Ningún flujo activo coincidió. No se crearon ejecuciones ni notificaciones. Revisa origen, condiciones y activación del borrador.": "No active flow matched. No executions or notifications were created. Check source, conditions and draft activation.",
+    "Borrador sin activar: no hay flujos activos. Revisa y activa para ejecutar automatizaciones.": "No active flows. Review and activate your draft to run automations.",
+    "Flujos activos: ": "Active flows: ",
+    ". Los cambios del borrador requieren Revisar y activar.": ". Draft changes require Review and activate.",
     "Evento de prueba aceptado; revisa Historial": "Test event accepted; check History",
     "Los datos de prueba deben ser un objeto JSON válido": "Test data must be a valid JSON object",
     "Motor desconectado": "Engine disconnected",

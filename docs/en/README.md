@@ -45,3 +45,26 @@ fragments to combine automatically.
 - [Acceptance tests with the user](external-acceptance.md)
 
 [Install without Go](installation.md).
+
+## Technical references
+
+| Reference | Languages |
+|---|---|
+| Product name and compatibility identifiers | [[en]](../en/product-name.md) · [[es]](../es/product-name.md) |
+| Development packages | [[en]](../en/packages.md) · [[es]](../es/packages.md) |
+| Architecture | [[en]](../en/architecture.md) · [[es]](../es/architecture.md) |
+| Control protocol | [[en]](../en/protocol.md) · [[es]](../es/protocol.md) |
+| Event formats | [[en]](../en/formats.md) · [[es]](../es/formats.md) |
+| LAN access | [[en]](../en/lan.md) · [[es]](../es/lan.md) |
+| Omarchy hooks | [[en]](../en/hooks.md) · [[es]](../es/hooks.md) |
+| Scheduling | [[en]](../en/scheduling.md) · [[es]](../es/scheduling.md) |
+| Webhook providers | [[en]](../en/providers.md) · [[es]](../es/providers.md) |
+| System monitoring | [[en]](../en/monitoring.md) · [[es]](../es/monitoring.md) |
+| Delivery recovery | [[en]](../en/recovery.md) · [[es]](../es/recovery.md) |
+| Command isolation | [[en]](../en/command-isolation.md) · [[es]](../es/command-isolation.md) |
+| Directory access | [[en]](../en/directory-access.md) · [[es]](../es/directory-access.md) |
+| Typed scripts | [[en]](../en/scripts.md) · [[es]](../es/scripts.md) |
+| OAuth 2 | [[en]](../en/oauth2.md) · [[es]](../es/oauth2.md) |
+| External adapters | [[en]](../en/external-adapters.md) · [[es]](../es/external-adapters.md) |
+| Operations | [[en]](../en/operations.md) · [[es]](../es/operations.md) |
+| Network exposure | [[en]](../en/exposure.md) · [[es]](../es/exposure.md) |

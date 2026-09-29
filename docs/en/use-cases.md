@@ -18,6 +18,8 @@ revision. Enable the relevant flow to simulate; enable its source only when you
 intend to activate it. Credential references are placeholders, never real secrets.
 
 
+Follow the [illustrated activation steps](user-guide.md#first-automation-a-local-notification): open **Review and activate**, inspect the capabilities, click **Authorize and activate**, and wait for confirmation. Simulation creates no History entries.
+
 ## Follow one example from start to finish
 
 1. Choose one case below. Download its linked JSON or locate it under

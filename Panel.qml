@@ -22,6 +22,10 @@ Item {
         })
     property bool dirty: false
     property bool loaded: false
+    property var activeConfig: null
+    readonly property int activeFlowCount: activeConfig ? (activeConfig.flows || []).filter(function(flow) { return flow.enabled; }).length : 0
+    readonly property int realTestFlowCount: activeConfig ? (activeConfig.flows || []).filter(function(flow) { return flow.enabled && flow.source === sampleSource.text; }).length : 0
+    readonly property string realTestGuidance: !activeConfig ? I18n.tr("Consultando la revisión activa…") : realTestFlowCount === 0 ? I18n.tr("No hay flujos activos para este origen. Guardar o simular no activa el borrador. Pulsa Revisar y activar antes de la prueba real.") : I18n.tr("Flujos activos para este origen: ") + realTestFlowCount + I18n.tr(". La prueba real aplica también sus condiciones y permisos.")
     property int section: 0
     property int connectionTab: 0
     property var history: []
@@ -192,6 +196,7 @@ Item {
     }
     function refresh() {
         backend.call("status", {});
+        backend.call("config.active", {});
         if (section === 3)
             backend.call("monitors.status", {});
         if (section === 6)
@@ -328,6 +333,8 @@ Item {
                 };
                 root.consentURL = "";
             }
+            if (op === "config.active" || op === "status")
+                root.activeConfig = null;
             root.afterSave = "";
             root.localError = message;
         }
@@ -340,6 +347,8 @@ Item {
                 root.config = value;
                 root.loaded = true;
                 root.dirty = false;
+            } else if (op === "config.active") {
+                root.activeConfig = value;
             } else if (op === "config.save") {
                 root.dirty = false;
                 root.notice = I18n.tr("Borrador guardado y validado");
@@ -355,7 +364,7 @@ Item {
                 root.review = value;
                 approval.open();
             } else if (op === "config.activate") {
-                root.notice = I18n.tr("Revisión activada");
+                root.notice = I18n.tr("Revisión activada. Ya puedes ejecutar la prueba real desde Simular / probar.");
                 root.refresh();
             } else if (op === "queue.inspect") {
                 root.history = value.items;
@@ -422,7 +431,13 @@ Item {
                 root.notice = I18n.tr("Operación completada");
                 root.refresh();
             } else if (op === "emit") {
-                root.notice = I18n.tr("Evento de prueba aceptado; revisa Historial");
+                root.localError = "";
+                root.notice = value.duplicate ? I18n.tr("Evento duplicado: no se crearon ejecuciones nuevas.") : value.executions > 0 ? I18n.tr("Ejecuciones creadas: ") + value.executions + I18n.tr(". Historial muestra su progreso; una ejecución completada confirma el resultado de la acción.") : I18n.tr("Ningún flujo activo coincidió. No se crearon ejecuciones ni notificaciones. Revisa origen, condiciones y activación del borrador.");
+                sampleDialog.close();
+                root.section = 4;
+                root.queueOnly = false;
+                root.queueOffset = 0;
+                root.refresh();
             }
         }
     }
@@ -599,6 +614,13 @@ Item {
                             fileDialog.open();
                         }
                     }
+                }
+                ThemedLabel {
+                    visible: backend.connected && root.activeConfig !== null
+                    text: root.activeFlowCount === 0 ? I18n.tr("Borrador sin activar: no hay flujos activos. Revisa y activa para ejecutar automatizaciones.") : I18n.tr("Flujos activos: ") + root.activeFlowCount + I18n.tr(". Los cambios del borrador requieren Revisar y activar.")
+                    color: root.activeFlowCount === 0 ? Color.urgent : Qt.alpha(Color.foreground, 0.75)
+                    wrapMode: Text.Wrap
+                    Layout.fillWidth: true
                 }
                 Rectangle {
                     visible: root.localError !== "" || root.notice !== ""
@@ -1123,6 +1145,7 @@ Item {
         }
         LocalizedDialog {
             id: approval
+            acceptText: I18n.tr("Autorizar y activar")
             anchors.centerIn: parent
             width: Math.min(parent.width - 48, 700)
             height: Math.min(parent.height - 48, 570)
@@ -1388,9 +1411,20 @@ Item {
                     }
                     ActionButton {
                         text: I18n.tr("Ejecutar prueba real")
-                        enabled: sampleSource.text.indexOf("local:") === 0 || sampleSource.text.indexOf("hook:") === 0
+                        enabled: backend.connected && !backend.busy && root.realTestFlowCount > 0 && (sampleSource.text.indexOf("local:") === 0 || sampleSource.text.indexOf("hook:") === 0)
                         onClicked: realTest.open()
                     }
+                }
+                ThemedLabel {
+                    text: root.realTestGuidance
+                    color: root.realTestFlowCount > 0 ? Color.foreground : Color.urgent
+                    wrapMode: Text.Wrap
+                    Layout.fillWidth: true
+                }
+                ActionButton {
+                    text: I18n.tr("Revisar y activar")
+                    enabled: root.loaded && !backend.busy
+                    onClicked: { sampleDialog.close(); root.save("config.preview"); }
                 }
                 ThemedLabel {
                     text: I18n.tr("La simulación usa el borrador. La prueba real usa la revisión activa y sus permisos.")
@@ -1409,6 +1443,10 @@ Item {
             standardButtons: Dialog.Ok | Dialog.Cancel
             onAccepted: {
                 try {
+                    if (!root.activeConfig || root.realTestFlowCount === 0) {
+                        root.localError = root.realTestGuidance;
+                        return;
+                    }
                     backend.call("emit", root.eventPayload());
                 } catch (e) {
                     root.localError = I18n.tr("Datos JSON inválidos");

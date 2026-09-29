@@ -89,20 +89,49 @@ has real effects. Stop this manual engine with Ctrl+C when finished.
 3. Save the draft. Open **Simulate / test** with source `local:demo`, type `demo`
    and data `{"message":"Build finished"}`. Choose **Simulate without effects**.
    Expect the flow to match and the resolved notification text to appear.
-4. Review capabilities and activate the exact revision you reviewed.
-5. Choose **Run real test** and confirm. Expect a desktop notification and a
-   completed execution in **History**.
+4. Close the simulation results and the sample-event dialog. **Simulation only
+   checks the draft: it sends no notification and creates no History entry.**
+5. In the top toolbar, click **Review and activate**. This opens **Review
+   capabilities**; opening this dialog alone does not activate anything.
+6. Check that the dialog lists your flow (`local-demo`), source (`local:demo`)
+   and the `notify` action with your notification title. Scroll through the list
+   if needed. Click **Authorize and activate** to grant the listed capabilities
+   and activate that revision. **Cancel** leaves the previous revision active.
+   There are no individual permission checkboxes in this dialog.
+7. Wait for **Revision activated. You can now run the real test from Simulate /
+   test.** The status above the sections should show **Active flows: 1** when this
+   is your only enabled flow. If you edit the draft later, repeat steps 5–6.
 
-A second test, `{"message":"Backup checked"}`, changes the message without
-changing the action. Sending source `local:other` should match no such flow.
+![Review the flow, event source and notification capability before authorizing](../images/first-review-activation-en.png)
+
+This is a real capture of the review dialog. The test profile uses the title
+`Omarchy Automations — tutorial check`; your dialog displays your own title.
+
+8. Reopen **Simulate / test**, enter source `local:demo`, type `demo` and data
+   `{"message":"Build finished"}`. Click **Run real test** and confirm the
+   warning. The button is unavailable when no active flow uses that source.
+9. The panel opens **History** and reports **Executions created: 1**. Wait for the
+   row to show **Completed** with **1 step completed**. Click **Refresh** if the
+   row still shows an intermediate state, or **Details** to inspect its result.
+
+![A real notification execution completed in History](../images/first-completed-notification-en.png)
+
+This populated History capture comes from a real notification test, not a mockup
+or an empty initial profile. `Completed` means the notification service accepted
+this action; do-not-disturb mode can still hide its desktop popup.
+
+| What you see | Meaning and next step |
+|---|---|
+| Simulation matches, History empty | Expected for simulation. Review, authorize and activate before a real test. |
+| No active flows for this source | Save and enable the flow, check the exact source, then Review and activate. |
+| No active flow matched; no executions created | The real event did not satisfy an active flow's source/conditions. Check the active revision and sample data. |
+| Execution failed | Open **Details**; check the reported permission or notification-service error. |
+| Execution completed, no popup | Check desktop notifications and do-not-disturb mode. |
+
+A second real test, `{"message":"Backup checked"}`, changes the message without
+changing the action. Source `local:other` should match no such flow.
 The importable equivalent is [notification.json](../../examples/notification.json).
 Importing disables flows; re-enable the example before reviewing and activating.
-
-![Simulation / Simulación](../images/native-simulation-en.png)
-
-Use the form to simulate your first event, then inspect History after a real test.
-
-![History / Historial](../images/native-history-en.png)
 
 ## Connections and credentials
 
