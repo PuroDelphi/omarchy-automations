@@ -1,36 +1,53 @@
 # Omarchy Automations
 
-Plugin de automatizaciones para Omarchy: webhooks de entrada y salida conectados con notificaciones, servicios, comandos y monitoreo.
+An automation plugin for Omarchy: connect inbound and outbound webhooks to notifications, services, commands and system monitoring.
 
-Estado: **en desarrollo, no listo para producción**. Motor, CLI y panel nativo funcionales e instalados; la revisión visual nativa y la documentación bilingüe están completadas para la versión actual; siguen abiertas las validaciones externas y los controles finales de entrega del roadmap.
+Status: **in development, not production-ready**. The engine, CLI and native panel are implemented. Native visual review and bilingual documentation are complete for the current development version. Real Google OAuth and suspend/logout acceptance tests are deferred; final release checks remain tracked in the [roadmap](ROADMAP.md).
 
-- [Documentation index — English](docs/en/README.md)
-- [Índice de documentación — Español](docs/es/README.md)
-- [User guide — English](docs/en/user-guide.md)
-- [Guía de usuario — Español](docs/es/user-guide.md)
-- [Roadmap y seguimiento](ROADMAP.md)
-- [Nombre e identificadores compatibles](docs/product-name.md)
-- [Paquetes de desarrollo](docs/releases.md)
-- [Preparación de GitHub](docs/github-publication.md)
-- [Instalación en desarrollo](docs/installation.md)
-- [English / Español](docs/languages.md)
-- [Diseño de arquitectura](docs/DESIGN.md)
-- [Protocolo y operaciones](docs/PROTOCOL.md)
-- [Hooks de Omarchy](docs/hooks.md)
-- [Formatos y límites](docs/formats.md)
-- [Proveedores y contratos](docs/providers.md)
-- [Intervalos y calendarios](docs/scheduling.md)
-- [Monitores del sistema](docs/monitoring.md)
-- [Aislamiento de comandos](docs/command-isolation.md)
-- [Operación, cola y diagnóstico](docs/operations.md)
-- [Recuperación y resultados inciertos](docs/recovery.md)
-- [Exposición TLS opcional](docs/exposure.md)
-- [Evidencia de validación](docs/validation.md)
-- [Compatibilidad comprobada](docs/compatibility.md)
+The interface defaults to **English**. Users can switch to **Spanish**, and the preference is saved per profile.
 
-## Desarrollo
+## Documentation
 
-Requiere Linux, Go 1.26+, Omarchy/Quickshell para UI y systemd de usuario para acciones del sistema. El motor usa SQLite integrado mediante Go.
+Choose a language for each guide. English is listed first throughout.
+
+| Guide | Languages |
+|---|---|
+| Documentation index | [[en]](docs/en/README.md) · [[es]](docs/es/README.md) |
+| User guide: installation and troubleshooting | [[en]](docs/en/user-guide.md) · [[es]](docs/es/user-guide.md) |
+| Interface, language and screenshots | [[en]](docs/en/interface.md) · [[es]](docs/es/interface.md) |
+| Options reference | [[en]](docs/en/options.md) · [[es]](docs/es/options.md) |
+| Use cases | [[en]](docs/en/use-cases.md) · [[es]](docs/es/use-cases.md) |
+| Scripts and event adapters | [[en]](docs/en/code-examples.md) · [[es]](docs/es/code-examples.md) |
+| GitHub webhook example | [[en]](docs/en/provider-example.md) · [[es]](docs/es/provider-example.md) |
+| Service control example | [[en]](docs/en/service-example.md) · [[es]](docs/es/service-example.md) |
+| HTTP retries and recovery | [[en]](docs/en/recovery-example.md) · [[es]](docs/es/recovery-example.md) |
+| Google OAuth example | [[en]](docs/en/oauth-example.md) · [[es]](docs/es/oauth-example.md) |
+| System integration and Omarchy hooks | [[en]](docs/en/system-integration.md) · [[es]](docs/es/system-integration.md) |
+| Security | [[en]](docs/en/security.md) · [[es]](docs/es/security.md) |
+| Performance | [[en]](docs/en/performance.md) · [[es]](docs/es/performance.md) |
+| GitHub setup and publishing | [[en]](docs/en/github.md) · [[es]](docs/es/github.md) |
+| Monitor recipes | [[en]](docs/en/monitor-recipes.md) · [[es]](docs/es/monitor-recipes.md) |
+| Action recipes | [[en]](docs/en/action-recipes.md) · [[es]](docs/es/action-recipes.md) |
+| Payload formats and conditions | [[en]](docs/en/payload-recipes.md) · [[es]](docs/es/payload-recipes.md) |
+| Webhook authentication | [[en]](docs/en/authentication-recipes.md) · [[es]](docs/es/authentication-recipes.md) |
+| Development release notes | [[en]](docs/en/release-notes.md) · [[es]](docs/es/release-notes.md) |
+| Acceptance tests with the user | [[en]](docs/en/external-acceptance.md) · [[es]](docs/es/external-acceptance.md) |
+
+## Technical references
+
+The original engineering notes below are maintained in Spanish. The documentation above provides the English and Spanish user guides.
+
+- [Roadmap and progress](ROADMAP.md)
+- [Product name and compatibility identifiers](docs/product-name.md)
+- [Development packages](docs/releases.md)
+- [Architecture](docs/DESIGN.md)
+- [Protocol and operations](docs/PROTOCOL.md)
+- [Validation evidence](docs/validation.md)
+- [Verified compatibility](docs/compatibility.md)
+
+## Development
+
+Requires Linux, Go 1.26+, Omarchy/Quickshell for the UI, and user systemd for system actions. The engine uses SQLite through Go.
 
 ```bash
 make build
@@ -38,7 +55,7 @@ make test
 make check
 ```
 
-Para probar sin alterar tu configuración, en una terminal:
+To try an isolated profile without changing your existing configuration, run in one terminal:
 
 ```bash
 export QUATRRO_PROFILE="$PWD/.dev/profile"
@@ -46,23 +63,23 @@ export PATH="$PWD/build:$PATH"
 quatrrod
 ```
 
-En otra terminal, con las mismas variables:
+In another terminal, with the same environment variables:
 
 ```bash
 quatrroctl status
 quatrroctl config.save --stdin < examples/notification.json
-quatrroctl simulate '{"source":"local:demo","type":"demo","data":{"message":"Hola"}}'
+quatrroctl simulate '{"source":"local:demo","type":"demo","data":{"message":"Hello"}}'
 quatrroctl config.preview
 python3 scripts/run-ui.py
 ```
 
-La simulación no activa el flujo ni ejecuta acciones. La activación requiere el hash y las capacidades revisadas que devuelve `config.preview`; consultar el protocolo. El panel permite crear conexiones, acciones, flujos y monitores, revisar capacidades y activar una revisión. Incluye simulación, historial, credenciales y límites de almacenamiento.
+Simulation does not activate flows or execute actions. Activation requires the reviewed hash and capabilities returned by `config.preview`; see the [protocol](docs/PROTOCOL.md). The panel lets you create connections, actions, flows and monitors, review capabilities and activate a revision. It includes simulation, history, credentials and storage limits.
 
-`python scripts/smoke-native.py --offscreen` comprueba la conexión y produce un render nuevo en `.dev/panel-render.png`, incluso con la sesión bloqueada. `python scripts/test-ui-flow.py` ejercita las señales de los formularios QML, activa una revisión y verifica notificación, entrega HTTPS local e historial. `QUATRRO_HOST_TEST=1 go test -race ./...` añade una notificación, un servicio temporal propio y pruebas de comandos aislados. Estas pruebas requieren acceso al bus real de la sesión.
+`python3 scripts/smoke-native.py --offscreen` checks connectivity and produces a fresh render at `.dev/panel-render.png`, even while the session is locked. `python3 scripts/test-ui-flow.py` exercises QML form signals, activates a revision and checks notification, local HTTPS delivery and history. `QUATRRO_HOST_TEST=1 go test -race ./...` adds a notification, a dedicated temporary service and isolated command tests. These tests require access to the real session bus.
 
-Los plugins Omarchy se ejecutan como código del usuario; esta interfaz no es un sandbox. No se publica un shell remoto. Los comandos registrados usan argumentos fijos y se ejecutan mediante systemd/Bubblewrap con red deshabilitada y `/usr` de solo lectura.
+Omarchy plugins run as user code; this interface is not a sandbox. The plugin does not expose a remote shell. Registered commands use fixed arguments and run through systemd/Bubblewrap with networking disabled and read-only `/usr`.
 
-## Licencia
+## License
 
-[MIT](LICENSE). Los avisos de las dependencias se conservan en
-[avisos de terceros](docs/third-party-notices.md).
+[MIT](LICENSE). Dependency notices are preserved in
+[third-party notices](docs/third-party-notices.md).
