@@ -1,8 +1,9 @@
 # Instalación en desarrollo
 
-El instalador está en verificación para R1. La instalación temporal se ha
-probado; la activación permanente, hooks y reversión integral de versiones siguen
-pendientes. No se anuncia todavía como procedimiento de entrega 1.0.
+La instalación permanente y los ciclos de instalación, actualización y retirada
+se han comprobado para la versión de desarrollo; las evidencias están en el
+roadmap. Quedan pendientes las validaciones externas aplazadas y el cierre de
+versión estable. No se anuncia todavía como entrega 1.0.
 
 Construye primero con `make build`. Python 3 ejecuta el instalador sin descargar
 paquetes ni solicitar privilegios administrativos.

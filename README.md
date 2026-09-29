@@ -6,6 +6,138 @@ Status: **in development, not production-ready**. The engine, CLI and native pan
 
 The interface defaults to **English**. Users can switch to **Spanish**, and the preference is saved per profile.
 
+## What you can automate
+
+| When this happens… | Omarchy Automations can… |
+|---|---|
+| A signed GitHub webhook arrives | Show a desktop notification and forward an HTTPS request. |
+| Disk space or another monitored metric crosses a threshold | Alert you, then send a recovery event when it returns to normal. |
+| An interval or calendar schedule fires | Run an approved script or command and report its outcome. |
+| An Omarchy hook or local event arrives | Apply conditions and run a reviewed sequence of actions. |
+
+Build a draft → simulate an event → review permissions → activate the flow.
+History shows execution and delivery status, including failures and uncertain outcomes.
+
+![Connections panel with an example inbound webhook](docs/images/tokyo-night-en-connections.png)
+*Connections panel in the Tokyo Night theme, rendered with disabled example data.*
+
+| Configure a webhook | Simulate before activating |
+|---|---|
+| ![Native inbound webhook editor](docs/images/native-entry-en.png) | ![Native event simulation dialog](docs/images/native-simulation-en.png) |
+
+*The editor and simulation dialog are captures from the installed Omarchy shell.
+More light/dark and English/Spanish screenshots: [[en]](docs/en/interface.md) · [[es]](docs/es/interface.md).*
+
+## Install
+
+Requires Omarchy Quattro with the plugin CLI, Git, Make, Python 3 and Go 1.26+.
+The verified environment is Linux amd64 with Omarchy 4.0.4-1. A user systemd
+session runs the engine; commands/scripts need Bubblewrap. Desktop credentials
+use Secret Service when selected. See [verified compatibility](docs/compatibility.md).
+
+Run as your normal desktop user, from a directory where you keep source projects:
+
+```bash
+git clone https://github.com/PuroDelphi/omarchy-automations.git
+cd omarchy-automations
+make build
+python3 scripts/install.py --activate
+```
+
+The installer installs the engine and CLI in `~/.local/bin`, registers
+`quatrrod.service` and enables the panel through `omarchy plugin enable`.
+Keep the checkout for updates and uninstallation. No administrator broker is
+installed by this command; system-service control is an optional separate setup.
+
+Verify and open the plugin:
+
+```bash
+systemctl --user status quatrrod.service
+~/.local/bin/quatrroctl status
+omarchy plugin enable quatrro.automations
+```
+
+Click the connections icon in the bar. `quatrro.automations` is the compatible
+technical plugin ID; the displayed product name is **Omarchy Automations**.
+
+**About `omarchy plugin add`:** Omarchy's standard command clones a plugin;
+it does not build our Go binaries or install the background service. This
+version therefore requires the installation steps above. Do not combine a
+clone inside Omarchy's plugin directory with this installer: its ownership
+checks reject untracked existing files. A complete one-command installation is
+still a packaging improvement, not a supported shortcut.
+
+## Try your first automation
+
+1. Open **Actions** and create a `notify` action named `notice`, with title
+   `Omarchy Automations` and message `{{data.message}}`.
+2. Open **Flows** and create an enabled flow with source `local:demo` and step `notice`.
+3. Save the draft. Open **Simulate / test**, use source `local:demo`, type `demo`
+   and sample data `{"message":"Hello from Omarchy Automations"}`.
+4. Choose **Simulate without effects**, then review permissions and activate.
+5. Choose **Run real test** and confirm. Look for the notification and its result
+   in **History**.
+
+Follow the illustrated user guide for credentials, inbound webhooks and more:
+[[en]](docs/en/user-guide.md) · [[es]](docs/es/user-guide.md).
+
+## Update
+
+From your source checkout, review the incoming changes and current work in History.
+Then build and install matching engine, CLI and panel versions together:
+
+```bash
+git pull --ff-only
+make build
+systemctl --user stop quatrrod.service
+python3 scripts/install.py --activate
+```
+
+The installer records backups and refuses unexpected modifications to owned files.
+`omarchy plugin update` alone does not update this installer-managed engine and UI.
+
+## Disable or uninstall
+
+To hide the panel while keeping automations running:
+
+```bash
+omarchy plugin disable quatrro.automations
+```
+
+To show it again, use `omarchy plugin enable quatrro.automations`. To stop the
+engine as well, use `systemctl --user stop quatrrod.service`.
+
+For a complete uninstall, run from the source checkout:
+
+```bash
+python3 scripts/install.py --uninstall
+```
+
+This stops/disables the service and uses `omarchy plugin disable` before removing
+verified installed files. Configuration, history, credentials and backups are
+preserved. Separately installed hooks and the optional administrator broker have
+[their own removal steps](docs/en/system-integration.md).
+
+Omarchy also provides `omarchy plugin remove quatrro.automations`, but it only
+removes the shell plugin directory; it does not uninstall the engine, service or
+installation receipt. Use the complete uninstall above for this plugin.
+
+## Troubleshooting and current limits
+
+- **Panel disconnected:** check `systemctl --user status quatrrod.service` and
+  `~/.local/bin/quatrroctl status`. Engine, CLI and UI must come from the same build.
+- **Simulation works but nothing runs:** review enabled resources, active revision,
+  permissions, pause state and History. Saving a draft alone does not activate it.
+- **No notification:** check the desktop notification service and do-not-disturb mode.
+- **Remote webhooks:** the listener defaults to loopback; exposing it requires an
+  explicit network/TLS setup. See the security guide [[en]](docs/en/security.md) · [[es]](docs/es/security.md).
+- **Google and session recovery:** real OAuth consent/renewal and physical
+  suspend/logout acceptance tests remain deferred. This is `0.1.0-dev`, not a stable release.
+
+Report reproducible problems in [GitHub Issues](https://github.com/PuroDelphi/omarchy-automations/issues)
+with your version, Omarchy version, steps and redacted errors. Do not attach tokens,
+credential files or unreviewed database/configuration exports.
+
 ## Documentation
 
 Choose a language for each guide. English is listed first throughout.

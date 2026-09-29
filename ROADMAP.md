@@ -1980,3 +1980,21 @@ contraseñas ni tokens en el chat.
 Remoto inspeccionado antes de publicar: main contiene commit inicial ec561e2
 con LICENSE MIT. Se conserva su historial y copyright JhonnySuarez junto al
 aviso de contributors; no se usa force push.
+
+
+## Revisión de presentación pública e instalación (2026-09-28)
+
+README ampliado con casos de uso, capturas existentes inspeccionadas, requisitos,
+instalación completa, primera automatización, actualización, desinstalación y
+soporte. Referencias revisadas: READMEs de Reprise y OmaPilot, y comandos Omarchy
+locales add/remove. Corregida nota obsoleta en docs/installation.md.
+
+Mejoras de distribución detectadas (propuestas; no declaradas implementadas):
+- Integración completa del backend con una instalación estándar Omarchy: add
+  actualmente solo clona y entra en conflicto con la propiedad del instalador.
+- Publicar artefactos versionados y checksums como GitHub Releases para evitar
+  exigir Go al usuario final; el paquete local no equivale a release publicada.
+- Automatizar verificaciones portables en CI; todavía no hay workflow .github.
+- Traducir las notas técnicas históricas que siguen solo en español; las guías
+  de usuario ya están emparejadas.
+Se conservan las pruebas Google/sesión aplazadas por el usuario.
