@@ -14,6 +14,7 @@ FocusScope {
     property string editText: currentText
     signal activated(int index)
     signal accepted
+    signal textEdited(string text)
     Layout.fillWidth: true
     Layout.minimumWidth: 0
     implicitWidth: Style.spacing.dropdownWidth
@@ -34,7 +35,7 @@ FocusScope {
             visible: root.editable
             Layout.fillWidth: true
             text: root.editText
-            onTextEdited: root.editText = text
+            onTextEdited: { root.editText = text; root.textEdited(text); }
             onAccepted: root.accepted()
         }
         Native.Dropdown {

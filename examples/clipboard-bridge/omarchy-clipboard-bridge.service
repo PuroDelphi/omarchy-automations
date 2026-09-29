@@ -1,0 +1,17 @@
+[Unit]
+Description=Omarchy Automations clipboard bridge example
+After=graphical-session.target
+
+[Service]
+Type=simple
+UMask=0077
+ExecStart=%h/.local/libexec/omarchy-automations/clipboard_bridge.py serve --port 8786
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=yes
+ProtectSystem=strict
+ReadWritePaths=%h/Downloads/ClipboardInbox
+PrivateTmp=yes
+
+[Install]
+WantedBy=default.target

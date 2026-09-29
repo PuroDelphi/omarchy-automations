@@ -11,12 +11,17 @@ ColumnLayout {
     property var value
     property bool immutable: false
     signal edited(var next)
+    function syncEditableChoice() {
+        var choice = editorLoader.item;
+        if (choice && spec.type === "editable-choice" && !choice.activeFocus)
+            choice.editText = value === undefined ? choice.currentText : String(value);
+    }
     function ensureChoice() {
         if (visible && spec.type === "choice" && spec.options && spec.options.length > 0 && spec.options.indexOf(value) < 0)
             edited(spec.options[0]);
     }
     onVisibleChanged: Qt.callLater(ensureChoice)
-    onValueChanged: Qt.callLater(ensureChoice)
+    onValueChanged: { Qt.callLater(ensureChoice); Qt.callLater(syncEditableChoice); }
     Component.onCompleted: Qt.callLater(ensureChoice)
     spacing: 6
     ThemedLabel {
@@ -33,7 +38,9 @@ ColumnLayout {
         Layout.fillWidth: true
     }
     Loader {
+        id: editorLoader
         Layout.fillWidth: true
+        onLoaded: Qt.callLater(root.syncEditableChoice)
         sourceComponent: root.spec.type === "script-parameters" ? scriptParametersField : root.spec.type === "bool" ? booleanField : root.spec.type === "choice" || root.spec.type === "editable-choice" ? choiceField : root.spec.type === "conditions" ? conditionsField : root.spec.type === "steps" ? stepsField : root.spec.type === "pairs" ? pairsField : root.spec.type === "multiline" || root.spec.type === "lines" ? multiField : textField
     }
     Component {
@@ -89,12 +96,16 @@ ColumnLayout {
             accessibleLabel: I18n.tr(root.spec.label || "")
             Accessible.description: I18n.tr(root.spec.hint || "")
             width: parent.width
-            model: root.spec.options || []
+            model: {
+                var options = root.spec.options || [];
+                if (root.spec.type === "editable-choice" && root.value && options.indexOf(root.value) < 0)
+                    return options.concat([root.value]);
+                return options;
+            }
             editable: root.spec.type === "editable-choice"
             currentIndex: Math.max(0, model.indexOf(root.value))
-            Component.onCompleted: if (editable && root.value)
-                editText = root.value
             onActivated: root.edited(currentText)
+            onTextEdited: function(next) { if (editable) root.edited(next); }
             onAccepted: if (editable)
                 root.edited(editText)
         }

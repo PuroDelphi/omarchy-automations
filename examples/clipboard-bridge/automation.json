@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "entries": [],
+  "destinations": [],
+  "actions": [
+    {"id":"clipboard-bridge-start","kind":"service","unit":"omarchy-clipboard-bridge.service","operation":"start"},
+    {"id":"clipboard-received-notice","kind":"notify","title":"Clipboard received","body":"{{data.kind}}: {{data.name}} ({{data.size}} bytes)"}
+  ],
+  "flows": [
+    {"id":"clipboard-start","name":"Start clipboard listener","source":"local:clipboard-control","enabled":false,"steps":["clipboard-bridge-start"]},
+    {"id":"clipboard-received","name":"Confirm clipboard transfer","source":"local:clipboard-received","enabled":false,"steps":["clipboard-received-notice"]}
+  ],
+  "monitors":[],
+  "timers":[]
+}

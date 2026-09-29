@@ -12,6 +12,7 @@ Las verificaciones de entrega pendientes están en el [roadmap](../../ROADMAP.md
 | [02](interface.md) | Interfaz, idioma y capturas |
 | [03](options.md) | Cada opción, valores iniciales, límites y ejemplos |
 | [04](use-cases.md) | Webhooks, alertas de disco y recordatorios programados |
+| [Avanzado: texto y archivos en portapapeles](clipboard-bridge.md) | Unidad de usuario, túnel SSH, capturas reales y ejemplos de transferencia |
 | [05](code-examples.md) | Scripts tipados y adaptadores de eventos |
 | [06](provider-example.md) | Eventos firmados de GitHub |
 | [07](service-example.md) | Control autorizado de servicios de usuario |

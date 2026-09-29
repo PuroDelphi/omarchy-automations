@@ -107,6 +107,8 @@ sin cambiar la acción. El origen `local:other` no debe coincidir con ese flujo.
 El equivalente importable es [notification.json](../../examples/notification.json).
 Importar deshabilita los flujos; vuelve a habilitarlos antes de revisar y activar.
 
+Para una integración más avanzada, sigue la [guía de portapapeles y archivos](clipboard-bridge.md).
+
 ## Conexiones y credenciales
 
 Crea credenciales en **Seguridad → Crear o rotar credencial**. Elige una referencia

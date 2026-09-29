@@ -103,6 +103,8 @@ changing the action. Source `local:other` should match no such flow.
 The importable equivalent is [notification.json](../../examples/notification.json).
 Importing disables flows; re-enable the example before reviewing and activating.
 
+For a more advanced integration, follow the [clipboard and file sharing walkthrough](clipboard-bridge.md).
+
 ## Connections and credentials
 
 Create credentials in **Security → Create or rotate credential**. Choose a local

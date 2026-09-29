@@ -12,6 +12,7 @@ release checks are tracked in the [roadmap](../../ROADMAP.md).
 | [02](interface.md) | Interface, language and screenshots |
 | [03](options.md) | Every option, defaults, constraints and examples |
 | [04](use-cases.md) | Webhooks, disk alerts and scheduled reminders |
+| [Advanced: clipboard text and files](clipboard-bridge.md) | User service, SSH tunnel, real UI screenshots and transfer examples |
 | [05](code-examples.md) | Typed scripts and event adapters |
 | [06](provider-example.md) | Signed GitHub events |
 | [07](service-example.md) | Authorized user-service control |

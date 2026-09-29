@@ -40,5 +40,9 @@ jobs:
       - name: Prebuilt setup lifecycle and archive safety
         run: python3 scripts/test-setup.py
 
+      - name: Clipboard bridge text and binary transfer in an isolated HOME
+        run: python3 scripts/test-clipboard-bridge.py
+      - name: Clipboard bridge with real engine and isolated Wayland substitute
+        run: python3 scripts/test-clipboard-integration.py
       - name: Installed AI skill examples without effects
         run: python3 scripts/test-skill-runtime.py

@@ -2050,3 +2050,12 @@ Preview 1 pendientes de verificar antes de considerar cerrada esta mejora.
 - [x] Runtime installer owns the skill files in both managed and Git-plugin modes.
 - [x] Document registration, example requests and removal in EN/ES.
 - [x] Preserve full drafts, review exact capabilities, handle revoked permissions and distinguish simulation from real effects.
+
+### Advanced clipboard example
+
+- [x] Add EN/ES step-by-step guide, native screenshots, service and sender example.
+- [x] Demonstrate exact user-service start and receipt-notification flows.
+- [x] Exercise text/binary transfer and rejection paths in an isolated HOME with fake Wayland/CLI.
+- [x] End-to-end private-profile test: text and binary file reach real engine and produce two completed notification executions.
+- [x] Fix editable flow source display and saving without Enter; native flow regression and screenshot checks passed.
+- [ ] Validate physical transfer and paste behavior on two real Wayland desktops.

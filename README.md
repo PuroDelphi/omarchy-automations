@@ -40,7 +40,7 @@ python3 ~/.config/omarchy/plugins/quatrro.automations/scripts/setup.py
 ```
 
 The first command clones the plugin without enabling it. The second downloads
-**Preview 3**, verifies the archive and file checksums, installs the engine and
+**Preview 4**, verifies the archive and file checksums, installs the engine and
 CLI, then enables the service and widget. Click the connections icon in the bar.
 The download comes from this repository's [GitHub Releases](https://github.com/PuroDelphi/omarchy-automations/releases).
 No Go compiler, sudo or manual service configuration is needed.
@@ -149,6 +149,7 @@ Choose a language for each guide. English is listed first throughout.
 | Interface, language and screenshots | [[en]](docs/en/interface.md) · [[es]](docs/es/interface.md) |
 | Options reference | [[en]](docs/en/options.md) · [[es]](docs/es/options.md) |
 | Use cases | [[en]](docs/en/use-cases.md) · [[es]](docs/es/use-cases.md) |
+| Advanced clipboard and file sharing | [[en]](docs/en/clipboard-bridge.md) · [[es]](docs/es/clipboard-bridge.md) |
 | Scripts and event adapters | [[en]](docs/en/code-examples.md) · [[es]](docs/es/code-examples.md) |
 | GitHub webhook example | [[en]](docs/en/provider-example.md) · [[es]](docs/es/provider-example.md) |
 | Service control example | [[en]](docs/en/service-example.md) · [[es]](docs/es/service-example.md) |

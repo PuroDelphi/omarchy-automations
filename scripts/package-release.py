@@ -22,7 +22,7 @@ def package(output):
              'scripts/install.py', 'scripts/setup.py', 'scripts/install-broker.py',
              'scripts/prepare-broker-install.py'}
     for directory, suffixes in [('qml', {'.qml', '.js', ''}), ('docs', {'.md', '.png'}),
-                                ('examples', {'.json', '.py', '.sh'}),
+                                ('examples', {'.json', '.py', '.sh', '.service'}),
                                 ('schemas', {'.json'}), ('skills', {'.md', '.yaml'}), ('packaging', None)]:
         for path in (ROOT / directory).rglob('*'):
             if path.is_symlink():
