@@ -41,7 +41,7 @@ with tempfile.TemporaryDirectory(prefix='omarchy-setup-test-') as directory:
     before = {p: p.read_bytes() for p in plugin.rglob('*') if p.is_file()}
     run(plugin / 'scripts/setup.py', home, '--archive', str(archive))
     receipt = json.loads((home / '.local/state/quatrro-install/receipt.json').read_text())
-    assert receipt['mode'] == 'git-plugin' and len(receipt['files']) == 3
+    assert receipt['mode'] == 'git-plugin' and len(receipt['files']) == 3 + len(install.SKILL_FILES)
     run(plugin / 'scripts/setup.py', home, '--archive', str(archive), '--update')
     run(plugin / 'scripts/setup.py', home, '--uninstall')
     assert all(p.read_bytes() == raw for p, raw in before.items())

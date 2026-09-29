@@ -2043,3 +2043,10 @@ Preview 1 pendientes de verificar antes de considerar cerrada esta mejora.
 - [x] README and installation guides link to optional development instructions.
 - [x] Legacy installer/package/broker references identify their advanced scope and link to normal installation.
 - Historical validation records and third-party license notices remain unchanged.
+
+### Preview 3 — installed AI skill
+
+- [x] Bundle omarchy-automations skill, CLI reference and Codex metadata.
+- [x] Runtime installer owns the skill files in both managed and Git-plugin modes.
+- [x] Document registration, example requests and removal in EN/ES.
+- [x] Preserve full drafts, review exact capabilities, handle revoked permissions and distinguish simulation from real effects.

@@ -70,3 +70,5 @@ ejemplo son alternativas, no fragmentos que deban combinarse automáticamente.
 | Network exposure | [[en]](../en/exposure.md) · [[es]](../es/exposure.md) |
 
 [Desarrollo y compilación opcional](development.md).
+
+Los asistentes de IA pueden usar la [skill Omarchy Automations incluida](ai-assistants.md), sin Go ni código fuente.

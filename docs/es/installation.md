@@ -108,3 +108,5 @@ Solo están verificados los paquetes precompilados para Linux amd64.
 
 CI verifica motor portable, instalador, documentación y paquete. No sustituye
 las pruebas nativas de Omarchy ni las pruebas Google/sesión aplazadas.
+
+Los asistentes de IA pueden usar la [skill Omarchy Automations incluida](ai-assistants.md), sin Go ni código fuente.

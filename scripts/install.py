@@ -17,6 +17,7 @@ from datetime import datetime, timezone
 PROJECT = Path(__file__).resolve().parents[1]
 PLUGIN = "quatrro.automations"
 DATABASE_VERSION = 5
+SKILL_FILES = ("SKILL.md", "references/runtime.md", "agents/openai.yaml")
 
 
 def digest(raw):
@@ -63,6 +64,7 @@ def plugin_sources():
 def owned_paths(home, config, receipt=None):
     plugin = config / "omarchy/plugins" / PLUGIN
     allowed = {str(home / ".local/bin" / name) for name in ("quatrrod", "quatrroctl")} | {str(plugin / relative) for relative in plugin_sources()} | {str(config / "systemd/user/quatrrod.service")}
+    allowed.update(str(home / ".local/share/omarchy-automations/skills/omarchy-automations" / name) for name in SKILL_FILES)
     ui_files = {str(relative) for relative in plugin_sources() if relative != Path("manifest.json")}
     for name in (receipt or {}).get("files", {}):
         try:
@@ -146,6 +148,9 @@ def artifacts(home, config):
     executable = str(home / ".local/bin/quatrrod").replace("%", "%%").replace("\\", "\\\\").replace('"', '\\"')
     unit = unit.replace("ExecStart=%h/.local/bin/quatrrod", f'ExecStart="{executable}"')
     files[str(config / "systemd/user/quatrrod.service")] = (unit.encode(), 0o644)
+    for name in SKILL_FILES:
+        source = PROJECT / "skills/omarchy-automations" / name
+        files[str(home / ".local/share/omarchy-automations/skills/omarchy-automations" / name)] = (source.read_bytes(), 0o644)
     return files, compatibility
 
 

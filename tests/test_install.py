@@ -36,13 +36,17 @@ class InstallationTests(unittest.TestCase):
         installer.install(self.args)
         receipt = json.loads((self.root / ".local/state/quatrro-install/receipt.json").read_text())
         self.assertEqual(receipt["mode"], "git-plugin")
-        self.assertEqual(len(receipt["files"]), 3)
+        self.assertEqual(len(receipt["files"]), 3 + len(installer.SKILL_FILES))
+        skill = self.root / ".local/share/omarchy-automations/skills/omarchy-automations"
+        for name in installer.SKILL_FILES:
+            self.assertEqual((skill / name).read_bytes(), (installer.PROJECT / "skills/omarchy-automations" / name).read_bytes())
         self.assertFalse(any(Path(p).is_relative_to(plugin) for p in receipt["files"]))
         installer.install(self.args)
         installer.uninstall(self.args)
         self.assertTrue((plugin / ".git").is_dir())
         self.assertEqual(before, {p: p.read_bytes() for p in plugin.rglob("*") if p.is_file()})
         self.assertFalse((self.root / ".local/bin/quatrrod").exists())
+        self.assertFalse((skill / "SKILL.md").exists())
 
     def test_git_panel_mismatch_refuses_runtime_installation(self):
         plugin = self.prepare_git_plugin()

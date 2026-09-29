@@ -1,0 +1,4 @@
+interface:
+  display_name: "Omarchy Automations"
+  short_description: "Manage automations through the installed service"
+  default_prompt: "Use $omarchy-automations to create and verify the automation I describe."

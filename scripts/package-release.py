@@ -23,7 +23,7 @@ def package(output):
              'scripts/prepare-broker-install.py'}
     for directory, suffixes in [('qml', {'.qml', '.js', ''}), ('docs', {'.md', '.png'}),
                                 ('examples', {'.json', '.py', '.sh'}),
-                                ('schemas', {'.json'}), ('packaging', None)]:
+                                ('schemas', {'.json'}), ('skills', {'.md', '.yaml'}), ('packaging', None)]:
         for path in (ROOT / directory).rglob('*'):
             if path.is_symlink():
                 raise ValueError('Symlink in release inputs: ' + str(path.relative_to(ROOT)))

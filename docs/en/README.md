@@ -70,3 +70,5 @@ fragments to combine automatically.
 | Network exposure | [[en]](../en/exposure.md) · [[es]](../es/exposure.md) |
 
 [Development and optional source builds](development.md).
+
+AI assistants can use the bundled [Omarchy Automations skill](ai-assistants.md), without Go or a source checkout.

@@ -106,3 +106,5 @@ Only Linux amd64 prebuilt artifacts are currently verified.
 
 The CI workflow checks the portable engine, installer, documentation and archive.
 It does not replace native Omarchy UI tests or the deferred Google/session tests.
+
+AI assistants can use the bundled [Omarchy Automations skill](ai-assistants.md), without Go or a source checkout.

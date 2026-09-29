@@ -40,7 +40,7 @@ python3 ~/.config/omarchy/plugins/quatrro.automations/scripts/setup.py
 ```
 
 The first command clones the plugin without enabling it. The second downloads
-**Preview 2**, verifies the archive and file checksums, installs the engine and
+**Preview 3**, verifies the archive and file checksums, installs the engine and
 CLI, then enables the service and widget. Click the connections icon in the bar.
 The download comes from this repository's [GitHub Releases](https://github.com/PuroDelphi/omarchy-automations/releases).
 No Go compiler, sudo or manual service configuration is needed.
@@ -189,6 +189,12 @@ Choose a language for each guide. English is listed first throughout.
 | Network exposure | [[en]](docs/en/exposure.md) · [[es]](docs/es/exposure.md) |
 
 Historical engineering records: [Roadmap](ROADMAP.md), [validation evidence](docs/validation.md), [verified compatibility](docs/compatibility.md).
+
+## AI assistants
+
+The runtime includes an **Omarchy Automations** skill for agents with authorized
+terminal access. It uses the installed CLI; no source checkout or Go is needed.
+[Setup and examples: English](docs/en/ai-assistants.md) · [Español](docs/es/ai-assistants.md).
 
 ## Development
 

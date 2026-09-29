@@ -39,3 +39,6 @@ jobs:
         run: python3 scripts/test-release-package.py
       - name: Prebuilt setup lifecycle and archive safety
         run: python3 scripts/test-setup.py
+
+      - name: Installed AI skill examples without effects
+        run: python3 scripts/test-skill-runtime.py
