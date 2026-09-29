@@ -1,0 +1,23 @@
+name: Feature request / Solicitud de funcionalidad
+description: Suggest an improvement / Propón una mejora
+title: "[Feature]: "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Use case / Caso de uso
+      description: What are you trying to automate, and what is difficult today?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior / Comportamiento propuesto
+    validations:
+      required: true
+  - type: textarea
+    id: security
+    attributes:
+      label: Permissions or security considerations / Permisos o seguridad
+      description: Describe any network access, credentials or OS actions involved.

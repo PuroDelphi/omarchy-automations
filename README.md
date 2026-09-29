@@ -197,6 +197,19 @@ The runtime includes an **Omarchy Automations** skill for agents with authorized
 terminal access. It uses the installed CLI; no source checkout or Go is needed.
 [Setup and examples: English](docs/en/ai-assistants.md) · [Español](docs/es/ai-assistants.md).
 
+## Support this project
+
+Omarchy Automations is open source. If it helps your workflow, you can support
+its maintenance through [GitHub Sponsors](https://github.com/sponsors/PuroDelphi)
+or [PayPal](https://www.paypal.com/donate/?hosted_button_id=KBAUBYYDNHQNQ).
+The PayPal QR code below is the same one used by
+[mcpFirebird](https://github.com/PuroDelphi/mcpFirebird#support-this-project).
+Donations are optional and do not change the MIT license.
+
+[![Scan to donate through PayPal](docs/images/paypal-qr.png)](https://www.paypal.com/donate/?hosted_button_id=KBAUBYYDNHQNQ)
+
+For questions, bug reports and security disclosures, see [Support](SUPPORT.md).
+
 ## Development
 
 For source builds, isolated profiles and tests, see the development guide

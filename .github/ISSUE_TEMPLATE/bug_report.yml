@@ -1,0 +1,34 @@
+name: Bug report / Informe de error
+description: Report a reproducible, non-security problem / Reporta un problema reproducible sin información sensible
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: "Do not include secrets, credentials or private exports. For vulnerabilities, use the private security form. / No incluyas secretos ni exportaciones privadas."
+  - type: input
+    id: version
+    attributes:
+      label: Plugin and Omarchy versions / Versiones del plugin y Omarchy
+      placeholder: "0.1.0-dev; Omarchy Quattro …"
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce / Pasos para reproducir
+      description: Include the flow state and whether it was simulated or activated.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected result / Resultado esperado
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual result and redacted logs / Resultado real y registros depurados
+    validations:
+      required: true

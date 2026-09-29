@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security vulnerability / Vulnerabilidad de seguridad
+    url: https://github.com/PuroDelphi/omarchy-automations/security/advisories/new
+    about: Report vulnerabilities privately; do not include exploits in public issues.
+  - name: Usage and installation / Uso e instalación
+    url: https://github.com/PuroDelphi/omarchy-automations/blob/main/SUPPORT.md
+    about: Read the English and Spanish support guide before opening an issue.
