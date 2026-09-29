@@ -27,9 +27,10 @@ and manifest base version. `release.json` records version, contracts, platform
 and each file's SHA256. The optional broker retains its separate protocol.
 
 The tar.gz normalizes ordering, permissions, ownership and timestamps, including
-the gzip header. Explicit input roots include binaries, UI, installers, templates,
+the gzip header. Explicit input roots include binaries, UI, the runtime installer, templates,
 examples, schemas and documentation. Profiles, Git metadata, caches and credentials
-are excluded; symlink inputs are rejected.
+are excluded; symlink inputs are rejected. `scripts/setup.py` stays in the Git
+checkout, where it pins the archive digest, and is not bundled into that archive.
 
 ## Install an extracted package
 

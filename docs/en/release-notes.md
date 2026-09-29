@@ -2,8 +2,10 @@
 
 [Español](../es/release-notes.md) · [Documentation](README.md)
 
-This is a local development build for Linux amd64, not the stable 1.0 release.
-No repository commit, tag, remote push or GitHub release has been created.
+This is a published development preview for Linux amd64, not the stable 1.0 release.
+Preview 5 provides a root marketplace screenshot and pins the downloaded runtime
+archive SHA256 in the source checkout. Its release tag points to the reviewed
+source commit.
 
 ## Included
 

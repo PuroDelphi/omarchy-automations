@@ -16,8 +16,9 @@ import urllib.request
 
 ROOT = Path(__file__).resolve().parents[1]
 REPOSITORY = 'PuroDelphi/omarchy-automations'
-TAG = 'v0.1.0-preview.4'
+TAG = 'v0.1.0-preview.5'
 ARCHIVE = 'omarchy-automations-0.1.0-dev-linux-amd64.tar.gz'
+PINNED_ARCHIVE_SHA256 = '37342b1787980de4e6f494c47b01cd7a6ba6f604dad6e8d56120d76e0dbcc11c'
 MAX_ARCHIVE = 80 * 1024 * 1024
 MAX_EXPANDED = 256 * 1024 * 1024
 
@@ -38,6 +39,12 @@ def download(name, destination, limit):
     if len(raw) > limit:
         raise ValueError('Download exceeds size limit')
     destination.write_bytes(raw)
+
+
+def verify_pinned_archive(archive, expected=PINNED_ARCHIVE_SHA256):
+    actual = hashlib.sha256(archive.read_bytes()).hexdigest()
+    if actual != expected:
+        raise ValueError('Downloaded runtime does not match the SHA256 pinned in this checkout')
 
 
 def extract_verified(archive, checksum, destination):
@@ -112,6 +119,7 @@ def main():
             print(f'Downloading Omarchy Automations {TAG} from {REPOSITORY}…', flush=True)
             download(ARCHIVE, archive, MAX_ARCHIVE)
             download(ARCHIVE + '.sha256', checksum, 4096)
+            verify_pinned_archive(archive)
         package = extract_verified(archive, checksum, temporary / 'extracted')
         # Use this reviewed installer, not executable Python from a downloaded archive.
         import install

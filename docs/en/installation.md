@@ -15,10 +15,12 @@ python3 ~/.config/omarchy/plugins/quatrro.automations/scripts/setup.py
 
 The first command clones trusted code without enabling it. Setup downloads the
 specific preview release selected in `scripts/setup.py`, validates the archive
-SHA256 and every file's hash, checks UI compatibility, installs `quatrrod` and
+against the SHA256 pinned in that checkout and every file's hash, checks UI
+compatibility, installs `quatrrod` and
 `quatrroctl` under `~/.local/bin`, enables the user service and enables the widget.
-It does not install the optional privileged broker. Checksums detect corruption;
-they are not an independent publisher signature. Download assets only from this
+It does not install the optional privileged broker. The pinned digest binds the
+automatic download to this checkout; it is not an independent publisher signature.
+Download assets only from this
 repository's [releases](https://github.com/PuroDelphi/omarchy-automations/releases).
 
 Click the connections icon in the bar. English is the default; select Spanish in

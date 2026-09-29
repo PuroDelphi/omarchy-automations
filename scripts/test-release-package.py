@@ -30,6 +30,7 @@ with tempfile.TemporaryDirectory(prefix='omarchy-package-') as temporary:
     extracted = next((base / 'extracted').iterdir())
     assert (extracted / 'LICENSE').read_bytes() == (ROOT / 'LICENSE').read_bytes()
     metadata = json.loads((extracted / 'release.json').read_text())
+    assert 'scripts/setup.py' not in metadata['files']
     assert metadata['product'] == 'Omarchy Automations'
     assert metadata['platform'] == 'linux-amd64'
     for language in ('en', 'es'):

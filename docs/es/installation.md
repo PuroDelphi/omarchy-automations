@@ -15,10 +15,12 @@ python3 ~/.config/omarchy/plugins/quatrro.automations/scripts/setup.py
 
 El primer comando clona código de confianza sin habilitarlo. Setup descarga la
 versión preliminar específica seleccionada en `scripts/setup.py`, valida SHA256
-del archivo y hashes de cada fichero, comprueba compatibilidad de UI, instala
+del archivo contra el valor fijado en esa copia Git y los hashes de cada fichero,
+comprueba compatibilidad de UI, instala
 `quatrrod` y `quatrroctl` en `~/.local/bin`, habilita el servicio y el widget.
-No instala el broker privilegiado opcional. Los hashes detectan corrupción;
-no son una firma independiente del publicador. Descarga únicamente de las
+No instala el broker privilegiado opcional. El hash fijado vincula la descarga
+automática con la copia revisada; no es una firma independiente del publicador.
+Descarga únicamente de las
 [versiones de este repositorio](https://github.com/PuroDelphi/omarchy-automations/releases).
 
 Pulsa el icono de conexiones en la barra. Inglés es el idioma inicial; selecciona

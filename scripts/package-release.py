@@ -19,8 +19,10 @@ ROOT = Path(__file__).resolve().parents[1]
 def package(output):
     # Explicit roots: no git metadata, profiles, caches or arbitrary workspace files.
     names = {'LICENSE', 'manifest.json', 'Panel.qml', 'Widget.qml', 'README.md', 'ROADMAP.md',
-             'scripts/install.py', 'scripts/setup.py', 'scripts/install-broker.py',
+             'scripts/install.py', 'scripts/install-broker.py',
              'scripts/prepare-broker-install.py'}
+    # setup.py stays in the reviewed Git checkout and pins this archive's digest.
+    # Excluding it avoids a self-referential digest.
     for directory, suffixes in [('qml', {'.qml', '.js', ''}), ('docs', {'.md', '.png'}),
                                 ('examples', {'.json', '.py', '.sh', '.service'}),
                                 ('schemas', {'.json'}), ('skills', {'.md', '.yaml'}), ('packaging', None)]:

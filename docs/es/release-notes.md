@@ -2,8 +2,10 @@
 
 [English](../en/release-notes.md) · [Documentación](README.md)
 
-Compilación local de desarrollo para Linux amd64; no es la versión estable 1.0.
-No se ha creado commit, tag, push remoto ni release de GitHub.
+Versión preliminar publicada para Linux amd64; no es la versión estable 1.0.
+Preview 5 añade una captura en la raíz para el marketplace y fija el SHA256 del
+paquete descargado en la copia de código fuente. La etiqueta de la versión
+apunta al commit de código revisado.
 
 ## Incluido
 

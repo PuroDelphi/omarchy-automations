@@ -28,9 +28,10 @@ y versión base del manifiesto. `release.json` registra versión, contratos,
 plataforma y SHA256 por archivo. El broker opcional conserva protocolo separado.
 
 El tar.gz normaliza orden, permisos, propietarios y fechas, incluida la cabecera
-gzip. Rutas de entrada explícitas incluyen binarios, UI, instaladores, plantillas,
+gzip. Rutas de entrada explícitas incluyen binarios, UI, el instalador del motor, plantillas,
 ejemplos, esquemas y documentación. Excluye perfiles, metadatos Git, cachés y
-credenciales; rechaza enlaces simbólicos.
+credenciales; rechaza enlaces simbólicos. `scripts/setup.py` permanece en la copia
+Git, donde fija el hash del archivo, y no se incluye dentro de ese archivo.
 
 ## Instalar un paquete extraído
 

@@ -18,6 +18,13 @@ with tempfile.TemporaryDirectory(prefix='omarchy-setup-test-') as directory:
     archive = Path(subprocess.check_output([sys.executable, str(ROOT / 'scripts/package-release.py'),
                                           '--output', str(base / 'artifacts')], text=True).strip())
     checksum = archive.with_name(archive.name + '.sha256')
+    digest = hashlib.sha256(archive.read_bytes()).hexdigest()
+    setup.verify_pinned_archive(archive, digest)
+    try:
+        setup.verify_pinned_archive(archive, '0' * 64)
+        raise AssertionError('Unpinned release accepted')
+    except ValueError as error:
+        assert 'does not match' in str(error)
     def run(script, home, *args):
         subprocess.run([sys.executable, str(script), '--staging-root', str(home), *args], check=True,
                        stdout=subprocess.DEVNULL)
