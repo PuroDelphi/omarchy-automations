@@ -3,9 +3,12 @@
 [English](../en/release-notes.md) · [Documentación](README.md)
 
 Versión preliminar publicada para Linux amd64; no es la versión estable 1.0.
-Preview 5 añade una captura en la raíz para el marketplace y fija el SHA256 del
-paquete descargado en la copia de código fuente. La etiqueta de la versión
-apunta al commit de código revisado.
+Preview 6 conserva los contratos del motor y la compatibilidad de Preview 5.
+Añade una herramienta probada que calcula el SHA256 del paquete, actualiza el
+hash fijado en la copia de código y comprueba que la etiqueta y el paquete
+coincidan. La etiqueta de la versión apunta al commit de código revisado.
+La captura para el marketplace y la verificación del paquete de Preview 5
+siguen incluidas.
 
 ## Incluido
 

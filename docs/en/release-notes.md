@@ -3,9 +3,11 @@
 [Español](../es/release-notes.md) · [Documentation](README.md)
 
 This is a published development preview for Linux amd64, not the stable 1.0 release.
-Preview 5 provides a root marketplace screenshot and pins the downloaded runtime
-archive SHA256 in the source checkout. Its release tag points to the reviewed
-source commit.
+Preview 6 keeps the Preview 5 runtime and compatibility contracts. It adds a
+tested release helper that calculates the archive SHA256, updates the digest
+pinned in the source checkout and verifies that the tag and archive match.
+Its release tag points to the reviewed source commit. The root marketplace
+screenshot and archive verification introduced in Preview 5 remain included.
 
 ## Included
 

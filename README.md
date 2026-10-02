@@ -40,7 +40,7 @@ python3 ~/.config/omarchy/plugins/quatrro.automations/scripts/setup.py
 ```
 
 The first command clones the plugin without enabling it. The second downloads
-**Preview 5**, verifies the archive against the SHA256 pinned in this checkout
+**Preview 6**, verifies the archive against the SHA256 pinned in this checkout
 and checks each packaged file, then installs the engine and
 CLI, then enables the service and widget. Click the connections icon in the bar.
 The download comes from this repository's [GitHub Releases](https://github.com/PuroDelphi/omarchy-automations/releases).
