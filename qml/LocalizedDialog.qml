@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import qs.Commons
+import qs.Commons as Commons
 import qs.Ui as Native
 import "."
 
@@ -10,8 +11,8 @@ Dialog {
     property string acceptText: I18n.language === "es" ? "Aceptar" : "OK"
     font.family: Style.font.family
     font.pixelSize: Style.font.body
-    palette.windowText: Color.foreground
-    palette.text: Color.foreground
+    palette.windowText: Commons.Color.foreground
+    palette.text: Commons.Color.foreground
     padding: Style.spacing.lg
     header: ThemedLabel {
         text: root.title
@@ -23,9 +24,9 @@ Dialog {
         bottomPadding: Style.spacing.controlGap
     }
     background: Native.BorderSurface {
-        color: Color.popups.background
+        color: Commons.Color.popups.background
         radius: Style.cornerRadius
-        borderSpec: Border.surfaceSpec("popups", "border", Color.popups.border, Style.normalBorderWidth)
+        borderSpec: Border.surfaceSpec("popups", "border", Commons.Color.popups.border, Style.normalBorderWidth)
     }
     footer: RowLayout {
         function standardButton(button) {

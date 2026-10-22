@@ -8,6 +8,7 @@ FocusScope {
     Accessible.name: root.accessibleLabel
     property string accessibleLabel: ""
     property var model: []
+    property var labels: model
     property int currentIndex: model.length ? 0 : -1
     readonly property string currentText: currentIndex >= 0 && currentIndex < model.length ? String(model[currentIndex]) : ""
     property bool editable: false
@@ -35,7 +36,10 @@ FocusScope {
             visible: root.editable
             Layout.fillWidth: true
             text: root.editText
-            onTextEdited: { root.editText = text; root.textEdited(text); }
+            onTextEdited: {
+                root.editText = text;
+                root.textEdited(text);
+            }
             onAccepted: root.accepted()
         }
         Native.Dropdown {
@@ -46,7 +50,7 @@ FocusScope {
             options: root.model.map(function (label, index) {
                 return {
                     value: String(index),
-                    label: String(label)
+                    label: String(root.labels[index] === undefined ? label : root.labels[index])
                 };
             })
             value: String(root.currentIndex)

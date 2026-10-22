@@ -1,6 +1,7 @@
 import QtQuick
 import qs.Ui as Native
 import qs.Commons
+import qs.Commons as Commons
 
 Native.Button {
     id: root
@@ -11,7 +12,7 @@ Native.Button {
     property bool destructive: false
     focusable: true
     selected: highlighted || checked
-    foreground: destructive ? Color.urgent : Color.foreground
+    foreground: destructive ? Commons.Color.urgent : Commons.Color.foreground
     opacity: enabled ? 1 : 0.45
     Accessible.role: Accessible.Button
     property string accessibleLabel: text

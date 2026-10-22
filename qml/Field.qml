@@ -1,14 +1,20 @@
 pragma ComponentBehavior: Bound
 import QtQuick
 import qs.Commons
+import qs.Commons as Commons
 import "."
 import QtQuick.Controls
 import QtQuick.Layouts
+import "Events.js" as Events
 
 ColumnLayout {
     id: root
     property var spec: ({})
     property var value
+    property string eventSource: ""
+    property bool advancedChoice: false
+    property var actions: []
+    signal actionRequested(string identifier)
     property bool immutable: false
     signal edited(var next)
     function syncEditableChoice() {
@@ -21,21 +27,29 @@ ColumnLayout {
             edited(spec.options[0]);
     }
     onVisibleChanged: Qt.callLater(ensureChoice)
-    onValueChanged: { Qt.callLater(ensureChoice); Qt.callLater(syncEditableChoice); }
+    onValueChanged: {
+        Qt.callLater(ensureChoice);
+        Qt.callLater(syncEditableChoice);
+    }
     Component.onCompleted: Qt.callLater(ensureChoice)
     spacing: 6
     ThemedLabel {
         text: I18n.tr(root.spec.label || "")
         font.bold: true
-        color: Color.foreground
+        color: Commons.Color.foreground
     }
     ThemedLabel {
         text: I18n.tr(root.spec.hint || "")
         visible: text !== ""
-        color: Qt.alpha(Color.foreground, 0.75)
+        color: Qt.alpha(Commons.Color.foreground, 0.75)
         font.pixelSize: Style.font.body
         wrapMode: Text.Wrap
         Layout.fillWidth: true
+    }
+    ActionButton {
+        visible: root.spec.type === "editable-choice"
+        text: root.advancedChoice ? I18n.tr("Elegir de la lista") : I18n.tr("Escribir un origen avanzado")
+        onClicked: root.advancedChoice = !root.advancedChoice
     }
     Loader {
         id: editorLoader
@@ -102,10 +116,16 @@ ColumnLayout {
                     return options.concat([root.value]);
                 return options;
             }
-            editable: root.spec.type === "editable-choice"
+            labels: model.map(function (v) {
+                return I18n.tr(Events.label(v));
+            })
+            editable: root.spec.type === "editable-choice" && root.advancedChoice
             currentIndex: Math.max(0, model.indexOf(root.value))
             onActivated: root.edited(currentText)
-            onTextEdited: function(next) { if (editable) root.edited(next); }
+            onTextEdited: function (next) {
+                if (editable)
+                    root.edited(next);
+            }
             onAccepted: if (editable)
                 root.edited(editText)
         }
@@ -124,6 +144,7 @@ ColumnLayout {
     Component {
         id: conditionsField
         Conditions {
+            eventSource: root.eventSource
             width: parent.width
             value: root.value || []
             onEdited: function (next) {
@@ -134,6 +155,10 @@ ColumnLayout {
     Component {
         id: stepsField
         Steps {
+            actions: root.actions
+            onActionRequested: function (identifier) {
+                root.actionRequested(identifier);
+            }
             width: parent.width
             value: root.value || []
             options: root.spec.options || []

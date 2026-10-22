@@ -1,4 +1,5 @@
 .pragma library
+.import "Events.js" as Events
 
 function fields(kind, config) {
     var common = [{key:"id", label:"Identificador", hint:"ejemplo: despliegues", required:true}]
@@ -52,7 +53,7 @@ function fields(kind, config) {
         {key:"timeout_seconds",label:"Tiempo máximo (segundos)",type:"number",when:"kind",oneOf:["command","script"]}
     ])
     if (kind === "flows") return common.concat(named,[
-        {key:"source",label:"Cuando llegue un evento de",type:"editable-choice",options:["local:demo"].concat((config.entries||[]).map(function(x){return "entry:"+x.id}),(config.monitors||[]).map(function(x){return "monitor:"+x.id}),(config.timers||[]).map(function(x){return "timer:"+x.id})),hint:"Entrada, monitor, programación, local:nombre o hook:evento"},
+        {key:"source",label:"Cuando llegue un evento de",type:"editable-choice",options:Events.hooks.map(function(h){return h.value}).concat(["local:demo"]).concat((config.entries||[]).map(function(x){return "entry:"+x.id}),(config.monitors||[]).map(function(x){return "monitor:"+x.id}),(config.timers||[]).map(function(x){return "timer:"+x.id})),hint:"Entrada, monitor, programación, local:nombre o hook:evento"},
         {key:"conditions",label:"Si se cumplen estas condiciones",type:"conditions"},
         {key:"steps",label:"Ejecutar en este orden",type:"steps",options:actions}
     ],enabled)

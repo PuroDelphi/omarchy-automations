@@ -1,34 +1,59 @@
 pragma ComponentBehavior: Bound
 import QtQuick
 import qs.Commons
+import qs.Commons as Commons
 import "."
 import QtQuick.Controls
 import QtQuick.Layouts
+import "Events.js" as Events
 
 ColumnLayout {
     id: root
     property var value: []
+    property string eventSource: ""
+    property bool advancedFields: false
+    readonly property var suggestedFields: Events.fields(eventSource)
     signal edited(var next)
     function update(i, k, v) {
         var a = JSON.parse(JSON.stringify(value));
         a[i][k] = v;
         edited(a);
     }
+    ActionButton {
+        visible: root.suggestedFields.length > 0
+        text: root.advancedFields ? I18n.tr("Usar campos sugeridos") : I18n.tr("Editar campos avanzados")
+        onClicked: root.advancedFields = !root.advancedFields
+    }
     Repeater {
         model: root.value.length
-        RowLayout {
+        ColumnLayout {
             required property int index
             Layout.fillWidth: true
-            InputField {
+            ChoiceField {
                 accessibleLabel: I18n.tr("Campo del evento")
-                placeholderText: "data.state"
-                text: root.value[index].field
-                Layout.fillWidth: true
-                onEditingFinished: root.update(index, "field", text)
+                model: root.suggestedFields.map(function (h) {
+                    return h.field;
+                }).concat(root.suggestedFields.some(function (h) {
+                    return h.field === root.value[index].field;
+                }) ? [] : [root.value[index].field])
+                labels: model.map(function (v) {
+                    var h = root.suggestedFields.find(function (h) {
+                        return h.field === v;
+                    });
+                    return h ? I18n.tr(h.fieldLabel) : v;
+                })
+                editable: root.advancedFields || root.suggestedFields.length === 0
+                currentIndex: model.indexOf(root.value[index].field)
+                editText: root.value[index].field
+                onActivated: root.update(index, "field", currentText)
+                onTextEdited: function (next) {
+                    root.update(index, "field", next);
+                }
             }
             ChoiceField {
                 accessibleLabel: I18n.tr("Operador de condición")
                 model: ["eq", "ne", "gt", "lt", "contains"]
+                labels: [I18n.tr("Es igual a"), I18n.tr("Es diferente de"), I18n.tr("Es mayor que"), I18n.tr("Es menor que"), I18n.tr("Contiene")]
                 currentIndex: model.indexOf(root.value[index].op)
                 onActivated: root.update(index, "op", currentText)
             }
@@ -60,15 +85,15 @@ ColumnLayout {
         text: I18n.tr("Añadir condición")
         onClicked: root.edited(root.value.concat([
             {
-                field: "data.state",
+                field: root.suggestedFields.length ? root.suggestedFields[0].field : "data.state",
                 op: "eq",
-                value: "failed"
+                value: root.suggestedFields.length && root.suggestedFields[0].type === "number" ? 20 : ""
             }
         ]))
     }
     ThemedLabel {
-        text: I18n.tr("Todas deben cumplirse. eq = igual; ne = diferente; gt/lt = mayor/menor; contains = contiene.")
-        color: Qt.alpha(Color.foreground, 0.75)
+        text: I18n.tr("Todas las condiciones deben cumplirse. Puedes elegir un campo sugerido o escribir una ruta avanzada.")
+        color: Qt.alpha(Commons.Color.foreground, 0.75)
         wrapMode: Text.Wrap
         Layout.fillWidth: true
     }

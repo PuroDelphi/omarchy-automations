@@ -1,6 +1,7 @@
 pragma ComponentBehavior: Bound
 import QtQuick
 import qs.Commons
+import qs.Commons as Commons
 import "."
 import QtQuick.Controls
 import QtQuick.Layouts
@@ -8,6 +9,7 @@ import "Schema.js" as Schema
 
 LocalizedDialog {
     id: root
+    property alias inlineActionEditor: actionLoader.item
     property alias directoriesEditor: directories
     property alias scriptArgumentsEditor: scriptArguments
     readonly property bool localCode: kind === "scripts" || kind === "adapters"
@@ -32,6 +34,55 @@ LocalizedDialog {
     property string administrationState: "unchecked"
     property bool checkingAdministration: false
     signal administrationCheckRequested(var request, int token)
+    property var pendingActions: []
+    readonly property var workingConfig: {
+        var next = JSON.parse(JSON.stringify(config));
+        next.actions = (next.actions || []).filter(function (a) {
+            return !pendingActions.some(function (p) {
+                return p.id === a.id;
+            });
+        }).concat(pendingActions);
+        return next;
+    }
+    function editAction(identifier) {
+        actionLoader.setSource("ResourceEditor.qml", {
+            kind: "actions",
+            config: workingConfig
+        });
+        actionLoader.item.edit(identifier ? workingConfig.actions.find(function (a) {
+            return a.id === identifier;
+        }) : null);
+    }
+    Loader {
+        id: actionLoader
+        parent: root.parent
+        anchors.fill: parent
+    }
+    Connections {
+        target: actionLoader.item
+        function onAdministrationCheckRequested(request, token) {
+            root.administrationCheckRequested(request, token);
+        }
+        function onPrepareRequested(request) {
+            root.prepareRequested(request);
+        }
+        function onSaved(action) {
+            var child = actionLoader.item;
+            var exists = root.workingConfig.actions.some(function (a) {
+                return a.id === action.id;
+            });
+            if (!child.existing && exists) {
+                child.error = I18n.tr("Ya existe una acción con ese identificador.");
+                child.open();
+                return;
+            }
+            root.pendingActions = root.pendingActions.filter(function (a) {
+                return a.id !== action.id;
+            }).concat([action]);
+            if (!child.existing)
+                root.setField("steps", (root.draft.steps || []).concat([action.id]));
+        }
+    }
     function resetAdministrationCheck() {
         administrationState = "unchecked";
         checkingAdministration = false;
@@ -47,6 +98,10 @@ LocalizedDialog {
         }, revision);
     }
     function administrationChecked(value, token) {
+        if (actionLoader.item && actionLoader.item.visible) {
+            actionLoader.item.administrationChecked(value, token);
+            return;
+        }
         if (token !== revision || !visible)
             return;
         checkingAdministration = false;
@@ -137,6 +192,10 @@ LocalizedDialog {
         });
     }
     function prepared(value) {
+        if (actionLoader.item && actionLoader.item.visible) {
+            actionLoader.item.prepared(value);
+            return;
+        }
         if (!preparing)
             return;
         preparing = false;
@@ -154,6 +213,8 @@ LocalizedDialog {
         if (preparing)
             return;
         resetAdministrationCheck();
+        pendingActions = [];
+        actionLoader.source = "";
         directories.reset();
         preparedRevision = resource && localCode ? JSON.parse(JSON.stringify(resource)) : null;
         existing = !!resource;
@@ -202,7 +263,7 @@ LocalizedDialog {
             return;
         }
         var resource = {};
-        Schema.fields(kind, config).forEach(function (field) {
+        Schema.fields(kind, workingConfig).forEach(function (field) {
             if (Schema.visible(field, root.draft) && root.draft[field.key] !== undefined)
                 resource[field.key] = root.draft[field.key];
         });
@@ -247,7 +308,7 @@ LocalizedDialog {
                 Layout.fillWidth: true
                 wrapMode: Text.Wrap
                 text: I18n.tr("Requiere el broker administrativo opcional y una política del administrador para esta unidad y operación. Guardar no instala el broker ni concede privilegios. Un resultado incierto no se reintenta automáticamente.")
-                color: Color.accent
+                color: Commons.Color.accent
             }
             ColumnLayout {
                 visible: {
@@ -264,13 +325,19 @@ LocalizedDialog {
                     text: root.administrationText()
                     Layout.fillWidth: true
                     wrapMode: Text.Wrap
-                    color: Color.foreground
+                    color: Commons.Color.foreground
                 }
+            }
+            ThemedLabel {
+                visible: root.kind === "actions" && root.existing
+                Layout.fillWidth: true
+                wrapMode: Text.Wrap
+                text: I18n.tr("Esta acción puede usarse en varios flujos. Sus cambios se aplican a todos al activar la nueva revisión.")
             }
             ThemedLabel {
                 text: root.error
                 visible: text !== ""
-                color: Color.urgent
+                color: Commons.Color.urgent
                 wrapMode: Text.Wrap
                 Layout.fillWidth: true
             }
@@ -299,11 +366,19 @@ LocalizedDialog {
                 }
             }
             Repeater {
-                model: Schema.fields(root.kind, root.config)
+                model: Schema.fields(root.kind, root.workingConfig)
                 Field {
                     required property var modelData
                     Layout.fillWidth: true
                     spec: modelData
+                    actions: root.workingConfig.actions || []
+                    onActionRequested: function (identifier) {
+                        root.editAction(identifier);
+                    }
+                    eventSource: {
+                        root.revision;
+                        return root.draft.source || "";
+                    }
                     enabled: !root.preparing
                     immutable: root.existing && modelData.key === "id"
                     visible: {

@@ -18,6 +18,32 @@ Type is `omarchy.<hook>`. Flow fields can read `data.theme`, `data.font` or
 `data.percentage`. The socket restricts access to the same user; these events do
 not prove that only the Omarchy executable could have produced them.
 
+
+## Visual setup
+
+These visual additions require matching source-built UI and runtime until included in a prebuilt release.
+
+Open **Flows → Omarchy events** to connect or disconnect each of the six supported
+hooks. This manages only the exact `quatrro-<event>` adapters; modified files,
+symlinks and other tools' hooks are never replaced. A disconnected engine loses
+hook events, as described below. Development profiles use an isolated hook folder.
+
+The flow editor lists event names and suggested condition fields. Advanced source
+and field paths remain available. Create or edit actions from the ordered steps;
+new action changes are staged with the flow and discarded when cancelling it.
+Shared action edits affect all referencing flows after activation.
+
+**Flows → Templates** offers 38 bilingual recipes covering desktop hooks, theme
+filters, recurring breaks, calendar reminders, resource alerts and local events.
+Search or filter by category. Each insertion allocates fresh IDs and adds disabled
+resources to the draft, without credentials or permissions. Adjust the values,
+enable the flow and any monitor/timer, save, simulate and review before activating.
+Connect desktop hooks separately. Calendar templates initially use UTC; set your
+IANA timezone and desired time. Notifications in local-event recipes read
+`data.message` supplied by the event producer. The startup hook means the desktop
+started, not a delayed readiness check; the update hook does not verify success.
+
+
 ## Install an adapter
 
 With `quatrroctl` installed under `~/.local/bin`, from the project root:

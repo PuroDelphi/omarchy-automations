@@ -2059,3 +2059,29 @@ Preview 1 pendientes de verificar antes de considerar cerrada esta mejora.
 - [x] End-to-end private-profile test: text and binary file reach real engine and produce two completed notification executions.
 - [x] Fix editable flow source display and saving without Enter; native flow regression and screenshot checks passed.
 - [ ] Validate physical transfer and paste behavior on two real Wayland desktops.
+
+
+## 2026-10-22 — Visual hook authoring and template library
+
+User-authorized scope: named event selection, visual hook connection management,
+readable conditions, inline flow actions and a broad template library; publish
+source to the existing repository. This does not close deferred OAuth/session or
+release gates above.
+
+- [x] Six named hook sources, suggested event fields, translated operators and
+  explicit advanced paths without changing stored event contracts.
+- [x] Native event manager and local `hooks.status/install/remove` operations.
+  Only exact unmodified adapters are managed; development profiles are isolated.
+- [x] Inline actions staged atomically with their flow; cancelling discards edits;
+  shared actions retain IDs and show the consequence of editing them.
+- [x] Searchable bilingual library with 38 templates in five categories, unique
+  insertion IDs, disabled draft resources and explicit UTC/hook setup guidance.
+- [x] Native color namespace collision fixed through `Commons.Color`; preserve
+  the host palette rather than defining separate colors.
+- [x] Go race tests, vet, manifest, 18 installer tests, deterministic archive,
+  prebuilt setup lifecycle, existing real QML workflow, new visual hook workflow
+  and portable template-to-engine validation passed. Screenshots inspected for
+  hooks, inline actions and English/Spanish templates. See `docs/validation.md`.
+
+Next: release matching source changes as a new prebuilt preview through the normal
+release process; physical suspend/logout and real Google OAuth remain deferred.

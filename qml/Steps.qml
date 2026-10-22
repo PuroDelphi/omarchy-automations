@@ -1,6 +1,7 @@
 pragma ComponentBehavior: Bound
 import QtQuick
 import qs.Commons
+import qs.Commons as Commons
 import "."
 import QtQuick.Controls
 import QtQuick.Layouts
@@ -9,6 +10,8 @@ ColumnLayout {
     id: root
     property var value: []
     property var options: []
+    property var actions: []
+    signal actionRequested(string identifier)
     signal edited(var next)
     function change(index, delta) {
         var a = value.slice();
@@ -25,9 +28,20 @@ ColumnLayout {
             required property string modelData
             Layout.fillWidth: true
             ThemedLabel {
-                text: (index + 1) + ". " + modelData
+                text: {
+                    var a = root.actions.find(function (a) {
+                        return a.id === modelData;
+                    });
+                    return (index + 1) + ". " + (a ? (a.title || a.name || a.id) + " · " + a.kind : modelData);
+                }
                 Layout.fillWidth: true
-                color: Color.foreground
+                Layout.minimumWidth: 0
+                wrapMode: Text.Wrap
+                color: Commons.Color.foreground
+            }
+            ActionButton {
+                text: I18n.tr("Editar acción")
+                onClicked: root.actionRequested(modelData)
             }
             ActionButton {
                 text: "↑"
@@ -51,11 +65,21 @@ ColumnLayout {
             }
         }
     }
+    ActionButton {
+        text: I18n.tr("Crear acción y añadirla")
+        onClicked: root.actionRequested("")
+    }
     RowLayout {
         ChoiceField {
             id: choice
             Layout.fillWidth: true
             model: root.options
+            labels: model.map(function (id) {
+                var a = root.actions.find(function (a) {
+                    return a.id === id;
+                });
+                return a ? (a.title || a.name || id) + " · " + a.kind : id;
+            })
         }
         ActionButton {
             text: I18n.tr("Añadir paso")

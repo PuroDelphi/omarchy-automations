@@ -1866,3 +1866,37 @@ avisos adicionales de componentes derivados antes de cerrar R1.7.
 Solicitada elección de licencia del proyecto y participación para consentimiento
 Google/suspensión/logout. Sin respuesta todavía; no se ejecutan acciones de
 sesión disruptivas ni se inventa licencia/credenciales. R1.7/F2.7/F3.3/R1.8 abiertos.
+
+
+## 2026-10-22 — Visual hook authoring
+
+Source review and isolated local execution on the Omarchy workstation:
+
+- `make build`: passed with task-local Go caches.
+- `make test check`: passed (`go test -race ./...`, `go vet ./...`, manifest).
+- `python3 -m unittest discover -s tests`: 18 passed after build.
+- `python3 scripts/test-release-package.py`: deterministic archive, extracted
+  install/update/uninstall, no host activation passed.
+- `python3 scripts/test-setup.py`: managed/Git lifecycle and unsafe archive tests passed.
+- `python3 scripts/test-ui-flow.py`: passed; existing native form, permissions,
+  credential rotation/deletion, six HTTPS deliveries, retry and revocation checks.
+- `python3 scripts/test-visual-flows.py`: passed with a temporary profile;
+  six event sources, hook install/remove, preservation of modified adapters,
+  inline action save/cancel, EN/ES template insertion and real engine validation.
+- `python3 scripts/test-template-runtime.py`: 38 bilingual recipes plus repeated
+  insertion accepted by the engine; drafts disabled and active config unchanged.
+- `python3 scripts/check-docs.py`: 42 paired guides and 533 local links passed.
+- Native QML formatter, `git diff --check`, design lint (zero errors/warnings)
+  and strict premium static audit (zero findings) passed.
+
+Rendered and inspected `.dev/visual-hooks.png`, `.dev/visual-inline.png`,
+`.dev/visual-templates-en.png`, `.dev/visual-templates-es.png` and reduced dialog
+capture. These are local test artifacts, not user data or published release assets.
+No plugin was installed or enabled in the user's real configuration. Hooks were
+managed only inside temporary development profiles. A diagnostic confirmed that
+unqualified `Color` resolved to Qt's `QQuickColor`; `Commons.Color` resolves the
+Omarchy palette and fixes the blank/low-contrast rendering.
+
+Scope limits: no new prebuilt release, no physical suspend/logout or real Google
+OAuth acceptance. Offscreen native interaction tests are not a claim of complete
+screen-reader or physical keyboard coverage. Existing pinned preview is unchanged.
