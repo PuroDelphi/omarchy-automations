@@ -35,7 +35,11 @@ Simulation does not activate flows or execute actions. Activation requires the r
 
 `python3 scripts/smoke-native.py --offscreen` checks connectivity and produces a fresh render at `.dev/panel-render.png`, even while the session is locked. `python3 scripts/test-ui-flow.py` exercises QML form signals, activates a revision and checks notification, local HTTPS delivery and history. `QUATRRO_HOST_TEST=1 go test -race ./...` adds a notification, a dedicated temporary service and isolated command tests. These tests require access to the real session bus.
 
-Omarchy plugins run as user code; this interface is not a sandbox. The plugin does not expose a remote shell. Registered commands use fixed arguments and run through systemd/Bubblewrap with networking disabled and read-only `/usr`.
+The development harness loads the editor in its own process but does not enforce
+the production cgroup limits. Test production containment with
+`QUATRRO_HOST_TEST=1 python3 scripts/test-editor-isolation.py`; test implicit
+clipboard reads with `python3 scripts/test-shell-clipboard.py` (Qt development
+headers, moc and C++ compiler required). See the security guide for the boundary. The plugin does not expose a remote shell. Registered commands use fixed arguments and run through systemd/Bubblewrap with networking disabled and read-only `/usr`.
 
 ## Install a source build
 

@@ -28,10 +28,10 @@ with tempfile.TemporaryDirectory(prefix='omarchy-doc-captures-') as temporary:
     base = Path(temporary)
     ui = base / 'ui'
     ui.mkdir()
-    for name in ('Panel.qml', 'Development.qml'):
+    for name in ('Editor.qml', 'Development.qml'):
         shutil.copy2(ROOT / name, ui / name)
     shutil.copytree(ROOT / 'qml', ui / 'qml')
-    panel = (ui / 'Panel.qml').read_text().replace('    id: root\n', '''    id: root
+    panel = (ui / 'Editor.qml').read_text().replace('    id: root\n', '''    id: root
     function documentationBounds() {
         return [eventLimit, byteLimit, retention, dedup].map(function(item) {
             var p = item.mapToItem(window.contentItem, 0, 0);
@@ -40,7 +40,7 @@ with tempfile.TemporaryDirectory(prefix='omarchy-doc-captures-') as temporary:
         });
     }
 ''', 1)
-    (ui / 'Panel.qml').write_text(panel)
+    (ui / 'Editor.qml').write_text(panel)
     harness = (ui / 'Development.qml').read_text().replace('target: "quatrro-development"',
         'target: "quatrro-development"\n        function documentationBounds(): string { return JSON.stringify(panel.documentationBounds()); }', 1)
     (ui / 'Development.qml').write_text(harness)

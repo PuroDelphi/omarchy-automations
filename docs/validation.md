@@ -1923,3 +1923,49 @@ checks deterministic packaging and setup lifecycle before committing/tagging.
 Remote publication evidence (tag target, archive SHA256, CI and HTTPS staging
 installation) belongs in the GitHub release and Marketplace update request so
 it can reference this exact source without a self-referential archive digest.
+
+
+## 2026-10-22 — Preview 8: clipboard availability containment
+
+Marketplace issue #12619 identified Qt 6.12 TextInput's implicit clipboard read
+in the shared shell. The complete editor is moved unchanged to Editor.qml;
+Panel.qml is now an input-free launcher. The worker verifies actual kernel
+cgroup limits before loading Qt (512 MiB, no swap, one CPU core, 128 tasks).
+No clipboard value is returned to the host. Missing limits never fall back to an
+in-process editor. Update/uninstall stop the separate editor before removing files.
+
+Verified on this Omarchy host:
+
+- `python3 scripts/test-shell-clipboard.py`: 20 implicit content reads for 20
+  bounded offers in the original Qt control, **0** for the actual manifest widget
+  and launcher, including the visible recovery surface. Offscreen clipboard only.
+- `QUATRRO_HOST_TEST=1 python3 scripts/test-editor-isolation.py`: actual panel
+  launch, effective cgroup files, reuse of one instance, memory exhaustion confined
+  to the editor, continuing test-host heartbeat and engine response, reopen and
+  restart recovery. EN/ES recovery captures inspected in `.dev/editor-launcher-*.png`.
+- `python3 scripts/test-native-controls.py`: real mouse/keyboard, masked credentials,
+  dropdowns, numeric fields, buttons and accessible labels. Corrected the test's
+  stale unqualified Color.urgent reference to Commons.Color.urgent.
+- `python3 scripts/test-visual-flows.py`: hook ownership, inline save/cancel,
+  bilingual 38-template library and narrow render. Captures inspected.
+- `python3 scripts/test-ui-flow.py`: native full workflow, credential lifecycle,
+  11 capability grants, revocation, six local HTTPS deliveries, history and diagnostics.
+- `python3 scripts/test-git-panel.py`: Git-owned UI and installed runtime connect;
+  English/Spanish switching; uninstall preserves the repository.
+- `python3 -m unittest discover -s tests -v`: 23 tests, including missing cgroups,
+  unbounded values, failed launch, no shell fallback and uninstall ordering.
+- Go 1.26.8 `make build test check`, template-to-engine validation, deterministic
+  package/extracted lifecycle, prebuilt setup safety, release-pin helper and
+  documentation checks passed (42 paired chapters, 539 local links).
+- Strict premium UI audit: zero findings. DESIGN.md lint: zero errors/warnings;
+  host-owned tokens retained. QML formatter and git diff whitespace checks passed.
+
+All three rebuilt Go binaries match the independently reproduced Preview 7 hashes
+recorded above; Go source and compatibility versions are unchanged. Preview 8
+packages the QML/process-boundary and installer changes with a newly pinned digest.
+
+Limits: these tests inject QMimeData in offscreen Qt and separately exercise real
+cgroup exhaustion; they do not attack the live Wayland clipboard. Qt itself still
+reads offers inside the editor, which may stall or lose unsaved input. Shared-shell
+controls from other plugins/Omarchy are outside this mitigation. Physical
+suspend/logout and real Google OAuth acceptance remain deferred.

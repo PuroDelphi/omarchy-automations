@@ -18,7 +18,8 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def package(output):
     # Explicit roots: no git metadata, profiles, caches or arbitrary workspace files.
-    names = {'LICENSE', 'manifest.json', 'Panel.qml', 'Widget.qml', 'README.md', 'ROADMAP.md',
+    names = {'LICENSE', 'manifest.json', 'Panel.qml', 'Editor.qml', 'EditorWindow.qml', 'Widget.qml', 'README.md', 'ROADMAP.md',
+             'scripts/editor.py', 'scripts/native_ui.py',
              'scripts/install.py', 'scripts/install-broker.py',
              'scripts/prepare-broker-install.py'}
     # setup.py stays in the reviewed Git checkout and pins this archive's digest.

@@ -32,7 +32,7 @@ def main():
         ui = directory / 'ui'
         ui.mkdir()
         shutil.copytree(ROOT / 'qml', ui / 'qml')
-        shutil.copy2(ROOT / 'Panel.qml', ui / 'Panel.qml')
+        shutil.copy2(ROOT / 'Editor.qml', ui / 'Editor.qml')
         harness = (ROOT / 'Development.qml').read_text()
         harness = 'import "qml/Compatibility.js" as Compatibility\n' + harness
         harness = harness.replace('target: "quatrro-development"', '''target: "quatrro-development"

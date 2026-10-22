@@ -30,6 +30,34 @@ Familias representativas: `ingress_test.go`, `providers_test.go`, `egress_test.g
 `internal/local` e `internal/broker`. El [registro de validación](../validation.md)
 recoge comandos, resultados y alcance de las integraciones.
 
+## Editor y portapapeles
+
+Qt 6.12 `TextInput` lee el contenido del portapapeles al recibir `dataChanged`
+para actualizar `canPaste`, aunque el usuario no pegue nada. Limitar la longitud
+del campo, ocultar el diálogo o filtrar teclas no limita esa lectura previa.
+La revisión del Marketplace
+[12619](https://github.com/omacom/omarchy-plugin-marketplace/issues/12619#issuecomment-6345792704)
+identificó esta ruta en Preview 7.
+
+Preview 8 ejecuta todos los controles editables en el servicio separado descrito
+en [arquitectura](architecture.md). En la shell solo quedan el widget y un lanzador
+sin entradas de texto. Se verifican los límites efectivos de memoria, swap, CPU y
+tareas antes de iniciar Qt; si faltan, no se inicia. El contenido del portapapeles
+no se devuelve al lanzador. Clics repetidos reutilizan el mismo editor.
+
+Es una contención del fallo, no una corrección de Qt. Una oferta maliciosa todavía
+puede bloquear o terminar el editor y perder cambios sin guardar. El lanzador
+ofrece Reintentar y Reiniciar editor con una advertencia de esa pérdida. Teclado,
+IME y pegado normal conservan el comportamiento nativo. Otros plugins y campos
+propios de la shell necesitan su propia mitigación; esto cubre este plugin.
+
+Las pruebas ofrecen texto acotado en un portapapeles offscreen: el campo Qt lee
+20 de 20 ofertas y los componentes reales del widget y lanzador leen cero. Otra
+prueba verifica los límites del kernel, agota intencionadamente la memoria del
+editor, comprueba que la shell de prueba y el motor responden y recupera el editor.
+No se altera el portapapeles real. Demuestran la ruta local de Qt y la separación
+de procesos, no un productor Wayland malicioso contra el escritorio en uso.
+
 ## Límites prácticos
 
 - Una firma GitHub no aporta timestamp confiable del evento. La deduplicación

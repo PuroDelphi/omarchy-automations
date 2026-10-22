@@ -147,7 +147,7 @@ class InstallationTests(unittest.TestCase):
             path.write_text('foreign fixture')
         calls = []
         def command(argv):
-            if len(calls) < 2:
+            if len(calls) < 3:
                 self.assertTrue(receipt_path.exists())
                 self.assertTrue(all(path.exists() for path in owned))
             else:
@@ -156,10 +156,11 @@ class InstallationTests(unittest.TestCase):
             calls.append(argv)
         # Exercise the non-staging control path while keeping all paths private.
         # Service/shell commands are recorded, not sent to the real desktop.
-        with patch.object(installer, 'layout', return_value=(self.root, self.root / '.config', self.root / '.local/state')), patch.object(installer, 'run', side_effect=command):
+        with patch.object(installer, 'layout', return_value=(self.root, self.root / '.config', self.root / '.local/state')), patch.object(installer, 'run', side_effect=command), patch.object(installer.subprocess, 'run', return_value=SimpleNamespace(returncode=0)):
             installer.uninstall(SimpleNamespace(staging_root=None))
         self.assertEqual(calls, [['systemctl','--user','disable','--now','quatrrod.service'],
                                 ['omarchy','plugin','disable','quatrro.automations'],
+                                ['systemctl','--user','stop','quatrro-automations-editor.service'],
                                 ['systemctl','--user','daemon-reload']])
         self.assertTrue(all(path.read_text() == 'foreign fixture' for path in preserved))
 
@@ -168,14 +169,14 @@ class InstallationTests(unittest.TestCase):
         receipt_path = self.root / '.local/state/quatrro-install/receipt.json'
         receipt_before = receipt_path.read_bytes()
         receipt = json.loads(receipt_before)
-        for fail_at in (0, 1):
+        for fail_at in (0, 1, 2):
             with self.subTest(fail_at=fail_at):
                 calls = []
                 def command(argv):
                     calls.append(argv)
                     if len(calls) - 1 == fail_at:
                         raise RuntimeError('control unavailable')
-                with patch.object(installer, 'layout', return_value=(self.root, self.root / '.config', self.root / '.local/state')), patch.object(installer, 'run', side_effect=command):
+                with patch.object(installer, 'layout', return_value=(self.root, self.root / '.config', self.root / '.local/state')), patch.object(installer, 'run', side_effect=command), patch.object(installer.subprocess, 'run', return_value=SimpleNamespace(returncode=0)):
                     with self.assertRaisesRegex(RuntimeError, 'control unavailable'):
                         installer.uninstall(SimpleNamespace(staging_root=None))
                 self.assertEqual(receipt_path.read_bytes(), receipt_before)

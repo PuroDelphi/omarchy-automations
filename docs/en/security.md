@@ -30,6 +30,34 @@ Representative test families are `ingress_test.go`, `providers_test.go`,
 `isolation_host_test.go`, `internal/local` and `internal/broker`. The
 [validation log](../validation.md) records commands, outcomes and integration scope.
 
+## Editor and clipboard
+
+Qt 6.12 `TextInput` reads clipboard text on `dataChanged` to update `canPaste`,
+even without a user paste. A length limit on the field, a hidden dialog or a
+keyboard shortcut filter cannot bound that earlier read. Marketplace review
+[12619](https://github.com/omacom/omarchy-plugin-marketplace/issues/12619#issuecomment-6345792704)
+identified this path in Preview 7.
+
+Preview 8 puts all writable controls in the separate editor unit described in
+[architecture](architecture.md). Only input-free launcher/status surfaces remain
+inside the shell. Effective memory, swap, CPU and task limits are checked before
+Qt starts; missing limits fail closed. Clipboard contents are never sent back to
+the launcher. Service reuse prevents repeated clicks creating multiple editors.
+
+This is availability containment, not a fix to Qt's clipboard implementation.
+A malicious offer can still stall or terminate the editor and lose unsaved input.
+The launcher offers Retry and an explicit Restart editor action with that warning.
+Keyboard input, IME and normal paste keep native Qt behavior. Other plugins or
+host-owned inputs require their own mitigation; this change covers this plugin.
+
+Tests inject bounded text offers into an offscreen clipboard: Qt's writable field
+reads 20 of 20 offers, while the actual launcher and widget read zero. A separate
+host test checks kernel cgroup limits, intentionally exhausts editor memory,
+checks host heartbeat and engine responses, then reopens and restarts the editor.
+No hostile offer is put on the real session clipboard. These tests demonstrate
+the local Qt call path and process boundary, not an end-to-end hostile Wayland
+producer against the live desktop.
+
 ## Practical limits
 
 - A GitHub signature does not provide a trusted event timestamp. Deduplication

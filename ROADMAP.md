@@ -2097,3 +2097,19 @@ independent pinned-toolchain builds, installer lifecycle and CI before tagging.
 After publishing, verify the remote tag and digest, run HTTPS staging setup, and
 request exact-HEAD update verification using the Marketplace verification form.
 This remains a development preview; deferred stable-release gates are unchanged.
+
+
+## 2026-10-22 — Preview 8: Marketplace clipboard review
+
+- [x] Reproduce implicit clipboard reads in Qt 6.12 with bounded offscreen data.
+- [x] Keep only the widget and input-free launcher inside the shared shell; move
+  the complete native editor to a separate user service with verified cgroup limits.
+- [x] Reuse one editor, expose retry/restart recovery and stop it during update/removal.
+- [x] Demonstrate zero content reads in the manifest surfaces, continued host/engine
+  responsiveness during editor memory exhaustion, and recovery.
+- [x] Native editing/accessibility, visual hooks/templates, full UI, Git installation,
+  portable tests, deterministic packaging and bilingual docs verified.
+
+Publish a fresh Preview 8 tag and archive, validate HTTPS staging installation and
+update Marketplace #12619 to the exact current HEAD. Final Marketplace approval
+belongs to its maintainers. Stable-release deferrals remain unchanged.

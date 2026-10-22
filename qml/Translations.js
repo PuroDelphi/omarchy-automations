@@ -1,6 +1,11 @@
 .pragma library
 
 var english = {
+"Reintentar": "Retry",
+"Cerrar": "Close",
+"No se pudo abrir el editor. Reintenta o reinícialo. Reiniciar descarta los cambios sin guardar del editor.": "Could not open the editor. Retry or restart it. Restarting discards unsaved editor changes.",
+"Abriendo automatizaciones…": "Opening automations…",
+"Reiniciar editor": "Restart editor",
 "Esta acción puede usarse en varios flujos. Sus cambios se aplican a todos al activar la nueva revisión.": "This action may be shared by several flows. Changes apply to all of them when the new revision is activated.",
 "Elegir de la lista": "Choose from the list",
 "Escribir un origen avanzado": "Enter an advanced source",

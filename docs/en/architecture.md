@@ -28,10 +28,18 @@ is a separate user service, so hiding or reloading the panel does not stop flows
 `quatrroctl` negotiates the local protocol and sends one operation per connection.
 The engine uses Go and SQLite; dependency versions are pinned in `go.mod`/`go.sum`.
 
-Omarchy plugins run as user code in the shell process. The panel is not a sandbox,
-and components running under the same UID do not create a strong boundary against
-malicious local software. Command isolation constrains dispatched jobs; it does
-not make the entire desktop trustworthy.
+Only the bar widget and input-free `Panel.qml` launcher run in the shared shell.
+`EditorWindow.qml` loads the full `Editor.qml` in a separate Quickshell process,
+started by `scripts/editor.py` in a dedicated user systemd service. Before loading
+Qt controls the worker checks effective cgroup limits: 512 MiB memory, zero swap,
+one CPU core and 128 tasks. It refuses to start without those limits. The launcher
+never falls back to loading the editor in the shared shell. Hiding the editor
+preserves its local draft; reopening reuses the service. Restart, update and
+uninstall stop it, discarding unsaved changes.
+
+This contains clipboard-related availability failures to the editor; it is not a
+sandbox against arbitrary software running under the same UID. Command isolation
+continues to constrain dispatched jobs. See [editor and clipboard](security.md#editor-and-clipboard).
 
 ## Configuration and execution
 

@@ -35,7 +35,7 @@ jobs:
         run: make build
       - name: Template generation and collision checks
         run: python3 scripts/test-template-runtime.py
-      - name: Installer ownership and rollback tests
+      - name: Installer ownership, editor boundary and rollback tests
         run: python3 -m unittest discover -s tests -v
       - name: Reproducible archive and staging lifecycle
         run: python3 scripts/test-release-package.py

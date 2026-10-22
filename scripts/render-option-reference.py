@@ -46,7 +46,7 @@ def render():
             option = 'common.' + key if key in ('id', 'name', 'enabled') else kind + '.' + key
             assert option in ids, f'undocumented scoped field: {kind}.{key}'
             coverage.append((kind + '.' + key, option))
-    panel = (ROOT / 'Panel.qml').read_text()
+    panel = (ROOT / 'Editor.qml').read_text()
     for control, option in PANEL_FIELDS.items():
         assert re.search(r'\bid:\s*' + re.escape(control) + r'\b', panel), control
         assert option in ids, option
