@@ -16,9 +16,9 @@ import urllib.request
 
 ROOT = Path(__file__).resolve().parents[1]
 REPOSITORY = 'PuroDelphi/omarchy-automations'
-TAG = 'v0.1.0-preview.6'
+TAG = 'v0.1.0-preview.7'
 ARCHIVE = 'omarchy-automations-0.1.0-dev-linux-amd64.tar.gz'
-PINNED_ARCHIVE_SHA256 = 'f98315e57cab67ad2ed63fe950ba484595c647abc4a8c33634e5e3f19072f917'
+PINNED_ARCHIVE_SHA256 = 'ef6878b43f82f9ea7682708951ab00254ed1e4eeda22af647827f10bac8cb2c4'
 MAX_ARCHIVE = 80 * 1024 * 1024
 MAX_EXPANDED = 256 * 1024 * 1024
 

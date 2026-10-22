@@ -1900,3 +1900,26 @@ Omarchy palette and fixes the blank/low-contrast rendering.
 Scope limits: no new prebuilt release, no physical suspend/logout or real Google
 OAuth acceptance. Offscreen native interaction tests are not a claim of complete
 screen-reader or physical keyboard coverage. Existing pinned preview is unchanged.
+
+## 2026-10-22 — Preview 7 release preflight
+
+PR #1 is merged into main. Preview 7 keeps component version `0.1.0-dev`,
+plugin ID `quatrro.automations` and existing protocol contracts.
+
+Two separate source trees and initially empty build caches using Go 1.26.8,
+`-trimpath -buildvcs=false`, produced byte-identical Linux amd64 binaries.
+The second build used `GOPROXY=off` and the same pinned module/toolchain cache:
+
+| Binary | SHA256 |
+|---|---|
+| quatrrod | `52e8967cc9f2fc873ffb9849e23acf8c274af3c6c2c29c67365aabe8febb911c` |
+| quatrroctl | `a5db0145e63e976ae6e314f75ef5787d1eba562775654c02efaf289235015cda` |
+| quatrro-broker | `6f54c9a5ddd505dcd76d470fb94f118295a4c7ab5bea083623f67413c16dfb80` |
+
+The full Go race suite, 18 installer tests and all template-to-engine checks
+passed on the pinned build. The release procedure packages only after finishing
+archive inputs, calculates the archive digest using `sync-release-pin.py`, then
+checks deterministic packaging and setup lifecycle before committing/tagging.
+Remote publication evidence (tag target, archive SHA256, CI and HTTPS staging
+installation) belongs in the GitHub release and Marketplace update request so
+it can reference this exact source without a self-referential archive digest.

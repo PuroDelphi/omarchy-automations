@@ -2085,3 +2085,15 @@ release gates above.
 
 Next: release matching source changes as a new prebuilt preview through the normal
 release process; physical suspend/logout and real Google OAuth remain deferred.
+
+
+## 2026-10-22 — Preview 7 release preparation
+
+PR #1 merged into main by explicit owner request. Preview 7 packages the visual
+hook authoring work and 38 templates with the existing 0.1.0-dev component version,
+protocol and plugin identity. The reviewed installer pins the newly built archive.
+Release validation follows `.github/RELEASING.md`: deterministic packaging,
+independent pinned-toolchain builds, installer lifecycle and CI before tagging.
+After publishing, verify the remote tag and digest, run HTTPS staging setup, and
+request exact-HEAD update verification using the Marketplace verification form.
+This remains a development preview; deferred stable-release gates are unchanged.

@@ -34,9 +34,8 @@ The Flows editor includes named Omarchy events, suggested condition fields,
 inline action creation/editing, and an event connection manager. The searchable
 library includes 38 English/Spanish templates. Templates are inserted disabled;
 review values, timezone, hook connections and permissions before activation.
-See [visual hooks and templates](docs/en/hooks.md#visual-setup). These additions
-require a source build of the matching engine and UI until a prebuilt release
-containing them is published; the existing pinned preview is unchanged.
+See [visual hooks and templates](docs/en/hooks.md#visual-setup). These additions are included in Preview 7. Update the matching engine and UI
+together using the pinned setup below.
 
 ## Install — no Go compiler needed
 
@@ -50,7 +49,7 @@ python3 ~/.config/omarchy/plugins/quatrro.automations/scripts/setup.py
 ```
 
 The first command clones the plugin without enabling it. The second downloads
-**Preview 6**, verifies the archive against the SHA256 pinned in this checkout
+**Preview 7**, verifies the archive against the SHA256 pinned in this checkout
 and checks each packaged file, then installs the engine and
 CLI, then enables the service and widget. Click the connections icon in the bar.
 The download comes from this repository's [GitHub Releases](https://github.com/PuroDelphi/omarchy-automations/releases).

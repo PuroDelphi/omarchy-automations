@@ -3,12 +3,16 @@
 [English](../en/release-notes.md) · [Documentación](README.md)
 
 Versión preliminar publicada para Linux amd64; no es la versión estable 1.0.
-Preview 6 conserva los contratos del motor y la compatibilidad de Preview 5.
-Añade una herramienta probada que calcula el SHA256 del paquete, actualiza el
-hash fijado en la copia de código y comprueba que la etiqueta y el paquete
-coincidan. La etiqueta de la versión apunta al commit de código revisado.
-La captura para el marketplace y la verificación del paquete de Preview 5
-siguen incluidas.
+Preview 7 añade creación visual de los seis hooks de Omarchy, un panel para
+conectar eventos, campos sugeridos y operadores traducidos para condiciones,
+edición de acciones dentro del flujo y 38 plantillas en inglés/español con búsqueda.
+Las plantillas crean identificadores nuevos y entran deshabilitadas al borrador.
+La gestión de hooks conserva archivos ajenos o modificados y rechaza enlaces
+simbólicos. Commons.Color corrige una colisión con un tipo Qt que afectaba la paleta.
+
+El paquete reproducible incluye estos cambios y su SHA256 está fijado en el
+instalador. La etiqueta identifica el commit exacto de código. Se conservan la
+herramienta de publicación de Preview 6 y los contratos de compatibilidad.
 
 ## Incluido
 

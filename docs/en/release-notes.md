@@ -3,11 +3,16 @@
 [Español](../es/release-notes.md) · [Documentation](README.md)
 
 This is a published development preview for Linux amd64, not the stable 1.0 release.
-Preview 6 keeps the Preview 5 runtime and compatibility contracts. It adds a
-tested release helper that calculates the archive SHA256, updates the digest
-pinned in the source checkout and verifies that the tag and archive match.
-Its release tag points to the reviewed source commit. The root marketplace
-screenshot and archive verification introduced in Preview 5 remain included.
+Preview 7 adds visual authoring of all six Omarchy hooks, a native event connection
+manager, suggested condition fields and translated operators, inline action editing,
+and a searchable library of 38 English/Spanish templates. Templates use fresh IDs
+and enter the draft disabled. Hook management preserves modified and unrelated
+files and rejects symlinks. Explicit Commons.Color qualification fixes a Qt type
+name collision affecting the panel palette.
+
+The reproducible runtime archive includes these changes and is pinned by SHA256
+in the checkout installer. The release tag identifies the exact source commit.
+Preview 6's release-pin helper and existing compatibility contracts are retained.
 
 ## Included
 

@@ -23,7 +23,7 @@ ejecutable Omarchy.
 
 ## Configuración visual
 
-Estas mejoras visuales requieren compilar la interfaz y el motor de la misma revisión hasta que se incluyan en una entrega precompilada.
+Estas mejoras visuales están incluidas en Preview 7. Instala juntos la interfaz y el motor correspondientes.
 
 Abre **Flujos → Eventos de Omarchy** para conectar o desconectar los seis hooks.
 Solo gestiona los adaptadores exactos `quatrro-<evento>`; no reemplaza archivos

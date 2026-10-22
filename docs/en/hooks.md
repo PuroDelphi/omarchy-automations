@@ -21,7 +21,7 @@ not prove that only the Omarchy executable could have produced them.
 
 ## Visual setup
 
-These visual additions require matching source-built UI and runtime until included in a prebuilt release.
+These visual additions are included in Preview 7. Install matching UI and runtime components.
 
 Open **Flows → Omarchy events** to connect or disconnect each of the six supported
 hooks. This manages only the exact `quatrro-<event>` adapters; modified files,
