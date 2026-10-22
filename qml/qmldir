@@ -16,3 +16,5 @@ ThemedLabel 1.0 ThemedLabel.qml
 ChoiceField 1.0 ChoiceField.qml
 ToggleField 1.0 ToggleField.qml
 NumericField 1.0 NumericField.qml
+HookManager 1.0 HookManager.qml
+TemplateLibrary 1.0 TemplateLibrary.qml

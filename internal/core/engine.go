@@ -52,6 +52,12 @@ func Open(p paths.Paths) (*Engine, error) {
 func (e *Engine) Close() error { e.closeGoogleConsent(); return e.db.Close() }
 func (e *Engine) Handle(ctx context.Context, r local.Request) (any, error) {
 	switch r.Op {
+	case "hooks.status":
+		return e.manageHooks("status", r.Data)
+	case "hooks.install":
+		return e.manageHooks("install", r.Data)
+	case "hooks.remove":
+		return e.manageHooks("remove", r.Data)
 	case "administration.check":
 		return e.checkAdministrative(ctx, r.Data)
 	case "oauth.google.current":

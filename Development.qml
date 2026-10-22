@@ -1,6 +1,8 @@
 import QtQuick
 import QtQuick.Controls
 import "qml"
+import "qml/Recipes.js" as Recipes
+import "qml/Schema.js" as Schema
 import Quickshell
 import Quickshell.Io
 
@@ -21,6 +23,13 @@ ShellRoot {
         function state(): string {
             return JSON.stringify({
                 loaded: panel.loaded,
+                hooks: panel.hooksDialog.adapters,
+                hookError: panel.hooksDialog.error,
+                pendingActions: panel.resourceEditor.pendingActions,
+                inlineError: panel.resourceEditor.inlineActionEditor ? panel.resourceEditor.inlineActionEditor.error : "",
+                hookOptions: Schema.fields("flows", panel.config).find(function (f) {
+                    return f.key === "source";
+                }).options,
                 oauthStates: panel.oauthStates,
                 consentSession: panel.consentSession,
                 consentURL: panel.consentURL,
@@ -68,6 +77,44 @@ ShellRoot {
                 realTestTitle: panel.realTestDialog.title,
                 realTestVisible: panel.realTestDialog.opened
             });
+        }
+        function visual(command: string, value: string): string {
+            var editor = panel.resourceEditor;
+            if (command === "narrow") {
+                panel.templatesDialog.width = 712;
+                panel.templatesDialog.height = 512;
+            }
+            if (command === "templates") {
+                editor.close();
+                panel.templatesDialog.open();
+            }
+            if (command === "template")
+                panel.templatesDialog.selected(Recipes.instantiate(Recipes.recipes[Number(value)], panel.config, I18n.language));
+            if (command === "hooks") {
+                panel.templatesDialog.close();
+                panel.hooksDialog.open();
+            }
+            if (command === "hook-install" || command === "hook-remove")
+                panel.hooksDialog.request(command === "hook-install" ? "hooks.install" : "hooks.remove", value);
+            if (command === "inline") {
+                panel.hooksDialog.close();
+                editor.editAction(value);
+            }
+            if (command === "inline-save") {
+                var child = editor.inlineActionEditor;
+                var data = JSON.parse(value);
+                Object.keys(data).forEach(function (k) {
+                    child.setField(k, data[k]);
+                });
+                child.accept();
+            }
+            if (command === "cancel-flow")
+                editor.reject();
+            if (command === "accept-flow")
+                editor.accept();
+            if (command === "flow-id")
+                editor.setField("id", value);
+            return "ok";
         }
         function resource(kind: string, fields: string): string {
             if (["entries", "destinations", "actions", "flows", "monitors", "timers"].indexOf(kind) < 0)

@@ -1,6 +1,7 @@
 pragma ComponentBehavior: Bound
 import QtQuick
 import qs.Commons
+import qs.Commons as Commons
 import "."
 import QtQuick.Controls
 import QtQuick.Layouts
@@ -15,7 +16,7 @@ ColumnLayout {
             required property string modelData
             ThemedLabel {
                 text: modelData
-                color: Color.foreground
+                color: Commons.Color.foreground
                 Layout.fillWidth: true
             }
             InputField {

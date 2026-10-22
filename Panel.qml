@@ -1,6 +1,7 @@
 pragma ComponentBehavior: Bound
 import QtQuick
 import qs.Commons
+import qs.Commons as Commons
 import QtQuick.Controls
 import QtQuick.Layouts
 import Quickshell
@@ -23,8 +24,12 @@ Item {
     property bool dirty: false
     property bool loaded: false
     property var activeConfig: null
-    readonly property int activeFlowCount: activeConfig ? (activeConfig.flows || []).filter(function(flow) { return flow.enabled; }).length : 0
-    readonly property int realTestFlowCount: activeConfig ? (activeConfig.flows || []).filter(function(flow) { return flow.enabled && flow.source === sampleSource.text; }).length : 0
+    readonly property int activeFlowCount: activeConfig ? (activeConfig.flows || []).filter(function (flow) {
+        return flow.enabled;
+    }).length : 0
+    readonly property int realTestFlowCount: activeConfig ? (activeConfig.flows || []).filter(function (flow) {
+        return flow.enabled && flow.source === sampleSource.text;
+    }).length : 0
     readonly property string realTestGuidance: !activeConfig ? I18n.tr("Consultando la revisión activa…") : realTestFlowCount === 0 ? I18n.tr("No hay flujos activos para este origen. Guardar o simular no activa el borrador. Pulsa Revisar y activar antes de la prueba real.") : I18n.tr("Flujos activos para este origen: ") + realTestFlowCount + I18n.tr(". La prueba real aplica también sus condiciones y permisos.")
     property int section: 0
     property int connectionTab: 0
@@ -54,6 +59,8 @@ Item {
     property string localError: ""
     readonly property string resourceKind: section === 0 ? (connectionTab === 0 ? "entries" : "destinations") : section === 1 ? "actions" : section === 2 ? "flows" : section === 6 ? "timers" : section === 7 ? "scripts" : section === 8 ? "adapters" : "monitors"
     readonly property var sectionNames: [I18n.tr("Conexiones"), I18n.tr("Acciones"), I18n.tr("Flujos"), I18n.tr("Monitores"), I18n.tr("Historial"), I18n.tr("Seguridad"), I18n.tr("Programación"), I18n.tr("Scripts"), I18n.tr("Adaptadores")]
+    property alias hooksDialog: hookManager
+    property alias templatesDialog: templateLibrary
     property alias resourceEditor: editor
     property alias backendClient: backend
     property alias approvalDialog: approval
@@ -162,7 +169,7 @@ Item {
         opened = false;
     }
     function capture(path) {
-        var item = simulationResult.opened ? simulationResult.contentItem : retryDialog.opened ? retryDialog.contentItem : detailDialog.opened ? detailDialog.contentItem : secretDialog.opened ? secretDialog.contentItem : editor.opened ? editor.contentItem : approval.opened ? approval.contentItem : canvas;
+        var item = templateLibrary.opened ? templateLibrary.contentItem.parent : hookManager.opened ? hookManager.contentItem.parent : editor.inlineActionEditor && editor.inlineActionEditor.opened ? editor.inlineActionEditor.contentItem.parent : simulationResult.opened ? simulationResult.contentItem : retryDialog.opened ? retryDialog.contentItem : detailDialog.opened ? detailDialog.contentItem : secretDialog.opened ? secretDialog.contentItem : editor.opened ? editor.contentItem : approval.opened ? approval.contentItem : canvas;
         item.grabToImage(function (result) {
             result.saveToFile(path);
         });
@@ -219,6 +226,13 @@ Item {
     }
     function saveResource(resource) {
         var next = JSON.parse(JSON.stringify(config));
+        if (editor.kind === "flows" && editor.pendingActions.length) {
+            next.actions = (next.actions || []).filter(function (a) {
+                return !editor.pendingActions.some(function (p) {
+                    return p.id === a.id;
+                });
+            }).concat(editor.pendingActions);
+        }
         var list = next[editor.kind] || [];
         next[editor.kind] = list;
         var index = list.findIndex(function (x) {
@@ -317,6 +331,10 @@ Item {
         id: backend
         polling: root.opened
         onFailed: function (op, message) {
+            if (op.indexOf("hooks.") === 0) {
+                hookManager.busy = false;
+                hookManager.error = message;
+            }
             if (op === "administration.check")
                 root.administrationChecked({
                     state: "unavailable"
@@ -339,6 +357,8 @@ Item {
             root.localError = message;
         }
         onResult: function (op, value) {
+            if (op.indexOf("hooks.") === 0)
+                hookManager.receive(value);
             if (op === "administration.check")
                 root.administrationChecked(value);
             if ((op === "scripts.prepare" || op === "adapters.prepare")) {
@@ -529,13 +549,13 @@ Item {
         implicitWidth: 1100
         implicitHeight: 800
         minimumSize: Qt.size(760, 560)
-        color: Color.background
+        color: Commons.Color.background
         onVisibleChanged: if (!visible)
             root.opened = false
         Rectangle {
             id: canvas
             anchors.fill: parent
-            color: Color.background
+            color: Commons.Color.background
             ColumnLayout {
                 anchors.fill: parent
                 anchors.margins: 24
@@ -551,13 +571,13 @@ Item {
                         Layout.minimumWidth: 0
                         ThemedLabel {
                             text: "Omarchy Automations"
-                            color: Color.foreground
+                            color: Commons.Color.foreground
                             font.pixelSize: Style.font.heading
                             font.bold: true
                         }
                         ThemedLabel {
                             text: !backend.connected ? I18n.tr("Motor desconectado") : (backend.status.paused ? I18n.tr("En pausa") : I18n.tr("Motor activo")) + " · " + (backend.status.version || "") + " · " + (backend.status.counts ? (backend.status.counts.pending || 0) : 0) + I18n.tr(" pendientes")
-                            color: backend.connected ? Color.foreground : Color.urgent
+                            color: backend.connected ? Commons.Color.foreground : Commons.Color.urgent
                         }
                     }
                     RowLayout {
@@ -618,7 +638,7 @@ Item {
                 ThemedLabel {
                     visible: backend.connected && root.activeConfig !== null
                     text: root.activeFlowCount === 0 ? I18n.tr("Borrador sin activar: no hay flujos activos. Revisa y activa para ejecutar automatizaciones.") : I18n.tr("Flujos activos: ") + root.activeFlowCount + I18n.tr(". Los cambios del borrador requieren Revisar y activar.")
-                    color: root.activeFlowCount === 0 ? Color.urgent : Qt.alpha(Color.foreground, 0.75)
+                    color: root.activeFlowCount === 0 ? Commons.Color.urgent : Qt.alpha(Commons.Color.foreground, 0.75)
                     wrapMode: Text.Wrap
                     Layout.fillWidth: true
                 }
@@ -627,13 +647,13 @@ Item {
                     Layout.fillWidth: true
                     implicitHeight: banner.implicitHeight + 20
                     radius: Style.cornerRadius
-                    color: root.localError !== "" ? Style.selectedFillFor(Color.urgent, Color.urgent) : Style.selectedFillFor(Color.foreground, Color.accent)
+                    color: root.localError !== "" ? Style.selectedFillFor(Commons.Color.urgent, Commons.Color.urgent) : Style.selectedFillFor(Commons.Color.foreground, Commons.Color.accent)
                     ThemedLabel {
                         id: banner
                         anchors.fill: parent
                         anchors.margins: 10
                         text: root.localError || root.notice
-                        color: Color.foreground
+                        color: Commons.Color.foreground
                         wrapMode: Text.Wrap
                     }
                 }
@@ -696,7 +716,7 @@ Item {
                             }
                             ThemedLabel {
                                 text: I18n.tr("Cerrar el panel no detiene el motor.")
-                                color: Qt.alpha(Color.foreground, 0.75)
+                                color: Qt.alpha(Commons.Color.foreground, 0.75)
                                 wrapMode: Text.Wrap
                                 Layout.fillWidth: true
                                 font.pixelSize: Style.font.body
@@ -719,10 +739,22 @@ Item {
                             Layout.fillWidth: true
                             ThemedLabel {
                                 text: root.sectionNames[root.section]
-                                color: Color.foreground
+                                color: Commons.Color.foreground
                                 font.pixelSize: Style.font.heading
                                 font.bold: true
                                 Layout.fillWidth: true
+                            }
+                            ActionButton {
+                                text: I18n.tr("Plantillas")
+                                visible: root.section === 2
+                                enabled: root.loaded
+                                onClicked: templateLibrary.open()
+                            }
+                            ActionButton {
+                                text: I18n.tr("Eventos de Omarchy")
+                                visible: root.section === 2
+                                enabled: backend.connected && !backend.busy
+                                onClicked: hookManager.open()
                             }
                             ActionButton {
                                 text: I18n.tr("Nuevo")
@@ -756,7 +788,7 @@ Item {
                             text: root.connectionTab === 0 ? root.ingressText() : I18n.tr("Solo se envía a destinos registrados. Las excepciones LAN se autorizan por destino.")
                             wrapMode: Text.Wrap
                             Layout.fillWidth: true
-                            color: Qt.alpha(Color.foreground, 0.75)
+                            color: Qt.alpha(Commons.Color.foreground, 0.75)
                         }
                         ListView {
                             visible: root.section < 4 || root.section === 6 || root.section === 7 || root.section === 8
@@ -771,7 +803,7 @@ Item {
                                 width: ListView.view.width
                                 implicitHeight: resourceRow.implicitHeight + 24
                                 radius: 10
-                                color: Style.normalFillFor(Color.foreground, Color.accent)
+                                color: Style.normalFillFor(Commons.Color.foreground, Commons.Color.accent)
                                 RowLayout {
                                     id: resourceRow
                                     anchors.fill: parent
@@ -780,12 +812,12 @@ Item {
                                         Layout.fillWidth: true
                                         ThemedLabel {
                                             text: modelData.name || modelData.id
-                                            color: Color.foreground
+                                            color: Commons.Color.foreground
                                             font.bold: true
                                         }
                                         ThemedLabel {
                                             text: modelData.id + " · " + (modelData.kind || modelData.metric || modelData.source || modelData.url || modelData.auth || "")
-                                            color: Qt.alpha(Color.foreground, 0.75)
+                                            color: Qt.alpha(Commons.Color.foreground, 0.75)
                                             wrapMode: Text.Wrap
                                             Layout.fillWidth: true
                                         }
@@ -797,7 +829,7 @@ Item {
                                                 });
                                                 return m ? (m.error || root.stateLabel(m.phase) + " · " + Number(m.value).toFixed(1) + " " + (m.unit || "%")) : I18n.tr("Aún sin muestras");
                                             }
-                                            color: Color.foreground
+                                            color: Commons.Color.foreground
                                         }
                                         ThemedLabel {
                                             visible: root.section === 6
@@ -807,14 +839,14 @@ Item {
                                                 });
                                                 return t ? root.stateLabel(t.phase) + I18n.tr(" · próxima: ") + (t.next ? Qt.formatDateTime(new Date(t.next * 1000), "yyyy-MM-dd HH:mm:ss") : "—") : I18n.tr("Aún sin activar");
                                             }
-                                            color: Color.foreground
+                                            color: Commons.Color.foreground
                                             wrapMode: Text.Wrap
                                             Layout.fillWidth: true
                                         }
                                         ThemedLabel {
                                             visible: modelData.enabled !== undefined
                                             text: modelData.enabled ? I18n.tr("Habilitado en borrador") : I18n.tr("Deshabilitado")
-                                            color: Qt.alpha(Color.foreground, 0.75)
+                                            color: Qt.alpha(Commons.Color.foreground, 0.75)
                                             font.pixelSize: Style.font.bodySmall
                                         }
                                     }
@@ -859,7 +891,7 @@ Item {
                             ThemedLabel {
                                 visible: root.queueOnly
                                 text: root.queueTotal + I18n.tr(" trabajos · desde ") + (root.queueOffset + 1)
-                                color: Qt.alpha(Color.foreground, 0.75)
+                                color: Qt.alpha(Commons.Color.foreground, 0.75)
                                 Layout.fillWidth: true
                             }
                             RowLayout {
@@ -898,7 +930,7 @@ Item {
                                 width: ListView.view.width
                                 implicitHeight: historyRow.implicitHeight + 24
                                 radius: 10
-                                color: Style.normalFillFor(Color.foreground, Color.accent)
+                                color: Style.normalFillFor(Commons.Color.foreground, Commons.Color.accent)
                                 RowLayout {
                                     id: historyRow
                                     anchors.fill: parent
@@ -907,12 +939,12 @@ Item {
                                         Layout.fillWidth: true
                                         ThemedLabel {
                                             text: modelData.flow + " · " + root.stateLabel(modelData.state)
-                                            color: Color.foreground
+                                            color: Commons.Color.foreground
                                             font.bold: true
                                         }
                                         ThemedLabel {
                                             text: new Date(modelData.created_at).toLocaleString() + " · " + (modelData.state === "completed" ? modelData.step + I18n.tr(" pasos realizados") : I18n.tr("paso ") + (modelData.step + 1))
-                                            color: Qt.alpha(Color.foreground, 0.75)
+                                            color: Qt.alpha(Commons.Color.foreground, 0.75)
                                             font.pixelSize: Style.font.body
                                             wrapMode: Text.Wrap
                                             Layout.fillWidth: true
@@ -956,7 +988,7 @@ Item {
                                 }
                                 ThemedLabel {
                                     text: I18n.tr("Credenciales")
-                                    color: Color.foreground
+                                    color: Commons.Color.foreground
                                     font.pixelSize: Style.font.title
                                 }
                                 ActionButton {
@@ -968,7 +1000,7 @@ Item {
                                     Layout.fillWidth: true
                                     ThemedLabel {
                                         text: (root.consentSession.id || "") + " · " + root.consentLabel(root.consentSession.state)
-                                        color: Qt.alpha(Color.foreground, 0.75)
+                                        color: Qt.alpha(Commons.Color.foreground, 0.75)
                                         Layout.fillWidth: true
                                         wrapMode: Text.Wrap
                                     }
@@ -995,12 +1027,12 @@ Item {
                                         Layout.fillWidth: true
                                         ThemedLabel {
                                             text: modelData.id + " · " + (modelData.backend === "keyring" ? I18n.tr("Almacén del escritorio") : I18n.tr("Archivo privado sin cifrar"))
-                                            color: Qt.alpha(Color.foreground, 0.75)
+                                            color: Qt.alpha(Commons.Color.foreground, 0.75)
                                             Layout.fillWidth: true
                                         }
                                         ThemedLabel {
                                             text: root.oauthStates[modelData.id] ? root.oauthStateText(root.oauthStates[modelData.id]) : ""
-                                            color: Qt.alpha(Color.foreground, 0.75)
+                                            color: Qt.alpha(Commons.Color.foreground, 0.75)
                                         }
                                         ActionButton {
                                             text: I18n.tr("Estado OAuth2")
@@ -1017,7 +1049,7 @@ Item {
                                 }
                                 ThemedLabel {
                                     text: I18n.tr("Permisos activos")
-                                    color: Color.foreground
+                                    color: Commons.Color.foreground
                                     font.pixelSize: Style.font.title
                                 }
                                 Repeater {
@@ -1028,7 +1060,7 @@ Item {
                                         ThemedLabel {
                                             text: modelData.scope
                                             Layout.fillWidth: true
-                                            color: Qt.alpha(Color.foreground, 0.75)
+                                            color: Qt.alpha(Commons.Color.foreground, 0.75)
                                         }
                                         ActionButton {
                                             destructive: true
@@ -1039,17 +1071,17 @@ Item {
                                 }
                                 ThemedLabel {
                                     text: I18n.tr("Almacenamiento y retención")
-                                    color: Color.foreground
+                                    color: Commons.Color.foreground
                                     font.pixelSize: Style.font.title
                                 }
                                 ThemedLabel {
                                     text: (root.storage.events || 0) + I18n.tr(" eventos · ") + ((root.storage.payload_bytes || 0) / 1048576).toFixed(1) + I18n.tr(" MiB de datos")
-                                    color: Qt.alpha(Color.foreground, 0.75)
+                                    color: Qt.alpha(Commons.Color.foreground, 0.75)
                                 }
                                 RowLayout {
                                     ThemedLabel {
                                         text: I18n.tr("Máximo de eventos")
-                                        color: Qt.alpha(Color.foreground, 0.75)
+                                        color: Qt.alpha(Commons.Color.foreground, 0.75)
                                         Layout.fillWidth: true
                                     }
                                     NumericField {
@@ -1063,7 +1095,7 @@ Item {
                                 RowLayout {
                                     ThemedLabel {
                                         text: I18n.tr("Datos de eventos (MiB)")
-                                        color: Qt.alpha(Color.foreground, 0.75)
+                                        color: Qt.alpha(Commons.Color.foreground, 0.75)
                                         Layout.fillWidth: true
                                     }
                                     NumericField {
@@ -1077,7 +1109,7 @@ Item {
                                 RowLayout {
                                     ThemedLabel {
                                         text: I18n.tr("Conservar historial (días)")
-                                        color: Qt.alpha(Color.foreground, 0.75)
+                                        color: Qt.alpha(Commons.Color.foreground, 0.75)
                                         Layout.fillWidth: true
                                     }
                                     NumericField {
@@ -1091,7 +1123,7 @@ Item {
                                 RowLayout {
                                     ThemedLabel {
                                         text: I18n.tr("Evitar duplicados durante (días)")
-                                        color: Qt.alpha(Color.foreground, 0.75)
+                                        color: Qt.alpha(Commons.Color.foreground, 0.75)
                                         Layout.fillWidth: true
                                     }
                                     NumericField {
@@ -1113,13 +1145,31 @@ Item {
                                 }
                                 ThemedLabel {
                                     text: I18n.tr("Los trabajos pendientes y los resultados inciertos se conservan. Alcanzar un límite rechaza eventos nuevos; no borra trabajos para hacer espacio.")
-                                    color: Qt.alpha(Color.foreground, 0.75)
+                                    color: Qt.alpha(Commons.Color.foreground, 0.75)
                                     wrapMode: Text.Wrap
                                     Layout.fillWidth: true
                                 }
                             }
                         }
                     }
+                }
+            }
+        }
+        TemplateLibrary {
+            id: templateLibrary
+            config: root.config
+            onSelected: function (next) {
+                root.config = next;
+                root.dirty = true;
+                root.notice = I18n.tr("Plantilla añadida deshabilitada. Ajusta y habilita sus recursos antes de revisar y activar.");
+            }
+        }
+        HookManager {
+            id: hookManager
+            onRequested: function (operation, data) {
+                if (!backend.call(operation, data)) {
+                    busy = false;
+                    error = I18n.tr("Motor no disponible. Inténtalo de nuevo.");
                 }
             }
         }
@@ -1161,7 +1211,7 @@ Item {
                     text: I18n.tr("Activar autoriza estas acciones para los eventos indicados. Los cambios de recursos necesitarán otra revisión.")
                     wrapMode: Text.Wrap
                     Layout.fillWidth: true
-                    color: Color.foreground
+                    color: Commons.Color.foreground
                 }
                 ScrollView {
                     Layout.fillWidth: true
@@ -1187,7 +1237,7 @@ Item {
                 width: parent.width
                 text: I18n.tr("Se cancelarán los trabajos pendientes y se intentarán detener los procesos activos. Los efectos ya enviados o realizados no se pueden deshacer.")
                 wrapMode: Text.Wrap
-                color: Color.foreground
+                color: Commons.Color.foreground
             }
         }
         LocalizedDialog {
@@ -1204,7 +1254,7 @@ Item {
                 width: parent.width
                 text: I18n.tr("Se reutilizarán el cuerpo y la clave de idempotencia. El receptor podría repetir efectos si no implementa idempotencia.")
                 wrapMode: Text.Wrap
-                color: Color.foreground
+                color: Commons.Color.foreground
             }
         }
         LocalizedDialog {
@@ -1222,7 +1272,7 @@ Item {
                 width: parent.width
                 text: I18n.tr("Las conexiones que usan esta referencia dejarán de autenticarse hasta que registres otra credencial con el mismo identificador.")
                 wrapMode: Text.Wrap
-                color: Color.foreground
+                color: Commons.Color.foreground
             }
         }
         LocalizedDialog {
@@ -1280,14 +1330,14 @@ Item {
                     text: I18n.tr("Importa una autorización Google existente. Guardar no concede permisos ni conecta con Google.")
                     Layout.fillWidth: true
                     wrapMode: Text.Wrap
-                    color: Qt.alpha(Color.foreground, 0.75)
+                    color: Qt.alpha(Commons.Color.foreground, 0.75)
                 }
                 ThemedLabel {
                     visible: credentialType.currentIndex === 2
                     text: I18n.tr("Usa un cliente Google de tipo Desktop. Indica los scopes necesarios; revisa sus permisos en el navegador. Guardar inicia una sesión de diez minutos, sin conceder permisos a flujos.")
                     Layout.fillWidth: true
                     wrapMode: Text.Wrap
-                    color: Qt.alpha(Color.foreground, 0.75)
+                    color: Qt.alpha(Commons.Color.foreground, 0.75)
                 }
                 InputField {
                     id: googleScopes
@@ -1322,7 +1372,7 @@ Item {
 
                 ThemedLabel {
                     text: I18n.tr("Identificador")
-                    color: Color.foreground
+                    color: Commons.Color.foreground
                 }
                 InputField {
                     id: secretID
@@ -1333,7 +1383,7 @@ Item {
                 ThemedLabel {
                     visible: credentialType.currentIndex === 0
                     text: I18n.tr("Valor nuevo (16–8192 bytes)")
-                    color: Color.foreground
+                    color: Commons.Color.foreground
                 }
                 InputField {
                     id: secretValue
@@ -1350,7 +1400,7 @@ Item {
                 }
                 ThemedLabel {
                     text: I18n.tr("Usar un identificador existente rota la credencial. Los flujos guardan solo su referencia.")
-                    color: Qt.alpha(Color.foreground, 0.75)
+                    color: Qt.alpha(Commons.Color.foreground, 0.75)
                     wrapMode: Text.Wrap
                     Layout.fillWidth: true
                 }
@@ -1367,7 +1417,7 @@ Item {
             contentItem: ColumnLayout {
                 ThemedLabel {
                     text: I18n.tr("Origen")
-                    color: Color.foreground
+                    color: Commons.Color.foreground
                 }
                 InputField {
                     id: sampleSource
@@ -1377,7 +1427,7 @@ Item {
                 }
                 ThemedLabel {
                     text: I18n.tr("Tipo")
-                    color: Color.foreground
+                    color: Commons.Color.foreground
                 }
                 InputField {
                     id: sampleType
@@ -1387,7 +1437,7 @@ Item {
                 }
                 ThemedLabel {
                     text: I18n.tr("Datos de ejemplo (JSON)")
-                    color: Color.foreground
+                    color: Commons.Color.foreground
                 }
                 ScrollView {
                     Layout.fillWidth: true
@@ -1417,18 +1467,21 @@ Item {
                 }
                 ThemedLabel {
                     text: root.realTestGuidance
-                    color: root.realTestFlowCount > 0 ? Color.foreground : Color.urgent
+                    color: root.realTestFlowCount > 0 ? Commons.Color.foreground : Commons.Color.urgent
                     wrapMode: Text.Wrap
                     Layout.fillWidth: true
                 }
                 ActionButton {
                     text: I18n.tr("Revisar y activar")
                     enabled: root.loaded && !backend.busy
-                    onClicked: { sampleDialog.close(); root.save("config.preview"); }
+                    onClicked: {
+                        sampleDialog.close();
+                        root.save("config.preview");
+                    }
                 }
                 ThemedLabel {
                     text: I18n.tr("La simulación usa el borrador. La prueba real usa la revisión activa y sus permisos.")
-                    color: Qt.alpha(Color.foreground, 0.75)
+                    color: Qt.alpha(Commons.Color.foreground, 0.75)
                     wrapMode: Text.Wrap
                     Layout.fillWidth: true
                 }
@@ -1456,7 +1509,7 @@ Item {
                 width: parent.width
                 text: I18n.tr("Esto puede mostrar notificaciones, ejecutar comandos o enviar datos a destinos autorizados.")
                 wrapMode: Text.Wrap
-                color: Color.foreground
+                color: Commons.Color.foreground
             }
         }
         LocalizedDialog {
@@ -1489,7 +1542,7 @@ Item {
             contentItem: ThemedLabel {
                 text: I18n.tr("Se descartará el cursor guardado de ") + root.selectedMonitor + I18n.tr(". La siguiente lectura empezará desde ese momento; los registros anteriores no se recuperarán. Los permisos no cambian.")
                 wrapMode: Text.Wrap
-                color: Color.foreground
+                color: Commons.Color.foreground
             }
         }
         LocalizedDialog {
@@ -1524,7 +1577,7 @@ Item {
             contentItem: ColumnLayout {
                 ThemedLabel {
                     text: fileDialog.diagnostic ? I18n.tr("Ruta absoluta de un nuevo archivo .json. Solo versiones, contadores y estado; no incluye configuración, rutas, URLs, cuerpos ni valores de credenciales.") : fileDialog.exporting ? I18n.tr("Ruta absoluta de un nuevo archivo .json (no se sobrescribe). Se exportan referencias, no valores del almacén de secretos.") : I18n.tr("Ruta absoluta de un archivo .json. Sustituye el borrador y deja los recursos importados deshabilitados.")
-                    color: Qt.alpha(Color.foreground, 0.75)
+                    color: Qt.alpha(Commons.Color.foreground, 0.75)
                     wrapMode: Text.Wrap
                     Layout.fillWidth: true
                 }

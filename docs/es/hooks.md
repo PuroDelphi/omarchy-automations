@@ -20,6 +20,33 @@ El tipo es `omarchy.<hook>`. Los campos del flujo se pueden consultar como
 mismo usuario; estos eventos no prueban que su origen sea exclusivamente el
 ejecutable Omarchy.
 
+
+## Configuración visual
+
+Estas mejoras visuales requieren compilar la interfaz y el motor de la misma revisión hasta que se incluyan en una entrega precompilada.
+
+Abre **Flujos → Eventos de Omarchy** para conectar o desconectar los seis hooks.
+Solo gestiona los adaptadores exactos `quatrro-<evento>`; no reemplaza archivos
+modificados, enlaces simbólicos ni hooks de otras herramientas. Si el motor está
+desconectado se pierden eventos, como se explica abajo. Los perfiles de desarrollo
+usan una carpeta de hooks aislada.
+
+El editor muestra nombres de eventos y campos sugeridos para condiciones. Se
+conserva el acceso a rutas avanzadas. Crea o edita acciones desde los pasos del
+flujo; sus cambios se guardan junto al flujo y se descartan al cancelar. Editar una
+acción compartida afecta a todos sus flujos después de activar la revisión.
+
+**Flujos → Plantillas** ofrece 38 recetas bilingües: eventos de escritorio, filtros
+por tema, pausas periódicas, recordatorios de calendario, alertas de recursos y
+eventos locales. Busca o filtra por categoría. Cada inserción crea identificadores
+nuevos y recursos deshabilitados, sin credenciales ni permisos. Ajusta valores,
+habilita el flujo y sus monitores/temporizadores, guarda, simula y revisa antes de
+activar. Conecta los hooks por separado. Los horarios empiezan en UTC: elige tu
+zona IANA y hora. Los eventos locales deben proporcionar `data.message`.
+El hook de inicio indica que arrancó el escritorio, no comprueba su disponibilidad;
+el de actualización tampoco comprueba que esta terminara correctamente.
+
+
 ## Instalar un adaptador
 
 Con `quatrroctl` instalado en `~/.local/bin/`, desde la raíz del proyecto:

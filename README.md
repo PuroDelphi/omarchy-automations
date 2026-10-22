@@ -28,6 +28,16 @@ History shows execution and delivery status, including failures and uncertain ou
 *The editor and simulation dialog are captures from the installed Omarchy shell.
 More light/dark and English/Spanish screenshots: [[en]](docs/en/interface.md) · [[es]](docs/es/interface.md).*
 
+## Visual automation building
+
+The Flows editor includes named Omarchy events, suggested condition fields,
+inline action creation/editing, and an event connection manager. The searchable
+library includes 38 English/Spanish templates. Templates are inserted disabled;
+review values, timezone, hook connections and permissions before activation.
+See [visual hooks and templates](docs/en/hooks.md#visual-setup). These additions
+require a source build of the matching engine and UI until a prebuilt release
+containing them is published; the existing pinned preview is unchanged.
+
 ## Install — no Go compiler needed
 
 **Linux amd64 · Omarchy Quattro · Python 3.** The prebuilt preview includes the
