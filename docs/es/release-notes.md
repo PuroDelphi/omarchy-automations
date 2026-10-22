@@ -2,6 +2,13 @@
 
 [English](../en/release-notes.md) · [Documentación](README.md)
 
+Preview 8 contiene el problema de disponibilidad del portapapeles señalado en
+Marketplace #12619 separando el editor completo de la shell compartida. El lanzador
+inicia un único servicio de usuario y verifica sus límites efectivos antes de
+cargar controles Qt. Conserva la edición nativa, los hooks y las 38 plantillas.
+Guarda los cambios antes de actualizar; un portapapeles malicioso todavía puede
+interrumpir el editor separado. Consulta [editor y portapapeles](security.md#editor-y-portapapeles).
+
 Versión preliminar publicada para Linux amd64; no es la versión estable 1.0.
 Preview 7 añade creación visual de los seis hooks de Omarchy, un panel para
 conectar eventos, campos sugeridos y operadores traducidos para condiciones,

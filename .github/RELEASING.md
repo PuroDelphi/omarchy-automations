@@ -8,9 +8,9 @@ without changing the package while the pin is written.
 ```bash
 make build
 python3 scripts/package-release.py
-python3 scripts/sync-release-pin.py --write --tag v0.1.0-preview.7
+python3 scripts/sync-release-pin.py --write --tag v0.1.0-preview.8
 python3 scripts/package-release.py
-python3 scripts/sync-release-pin.py --check --tag v0.1.0-preview.7
+python3 scripts/sync-release-pin.py --check --tag v0.1.0-preview.8
 python3 scripts/test-release-package.py
 python3 scripts/test-setup.py
 ```

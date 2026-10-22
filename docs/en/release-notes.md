@@ -2,6 +2,13 @@
 
 [Español](../es/release-notes.md) · [Documentation](README.md)
 
+Preview 8 contains the clipboard availability issue reported in Marketplace
+#12619 by separating the full editor from the shared shell. The launcher starts
+one bounded user unit and verifies its effective limits before Qt controls load.
+Native editing, hooks and all 38 templates are retained. Save changes before
+updating; a hostile clipboard can still interrupt the separate editor. See
+[editor and clipboard](security.md#editor-and-clipboard).
+
 This is a published development preview for Linux amd64, not the stable 1.0 release.
 Preview 7 adds visual authoring of all six Omarchy hooks, a native event connection
 manager, suggested condition fields and translated operators, inline action editing,

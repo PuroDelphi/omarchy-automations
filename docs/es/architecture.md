@@ -27,10 +27,19 @@ servicio de usuario separado: ocultar o recargar el panel no detiene los flujos.
 `quatrroctl` negocia el protocolo local y envía una operación por conexión.
 El motor usa Go y SQLite, con dependencias fijadas en `go.mod`/`go.sum`.
 
-Los plugins Omarchy ejecutan código del usuario dentro del shell. El panel no es
-un sandbox; componentes con el mismo UID no crean una frontera fuerte contra
-software local malicioso. El aislamiento restringe trabajos despachados, no
-convierte todo el escritorio en confiable.
+Solo el widget y el lanzador `Panel.qml`, sin entradas de texto, se cargan en la
+shell compartida. `EditorWindow.qml` carga `Editor.qml` en otro proceso Quickshell,
+iniciado por `scripts/editor.py` en un servicio systemd de usuario dedicado.
+Antes de crear controles Qt, comprueba los límites efectivos del cgroup: 512 MiB,
+cero swap, un núcleo de CPU y 128 tareas. Si faltan, se niega a iniciar; nunca
+recurre a cargar el editor dentro de la shell. Ocultar la ventana conserva el
+borrador local y reabrirla reutiliza el servicio. Reiniciar, actualizar o desinstalar
+lo detiene y descarta los cambios sin guardar.
+
+Esto contiene los fallos de disponibilidad del portapapeles dentro del editor;
+no es un sandbox contra software arbitrario con el mismo UID. El aislamiento de
+acciones sigue restringiendo los trabajos despachados. Consulta
+[editor y portapapeles](security.md#editor-y-portapapeles).
 
 ## Configuración y ejecución
 

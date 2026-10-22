@@ -24,7 +24,7 @@ def wait(check,label):
 
 with tempfile.TemporaryDirectory(prefix='clipboard-capture-') as directory:
     home=Path(directory);ui=home/'ui';ui.mkdir()
-    shutil.copy2(ROOT/'Panel.qml',ui/'Panel.qml')
+    shutil.copy2(ROOT/'Editor.qml',ui/'Editor.qml')
     shutil.copytree(ROOT/'qml',ui/'qml')
     harness=(ROOT/'Development.qml').read_text().replace('target: "quatrro-development"','''target: "quatrro-development"
         function guideEdit(kind: string, index: int): void {

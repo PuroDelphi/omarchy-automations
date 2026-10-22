@@ -58,7 +58,7 @@ def layout(staging):
 
 
 def plugin_sources():
-    return [Path("manifest.json"), Path("Widget.qml"), Path("Panel.qml"), Path("qml/qmldir"), *sorted(Path("qml") / p.name for p in (PROJECT / "qml").iterdir() if p.suffix in (".qml", ".js"))]
+    return [Path("manifest.json"), Path("Widget.qml"), Path("Panel.qml"), Path("Editor.qml"), Path("EditorWindow.qml"), Path("scripts/editor.py"), Path("scripts/native_ui.py"), Path("qml/qmldir"), *sorted(Path("qml") / p.name for p in (PROJECT / "qml").iterdir() if p.suffix in (".qml", ".js"))]
 
 
 def owned_paths(home, config, receipt=None):
@@ -180,6 +180,15 @@ def run(args):
     subprocess.run(args, check=True, timeout=30)
 
 
+def stop_editor():
+    unit = "quatrro-automations-editor.service"
+    active = subprocess.run(["systemctl", "--user", "is-active", "--quiet", unit], timeout=10)
+    if active.returncode == 0:
+        run(["systemctl", "--user", "stop", unit])
+    elif active.returncode not in (3, 4):
+        raise ValueError("Cannot determine editor state; stop it before changing installation")
+
+
 @contextmanager
 def engine_lock(state):
     directory = state / "quatrro"
@@ -290,6 +299,8 @@ def install_files(args):
             if not shutil.which(command):
                 raise ValueError(f"Missing dependency: {command}")
         run(["omarchy", "plugin", "validate", str(PROJECT)])
+    if not args.staging_root:
+        stop_editor()
     # Keep complete prior bytes before touching destinations. Updates refuse
     # locally edited files, rather than silently erasing their changes.
     before = {name: (Path(name).read_bytes(), Path(name).stat().st_mode & 0o777) if Path(name).exists() else None for name in files}
@@ -329,6 +340,7 @@ def uninstall(args):
     if not args.staging_root:
         run(["systemctl", "--user", "disable", "--now", "quatrrod.service"])
         run(["omarchy", "plugin", "disable", PLUGIN])
+        stop_editor()
     for name in receipt["files"]:
         Path(name).unlink(missing_ok=True)
     receipt_path.unlink()

@@ -1,4 +1,4 @@
-"""Expose installed Omarchy QML modules to isolated development harnesses."""
+"""Expose installed Omarchy QML modules to the separate editor and development harnesses."""
 from pathlib import Path
 import os
 

@@ -67,3 +67,9 @@ sin red y con `/usr` de solo lectura.
 
 [Detalles del instalador y restauración](../installation.md) ·
 [Paquetes y reproducibilidad](packages.md).
+
+Las pruebas `python3 scripts/test-shell-clipboard.py` y
+`QUATRRO_HOST_TEST=1 python3 scripts/test-editor-isolation.py` verifican las lecturas
+implícitas y la contención del editor de producción. Requieren cabeceras Qt, moc y
+un compilador C++. El harness Development.qml usa un proceso propio sin imponer
+los límites de cgroup de producción. Consulta la guía de seguridad.

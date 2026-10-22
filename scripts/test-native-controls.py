@@ -17,6 +17,7 @@ import QtQuick.Controls
 import QtTest
 import Quickshell
 import qs.Commons
+import qs.Commons as Commons
 import "qml"
 FloatingWindow {
     visible: true
@@ -134,7 +135,7 @@ TestCase {
         compare(action.width, originalWidth);
         compare(action.height, originalHeight);
         action.destructive = true;
-        compare(action.foreground, Color.urgent);
+        compare(action.foreground, Commons.Color.urgent);
         action.enabled = false;
         compare(action.opacity, 0.45);
         keyClick(Qt.Key_Return); keyClick(Qt.Key_Space);

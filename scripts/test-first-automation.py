@@ -24,7 +24,7 @@ def wait(check,label):
 with tempfile.TemporaryDirectory(prefix='automations-first-flow-') as directory:
     home=Path(directory);ui=home/'ui';ui.mkdir()
     shutil.copytree(ROOT/'qml',ui/'qml')
-    shutil.copy2(ROOT/'Panel.qml',ui/'Panel.qml')
+    shutil.copy2(ROOT/'Editor.qml',ui/'Editor.qml')
     harness=(ROOT/'Development.qml').read_text().replace('loaded: panel.loaded,','loaded: panel.loaded, activeFlows: panel.activeFlowCount, testFlows: panel.realTestFlowCount, guidance: panel.realTestGuidance, section: panel.section,')
     harness=harness.replace('target: "quatrro-development"','''target: "quatrro-development"
         function rejectApproval(): void { panel.approvalDialog.reject(); }

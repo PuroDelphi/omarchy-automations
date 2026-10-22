@@ -7,7 +7,7 @@ import Quickshell
 import Quickshell.Io
 
 ShellRoot {
-    Panel {
+    Editor {
         id: panel
         Component.onCompleted: open("{}")
     }

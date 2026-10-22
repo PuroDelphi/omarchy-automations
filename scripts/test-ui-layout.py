@@ -29,7 +29,7 @@ with tempfile.TemporaryDirectory(prefix='omarchy-layout-') as temporary:
     ui = base / 'ui'
     ui.mkdir()
     shutil.copytree(ROOT / 'qml', ui / 'qml')
-    panel = (ROOT / 'Panel.qml').read_text().replace('minimumSize: Qt.size(760, 560)', 'minimumSize: Qt.size(0, 0)')
+    panel = (ROOT / 'Editor.qml').read_text().replace('minimumSize: Qt.size(760, 560)', 'minimumSize: Qt.size(0, 0)')
     panel = panel.replace('    id: root\n', '''    id: root
     function qaResize(w, h) { window.minimumSize = Qt.size(w,h); window.maximumSize = Qt.size(w,h); window.implicitWidth = w; window.implicitHeight = h; }
     function qaGeometry() {
@@ -109,7 +109,7 @@ with tempfile.TemporaryDirectory(prefix='omarchy-layout-') as temporary:
         editor.contentItem.background = Qt.createQmlObject('import QtQuick; Rectangle { color: "' + Color.popups.background + '" }', editor.contentItem);
         editor.contentItem.grabToImage(function(result) {result.saveToFile(path);}); editor.footer.grabToImage(function(result) {result.saveToFile(path.replace(".png", "-footer.png"));}); }
 ''', 1)
-    (ui / 'Panel.qml').write_text(panel)
+    (ui / 'Editor.qml').write_text(panel)
     harness = (ROOT / 'Development.qml').read_text().replace('target: "quatrro-development"', '''target: "quatrro-development"
         function resize(w: int, h: int): void { panel.qaResize(w,h); }
         function history(enabled: bool): void { panel.qaHistory(enabled); }

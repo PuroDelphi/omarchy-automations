@@ -43,3 +43,10 @@ The primary save operation prepares a draft, never silently activates effects.
 Errors stay adjacent to the operation and leave the input available for correction.
 Loading disables repeated mutations. All product text and accessible names must
 support both languages; stable resource IDs and event paths are never translated.
+
+## Process ownership
+
+Native visual tokens and controls are retained. Since Preview 8 the full editor
+lives in a separate bounded process; the shared shell contains only the widget
+and an input-free launch/retry surface. This changes process ownership, not the
+visual language. See `UX-CONTRACT.md` and `docs/en/security.md`.

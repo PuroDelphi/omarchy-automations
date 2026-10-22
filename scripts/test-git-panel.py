@@ -15,7 +15,7 @@ with tempfile.TemporaryDirectory(prefix='automations-git-panel-') as directory:
     plugin = home / '.config/omarchy/plugins/quatrro.automations'
     plugin.mkdir(parents=True)
     subprocess.run(['git', 'init', '-q', str(plugin)], check=True)
-    for name in ('Panel.qml', 'Widget.qml', 'Development.qml', 'manifest.json'):
+    for name in ('Panel.qml', 'Editor.qml', 'EditorWindow.qml', 'Widget.qml', 'Development.qml', 'manifest.json'):
         shutil.copy2(ROOT / name, plugin / name)
     shutil.copytree(ROOT / 'qml', plugin / 'qml')
     shutil.copytree(ROOT / 'scripts', plugin / 'scripts', ignore=shutil.ignore_patterns('__pycache__'))

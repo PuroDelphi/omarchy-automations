@@ -37,7 +37,7 @@ with tempfile.TemporaryDirectory(prefix='omarchy-tutorials-') as temporary:
     base = Path(temporary)
     ui = base / 'ui'
     ui.mkdir()
-    shutil.copy2(ROOT / 'Panel.qml', ui / 'Panel.qml')
+    shutil.copy2(ROOT / 'Editor.qml', ui / 'Editor.qml')
     shutil.copytree(ROOT / 'qml', ui / 'qml')
     harness = (ROOT / 'Development.qml').read_text().replace(
         'target: "quatrro-development"', '''target: "quatrro-development"
